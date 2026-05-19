@@ -193,6 +193,86 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
 /* 인스타 토스트 */
 .insta-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:12px;font-weight:600;padding:10px 18px;border-radius:100px;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;z-index:10}
 .insta-toast.show{opacity:1}
+
+/* ── 사주 CTA (결과 화면) ── */
+.btn-saju-cta{width:100%;padding:16px 18px;background:#f5f3ff;border:2px solid #e0d9ff;border-radius:14px;font-family:inherit;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:all .12s;text-align:left}
+.btn-saju-cta:active{transform:scale(.98);opacity:.88}
+.btn-saju-cta-left{display:flex;flex-direction:column;gap:3px}
+.btn-saju-cta-title{font-size:14px;font-weight:800;color:#4c1d95}
+.btn-saju-cta-sub{font-size:11px;color:#8b5cf6;font-weight:600}
+.btn-saju-arrow{font-size:18px;color:#8b5cf6;flex-shrink:0}
+
+/* ── SAJU INPUT ── */
+#s-saju-input{background:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#s-saju-input::-webkit-scrollbar{display:none}
+.saju-top{display:flex;align-items:center;gap:14px;padding:60px 20px 0;flex-shrink:0}
+.saju-head{padding:16px 24px 0}
+.saju-title{font-size:29px;font-weight:900;letter-spacing:-1.2px;line-height:1.25;color:var(--text);margin-bottom:6px}
+.saju-subtitle{font-size:13px;color:var(--muted);margin-bottom:8px;line-height:1.6}
+.saju-body{padding:20px 24px 40px;display:flex;flex-direction:column;gap:18px}
+.saju-field{display:flex;flex-direction:column;gap:8px}
+.saju-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.saju-input{padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:16px;color:var(--text);background:var(--chip);outline:none;transition:border-color .15s;width:100%}
+.saju-input:focus{border-color:var(--accent)}
+.saju-input::placeholder{color:var(--muted)}
+.saju-date-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.saju-select{padding:14px 12px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:15px;color:var(--text);background:var(--chip);outline:none;transition:border-color .15s;width:100%;appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aaa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.saju-select:focus{border-color:var(--accent)}
+.gender-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gender-btn{padding:14px;background:var(--chip);border:2px solid transparent;border-radius:14px;font-family:inherit;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;transition:all .12s;text-align:center}
+.gender-btn:active{transform:scale(.97)}
+.gender-btn.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.saju-time-note{font-size:11px;color:var(--muted);line-height:1.55;padding:10px 14px;background:var(--chip);border-radius:10px;margin-top:6px}
+.btn-saju-start{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s,opacity .15s;margin-top:4px}
+.btn-saju-start:active{transform:scale(.98)}
+.btn-saju-start:disabled{opacity:.35;cursor:default}
+
+/* ── SAJU LOADING ── */
+#s-saju-load{background:#0d0d0d;align-items:center;justify-content:center}
+.saju-load-emoji{font-size:54px;margin-bottom:18px;animation:bob .8s ease-in-out infinite alternate}
+.saju-load-title{font-size:20px;font-weight:900;color:#fff;margin-bottom:8px;text-align:center}
+.saju-load-sub{font-size:12px;color:rgba(255,255,255,.4);animation:blink 1.4s ease-in-out infinite;text-align:center;padding:0 32px}
+
+/* ── SAJU RESULT ── */
+#s-saju-result{background:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#s-saju-result::-webkit-scrollbar{display:none}
+.saju-res-hero{padding:56px 24px 24px;background:#0d0d0d;color:#fff;flex-shrink:0}
+.saju-res-gan-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(139,92,246,.25);border-radius:100px;padding:5px 12px;font-size:11px;font-weight:700;color:#c4b5fd;letter-spacing:.5px;margin-bottom:12px}
+.saju-res-name{font-size:24px;font-weight:900;letter-spacing:-.8px;line-height:1.25;margin-bottom:4px}
+.saju-res-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:20px}
+.saju-four-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.saju-pillar{display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(255,255,255,.07);border-radius:12px;padding:10px 4px}
+.saju-pillar-lbl{font-size:8px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:.5px}
+.saju-pillar-gan{font-size:20px;font-weight:900;line-height:1}
+.saju-pillar-ji{font-size:16px;font-weight:700;color:rgba(255,255,255,.55);line-height:1}
+.saju-pillar-kr{font-size:8px;color:rgba(255,255,255,.22);margin-top:3px}
+
+.saju-res-body{padding:20px 24px 40px}
+
+/* 무료 섹션 */
+.saju-sec-badge{display:inline-flex;align-items:center;gap:5px;background:#f0f0ff;border-radius:100px;padding:4px 10px;font-size:10px;font-weight:700;color:#6d28d9;letter-spacing:.5px;margin-bottom:12px}
+.saju-free-card{background:var(--chip);border-radius:16px;padding:18px;margin-bottom:10px}
+.saju-free-card.accent{border-left:4px solid #8b5cf6}
+.saju-free-card-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#8b5cf6;margin-bottom:8px}
+.saju-free-card-body{font-size:14px;color:var(--text);line-height:1.8;font-weight:400}
+
+/* 오행 바 */
+.ohaeng-grid{display:flex;flex-direction:column;gap:8px}
+.oh-row{display:flex;align-items:center;gap:10px}
+.oh-lbl{font-size:12px;font-weight:700;color:var(--sub);width:20px;flex-shrink:0}
+.oh-bar-bg{flex:1;height:7px;background:var(--border);border-radius:100px;overflow:hidden}
+.oh-bar{height:100%;border-radius:100px;width:0%;transition:width 1s cubic-bezier(.25,.46,.45,.94)}
+.oh-pct{font-size:11px;font-weight:700;color:var(--sub);width:30px;text-align:right;flex-shrink:0}
+
+/* 잠금 섹션 */
+.saju-lock-section{position:relative;margin-bottom:24px;border-radius:16px;overflow:hidden}
+.saju-blurred{filter:blur(5px);user-select:none;pointer-events:none;opacity:.6;padding:0}
+.saju-lock-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:2;padding:24px;background:rgba(255,255,255,.15);backdrop-filter:blur(2px)}
+.saju-lock-icon{font-size:28px}
+.saju-lock-msg{font-size:14px;font-weight:800;color:var(--text);text-align:center;line-height:1.55}
+.saju-lock-price{font-size:11px;color:var(--muted);font-weight:500}
+.btn-unlock{padding:14px 24px;background:#111;color:#fff;border:none;border-radius:14px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:transform .1s;letter-spacing:-.2px}
+.btn-unlock:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -396,6 +476,139 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
     </div>
   </div>
 
+  <!-- SAJU INPUT -->
+  <div class="screen" id="s-saju-input">
+    <div class="saju-top"><button class="btn-bk" id="bkSaju">←</button><span class="step-lbl">사주 분석</span></div>
+    <div class="saju-head">
+      <h2 class="saju-title">나는 왜<br>이런 상황에<br>놓인 걸까?</h2>
+      <p class="saju-subtitle">생년월일을 입력하면 명리학(命理學) 기반으로<br>당신의 기질과 관계 패턴을 분석해드려요</p>
+    </div>
+    <div class="saju-body">
+      <div class="saju-field">
+        <div class="saju-label">이름 (선택)</div>
+        <input type="text" class="saju-input" id="sajuName" placeholder="홍길동" autocomplete="off">
+      </div>
+      <div class="saju-field">
+        <div class="saju-label">생년월일</div>
+        <div class="saju-date-row">
+          <input type="number" class="saju-input" id="sajuYear" placeholder="1990년" min="1930" max="2005" inputmode="numeric">
+          <select class="saju-select" id="sajuMonth">
+            <option value="">월</option>
+            <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
+            <option value="4">4월</option><option value="5">5월</option><option value="6">6월</option>
+            <option value="7">7월</option><option value="8">8월</option><option value="9">9월</option>
+            <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
+          </select>
+          <select class="saju-select" id="sajuDay">
+            <option value="">일</option>
+            <option value="1">1일</option><option value="2">2일</option><option value="3">3일</option>
+            <option value="4">4일</option><option value="5">5일</option><option value="6">6일</option>
+            <option value="7">7일</option><option value="8">8일</option><option value="9">9일</option>
+            <option value="10">10일</option><option value="11">11일</option><option value="12">12일</option>
+            <option value="13">13일</option><option value="14">14일</option><option value="15">15일</option>
+            <option value="16">16일</option><option value="17">17일</option><option value="18">18일</option>
+            <option value="19">19일</option><option value="20">20일</option><option value="21">21일</option>
+            <option value="22">22일</option><option value="23">23일</option><option value="24">24일</option>
+            <option value="25">25일</option><option value="26">26일</option><option value="27">27일</option>
+            <option value="28">28일</option><option value="29">29일</option><option value="30">30일</option>
+            <option value="31">31일</option>
+          </select>
+        </div>
+      </div>
+      <div class="saju-field">
+        <div class="saju-label">성별</div>
+        <div class="gender-row">
+          <button class="gender-btn" data-gender="m">👨 남성</button>
+          <button class="gender-btn" data-gender="f">👩 여성</button>
+        </div>
+      </div>
+      <div class="saju-field">
+        <div class="saju-label">태어난 시간 (선택)</div>
+        <select class="saju-select" id="sajuHour">
+          <option value="">모르면 건너뛰어도 돼요</option>
+          <option value="0">자시(子時) — 밤 11시~새벽 1시</option>
+          <option value="2">축시(丑時) — 새벽 1~3시</option>
+          <option value="4">인시(寅時) — 새벽 3~5시</option>
+          <option value="6">묘시(卯時) — 오전 5~7시</option>
+          <option value="8">진시(辰時) — 오전 7~9시</option>
+          <option value="10">사시(巳時) — 오전 9~11시</option>
+          <option value="12">오시(午時) — 오전 11시~오후 1시</option>
+          <option value="14">미시(未時) — 오후 1~3시</option>
+          <option value="16">신시(申時) — 오후 3~5시</option>
+          <option value="18">유시(酉時) — 오후 5~7시</option>
+          <option value="20">술시(戌時) — 오후 7~9시</option>
+          <option value="22">해시(亥時) — 오후 9~11시</option>
+        </select>
+        <div class="saju-time-note">⏰ 시간을 입력하면 시주(時柱)까지 분석해 더 정확한 풀이를 드려요</div>
+      </div>
+      <button type="button" class="btn-saju-start" id="btnSajuStart" disabled>사주 분석 시작 →</button>
+    </div>
+  </div>
+
+  <!-- SAJU LOADING -->
+  <div class="screen" id="s-saju-load">
+    <div style="text-align:center;padding:0 32px">
+      <div class="saju-load-emoji">☯️</div>
+      <div class="saju-load-title">사주 분석 중...</div>
+      <div class="saju-load-sub" id="sajuLoadTxt">천간지지 배열 중...</div>
+    </div>
+    <div class="hi"><div class="hi-bar" style="background:rgba(255,255,255,.15)"></div></div>
+  </div>
+
+  <!-- SAJU RESULT -->
+  <div class="screen" id="s-saju-result">
+    <div class="saju-res-hero">
+      <div class="saju-res-gan-badge" id="srGanBadge">일간 · 甲 갑목(甲木)</div>
+      <div class="saju-res-name" id="srName">당신의 사주 풀이</div>
+      <div class="saju-res-sub" id="srSub">양력 0000년 0월 0일</div>
+      <div class="saju-four-row" id="srFourPillars"></div>
+    </div>
+    <div class="saju-res-body">
+      <!-- 무료 섹션 -->
+      <div class="saju-free-section">
+        <div class="saju-sec-badge">🔓 무료 분석</div>
+        <div class="saju-free-card accent">
+          <div class="saju-free-card-title" id="srFreeTitle">당신의 타고난 기질</div>
+          <div class="saju-free-card-body" id="srFreeBody"></div>
+        </div>
+        <div class="saju-free-card accent">
+          <div class="saju-free-card-title">이 상황이 유독 힘든 이유</div>
+          <div class="saju-free-card-body" id="srWhyHard"></div>
+        </div>
+        <div class="saju-free-card">
+          <div class="saju-free-card-title">사주팔자 오행 분포</div>
+          <div class="ohaeng-grid" id="srOhaeng"></div>
+        </div>
+      </div>
+
+      <!-- 잠금 섹션 -->
+      <div class="saju-lock-section">
+        <div class="saju-blurred">
+          <div class="saju-free-card" style="margin-bottom:10px">
+            <div class="saju-free-card-title">🎯 일간 맞춤 대처 전략</div>
+            <div class="saju-free-card-body">나의 기질에 꼭 맞는 구체적인 대처 전략과 실전 대화법. 갑목 기질이라면 직접 대결보다 이런 방식이 훨씬 효과적이에요. 상대의 패턴을 역이용하는 방법도 있어요.</div>
+          </div>
+          <div class="saju-free-card" style="margin-bottom:10px">
+            <div class="saju-free-card-title">🔗 관계 패턴 심층 분석</div>
+            <div class="saju-free-card-body">왜 이런 사람이 반복해서 나타나는지, 내 사주의 어떤 기운이 이런 관계를 끌어당기는지 분석해드려요. 관계 역학의 근본 원인을 이해하면 패턴이 달라져요.</div>
+          </div>
+          <div class="saju-free-card">
+            <div class="saju-free-card-title">📅 지금 이 상황, 언제까지일까?</div>
+            <div class="saju-free-card-body">대운과 세운 기준으로 본 관계 변화 시점. 지금이 버텨야 할 시기인지, 아니면 과감히 움직여야 할 시기인지 명리학적으로 풀어드려요.</div>
+          </div>
+        </div>
+        <div class="saju-lock-overlay">
+          <div class="saju-lock-icon">🔒</div>
+          <div class="saju-lock-msg">맞춤 대처 전략, 관계 패턴 원인,<br>변화 시점 예측까지 전부 확인하기</div>
+          <div class="saju-lock-price">2,900원 · 한 번 결제로 평생 열람</div>
+          <button class="btn-unlock" id="btnUnlock">전체 풀이 보기  2,900원 →</button>
+        </div>
+      </div>
+
+      <button type="button" class="btn-again" id="btnSajuBack" style="margin-bottom:50px">← 결과로 돌아가기</button>
+    </div>
+  </div>
+
   <!-- LOADING -->
   <div class="screen" id="s-load">
     <div style="text-align:center;padding:0 32px">
@@ -442,6 +655,13 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
       <div class="sec-lbl">대처 방법</div>
       <div class="act-section" id="actSection"></div>
       <button type="button" class="btn-share" id="btnShare">📤 결과 공유하기</button>
+      <button type="button" class="btn-saju-cta" id="btnSajuCta">
+        <div class="btn-saju-cta-left">
+          <span class="btn-saju-cta-title">✨ 나는 왜 이런 상황에 놓인 걸까?</span>
+          <span class="btn-saju-cta-sub">생년월일로 보는 사주 심층 분석 — 무료</span>
+        </div>
+        <span class="btn-saju-arrow">→</span>
+      </button>
       <button type="button" class="btn-again" id="btnAgain">↩ 다시 판별하기</button>
     </div>
   </div>
@@ -476,12 +696,13 @@ document.addEventListener('DOMContentLoaded', function(){
     updateUI(toId);
   }
   function updateUI(id){
-    var dark=(id==='s0'||id==='s-result'||id==='s-load');
+    var dark=(id==='s0'||id==='s-result'||id==='s-load'||id==='s-saju-load');
     document.getElementById('sb').className=dark?'dark':'light';
     var map={s1:1,s2:2,s3:3,s4:4,'s-load':5,'s-result':5};
     var n=map[id]||0;
     var pw=document.getElementById('pw');
-    if(n>0&&id!=='s-result'&&id!=='s-load'){pw.style.display='block';document.getElementById('pb').style.width=(n/TOTAL*100)+'%';}
+    var hidePw=(id==='s-result'||id==='s-load'||id==='s-saju-input'||id==='s-saju-load'||id==='s-saju-result');
+    if(n>0&&!hidePw){pw.style.display='block';document.getElementById('pb').style.width=(n/TOTAL*100)+'%';}
     else{pw.style.display='none';}
   }
   function selCard(card,group){group.forEach(function(c){c.classList.remove('sel');});card.classList.add('sel');}
@@ -1056,6 +1277,244 @@ document.addEventListener('DOMContentLoaded', function(){
       if(t<1)requestAnimationFrame(step);
     })(s);
   }
+
+
+  /* ── SAJU (사주 분석) ── */
+  var sajuState={name:'',year:0,month:0,day:0,gender:'',hour:-1};
+  var sajuResult=null;
+
+  // 천간 · 지지 · 오행 테이블
+  var GAN=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+  var JI=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+  var GAN_KR=['갑','을','병','정','무','기','경','신','임','계'];
+  var JI_KR=['자','축','인','묘','진','사','오','미','신','유','술','해'];
+  var OH_NAME=['木','火','土','金','水'];
+  var OH_COL=['#4ade80','#fb923c','#a78bfa','#fbbf24','#60a5fa'];
+  // 천간→오행: 甲乙=木, 丙丁=火, 戊己=土, 庚辛=金, 壬癸=水
+  var GAN_OH=[0,0,1,1,2,2,3,3,4,4];
+  // 지지→오행: 子=水,丑=土,寅=木,卯=木,辰=土,巳=火,午=火,未=土,申=金,酉=金,戌=土,亥=水
+  var JI_OH=[4,2,0,0,2,1,1,2,3,3,2,4];
+
+  // Julian Day Number 계산
+  function getJD(y,m,d){
+    var a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;
+    return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045;
+  }
+
+  // 년주(年柱): 입춘 기준 (2월 4일 이전이면 전년도)
+  function getYearPillar(y,m,d){
+    var adjY=(m<2||(m===2&&d<4))?y-1:y;
+    return{g:((adjY-4)%10+10)%10,j:((adjY-4)%12+12)%12};
+  }
+
+  // 월주(月柱): 절기 기준 지지 + 년간에 따른 월간
+  var JEOLGI=[
+    {ji:1,sm:1,sd:6},{ji:2,sm:2,sd:4},{ji:3,sm:3,sd:6},
+    {ji:4,sm:4,sd:5},{ji:5,sm:5,sd:6},{ji:6,sm:6,sd:6},
+    {ji:7,sm:7,sd:7},{ji:8,sm:8,sd:7},{ji:9,sm:9,sd:8},
+    {ji:10,sm:10,sd:8},{ji:11,sm:11,sd:7},{ji:0,sm:12,sd:7}
+  ];
+  function getMonthPillar(y,m,d,yearG){
+    var ji=2;
+    for(var i=JEOLGI.length-1;i>=0;i--){
+      var j=JEOLGI[i];
+      if(m>j.sm||(m===j.sm&&d>=j.sd)){ji=j.ji;break;}
+    }
+    // 년간 % 5 → 인월(寅月,지지2) 천간: 갑기=丙(2), 을경=戊(4), 병신=庚(6), 정임=壬(8), 무계=甲(0)
+    var inStart=[2,4,6,8,0][yearG%5];
+    var g=(inStart+(ji-2+12)%12)%10;
+    return{g:g,j:ji};
+  }
+
+  // 일주(日柱): 기준 1900.1.31 = 甲子日 (JD 2415080)
+  var BASE_JD=2415080;
+  function getDayPillar(y,m,d){
+    var diff=getJD(y,m,d)-BASE_JD;
+    return{g:((diff%10)+10)%10,j:((diff%12)+12)%12};
+  }
+
+  // 시주(時柱): 일간에 따른 자시(子時) 천간, 시진 지지
+  function getHourPillar(dayG,hour){
+    if(hour<0)return null;
+    var jiH=(hour===23||hour===0)?0:Math.floor((hour+1)/2)%12;
+    var ziStart=[0,2,4,6,8][dayG%5];
+    return{g:(ziStart+jiH)%10,j:jiH};
+  }
+
+  // 오행 분포 집계
+  function calcOhaeng(yr,mo,da,hr){
+    var oh=[0,0,0,0,0];
+    [yr,mo,da,hr].forEach(function(p){
+      if(!p)return;
+      oh[GAN_OH[p.g]]++;oh[JI_OH[p.j]]++;
+    });
+    return oh;
+  }
+
+  // 일간별 기질 + 이 상황이 힘든 이유 (10가지)
+  var GAN_DATA=[
+    { label:'갑목(甲木)',ohLabel:'木',
+      trait:'리더 기질이 강하고 자기 주관이 뚜렷한 사람이에요. 마치 나무가 하늘을 향해 곧게 자라듯, 본인이 옳다고 생각하는 방향으로 밀고 나가는 힘이 있어요. 쉽게 꺾이지 않지만, 억지로 꺾으려 할 때 가장 크게 저항하는 기질이에요.',
+      why:'갑목(甲木) 기질은 자율성을 침해받을 때 극도의 스트레스를 느껴요. 상대의 "나 때는~"이나 경험을 앞세운 통제가 유독 크게 다가오는 건, 내 방향을 억지로 꺾으려는 시도로 무의식이 반응하기 때문이에요.'
+    },
+    { label:'을목(乙木)',ohLabel:'木',
+      trait:'유연하고 관계 감각이 탁월한 사람이에요. 분위기를 빠르게 읽고 자연스럽게 어울리는 데 능해요. 상대에게 맞춰주는 것도 잘하지만, 그 과정에서 자신의 감정을 뒤로 미루는 경우가 많아요.',
+      why:'참다 참다 한 번에 터지는 패턴이 생기는 건 을목(乙木)의 특성이에요. 경계를 조금씩 양보하다 보면 어느 순간 내 공간이 너무 좁아진 상태가 돼요. 지금 이 상황도 오래 맞춰주다 경계가 흐려진 결과일 수 있어요.'
+    },
+    { label:'병화(丙火)',ohLabel:'火',
+      trait:'열정적이고 표현력이 풍부한 사람이에요. 감정을 숨기는 게 잘 안 되고, 싫은 건 바로 얼굴에 나타나는 기질이에요. 주변을 밝히는 에너지가 있지만, 감정의 파동도 그만큼 크게 옵니다.',
+      why:'상대의 무시나 폄하 발언이 다른 사람보다 훨씬 크게 느껴지는 건 병화(丙火) 기질의 특성이에요. 감정적으로 즉각 반응하다 상황이 꼬이고, 그게 다시 스트레스로 돌아오는 패턴이 반복될 수 있어요.'
+    },
+    { label:'정화(丁火)',ohLabel:'火',
+      trait:'직관이 날카롭고 속 깊은 사람이에요. "이 사람 뭔가 이상하다"는 느낌이 들었다면 대부분 맞아요. 겉으론 차분해 보여도 내면에서는 끊임없이 분석하고 감지하는 기질이에요.',
+      why:'정화(丁火) 기질은 감정을 혼자 삭히고 처리하는 경향이 강해요. 문제를 마음속에서 오래 굴리다 보면 실제보다 더 크게 느껴지거나, 자기 자신을 탓하게 되는 상황이 생겨요. 이 상황도 혼자 감당하고 계신 건 아닌지요.'
+    },
+    { label:'무토(戊土)',ohLabel:'土',
+      trait:'묵직하고 흔들림 없는 중심이 있어요. 쉽게 흔들리지 않고 묵묵히 버티는 힘이 강점이에요. 대산(大山) 같은 기질로, 주변에서 의지하는 사람이 많은 존재예요.',
+      why:'무토(戊土)의 큰 과제는 "참으면 된다"는 믿음이에요. 쌓이고 쌓이다 한 번에 무너지는 패턴이 생길 수 있어요. 지금 이 상황도 오래 버텨온 결과일 가능성이 높고, 몸이나 마음 어딘가에서 신호를 보내고 있을 수 있어요.'
+    },
+    { label:'기토(己土)',ohLabel:'土',
+      trait:'배려심이 많고 꼼꼼하며, 세심하게 주변을 살피는 기질이에요. 사람의 감정에 민감하게 반응하고, 상대가 편안하게 느끼도록 노력하는 성향이 강해요.',
+      why:'상대의 감정을 먼저 고려하다 보니 정작 본인의 경계가 언제 넘어갔는지 늦게 알아채는 경우가 많아요. 기토(己土) 기질은 "저 사람도 사정이 있겠지"라고 생각하면서 자신의 불편함을 정당화하지 않는 경향이 있어요.'
+    },
+    { label:'경금(庚金)',ohLabel:'金',
+      trait:'결단력 있고 원칙적인 사람이에요. 옳고 그름이 분명하고, 한번 판단을 내리면 명확하게 행동해요. 쇠처럼 단단하고 날카로운 기질로, 불의에 쉽게 참지 못하는 성격이에요.',
+      why:'상황을 정확히 판단하는 능력은 뛰어나지만, 대응이 너무 직접적이어서 갈등이 오히려 커지는 경우가 있어요. 경금(庚金) 기질은 "맞는 말도 방식이 틀리면 효과가 없다"는 걸 체감하는 시기가 반드시 와요.'
+    },
+    { label:'신금(辛金)',ohLabel:'金',
+      trait:'완벽주의적이고 예민한 감각의 소유자예요. 세심하고 미적 감각이 뛰어나며, 사소한 것도 그냥 넘기지 않는 기질이에요. 보석처럼 섬세하게 빛나는 존재지만, 그만큼 상처도 쉽게 남는 편이에요.',
+      why:'상대의 말 한마디가 오래 남고, 그 상황을 자꾸 되돌아보게 되는 건 신금(辛金) 특유의 기질이에요. "내가 잘못한 건 아닐까"라는 생각이 반복된다면, 그건 예민함이 아니라 자기 검열이 과도한 상태예요.'
+    },
+    { label:'임수(壬水)',ohLabel:'水',
+      trait:'상황 파악이 빠르고 유연하게 흐름을 바꾸는 능력이 있어요. 큰 물줄기처럼 어느 방향으로든 흘러갈 수 있는 적응력과 지혜를 가진 기질이에요.',
+      why:'이미 상황을 다각도로 분석하고 여러 가능성을 생각해봤을 것이에요. 임수(壬水) 기질의 어려움은 "다 알면서도 실제 변화를 만들기가 어렵다"는 느낌이에요. 지금은 분석보다 작은 행동 하나가 더 중요한 시점일 수 있어요.'
+    },
+    { label:'계수(癸水)',ohLabel:'水',
+      trait:'감수성이 풍부하고 깊은 공감 능력을 가진 사람이에요. 작은 빗방울처럼 조용하지만 쌓이면 큰 힘이 되는 기질로, 내면이 풍부하고 섬세해요.',
+      why:'상대의 에너지에 강하게 영향받는 기질이에요. 부정적인 에너지가 강한 관계에서 계수(癸水) 기질이 특히 더 소진되기 쉬워요. 이 상황이 힘든 건 예민해서가 아니라, 그만큼 많이 흡수하고 있기 때문이에요.'
+    }
+  ];
+
+  // 천간 색상
+  function ganColor(g){return['#4ade80','#86efac','#fb923c','#fca5a5','#a78bfa','#c4b5fd','#fbbf24','#fde68a','#60a5fa','#93c5fd'][g]||'#fff';}
+
+  // 사주 계산
+  function calcSaju(y,m,d,hour){
+    var yr=getYearPillar(y,m,d);
+    var mo=getMonthPillar(y,m,d,yr.g);
+    var da=getDayPillar(y,m,d);
+    var hr=hour>=0?getHourPillar(da.g,hour):null;
+    var oh=calcOhaeng(yr,mo,da,hr);
+    return{yr:yr,mo:mo,da:da,hr:hr,oh:oh};
+  }
+
+  // 사주 결과 렌더링
+  function renderSajuResult(saju,name,y,m,d,hour){
+    var da=saju.da;
+    var info=GAN_DATA[da.g];
+
+    // 헤더
+    document.getElementById('srGanBadge').textContent='일간 · '+GAN[da.g]+' '+info.label;
+    document.getElementById('srName').textContent=(name||'당신')+'의 사주 풀이';
+    document.getElementById('srSub').textContent='양력 '+y+'년 '+m+'월 '+d+'일'+(hour>=0?' '+hour+'시 생':'');
+
+    // 4기둥
+    var cols=[
+      {lbl:'년주',p:saju.yr},{lbl:'월주',p:saju.mo},
+      {lbl:'일주',p:saju.da},{lbl:'시주',p:saju.hr}
+    ];
+    var html='';
+    cols.forEach(function(c){
+      if(!c.p){
+        html+='<div class="saju-pillar" style="opacity:.25"><div class="saju-pillar-lbl">시주</div><div class="saju-pillar-gan" style="color:rgba(255,255,255,.3)">?</div><div class="saju-pillar-ji" style="color:rgba(255,255,255,.2)">?</div><div class="saju-pillar-kr">미입력</div></div>';
+      }else{
+        html+='<div class="saju-pillar"><div class="saju-pillar-lbl">'+c.lbl+'</div><div class="saju-pillar-gan" style="color:'+ganColor(c.p.g)+'">'+GAN[c.p.g]+'</div><div class="saju-pillar-ji">'+JI[c.p.j]+'</div><div class="saju-pillar-kr">'+GAN_KR[c.p.g]+JI_KR[c.p.j]+'</div></div>';
+      }
+    });
+    document.getElementById('srFourPillars').innerHTML=html;
+
+    // 무료 분석 텍스트
+    document.getElementById('srFreeTitle').textContent='당신의 타고난 기질 — '+info.label;
+    document.getElementById('srFreeBody').textContent=info.trait;
+    document.getElementById('srWhyHard').textContent=info.why;
+
+    // 오행 분포
+    var total=saju.oh.reduce(function(a,b){return a+b;},0)||1;
+    var ohHtml='';
+    saju.oh.forEach(function(v,i){
+      var pct=Math.round(v/total*100);
+      ohHtml+='<div class="oh-row"><div class="oh-lbl">'+OH_NAME[i]+'</div><div class="oh-bar-bg"><div class="oh-bar" style="background:'+OH_COL[i]+';width:0%" data-pct="'+pct+'"></div></div><div class="oh-pct">'+pct+'%</div></div>';
+    });
+    document.getElementById('srOhaeng').innerHTML=ohHtml;
+    setTimeout(function(){
+      document.querySelectorAll('#srOhaeng .oh-bar').forEach(function(b){b.style.width=b.dataset.pct+'%';});
+    },350);
+
+    // 스크롤 리셋
+    document.getElementById('s-saju-result').scrollTop=0;
+  }
+
+  // 유효성 체크
+  function checkSajuValid(){
+    var y=parseInt(document.getElementById('sajuYear').value||0);
+    var m=parseInt(document.getElementById('sajuMonth').value||0);
+    var d=parseInt(document.getElementById('sajuDay').value||0);
+    var ok=(y>=1930&&y<=2010&&m>=1&&m<=12&&d>=1&&d<=31&&sajuState.gender!=='');
+    document.getElementById('btnSajuStart').disabled=!ok;
+  }
+
+  // 성별 버튼
+  var genderBtns=Array.from(document.querySelectorAll('.gender-btn'));
+  genderBtns.forEach(function(b){
+    b.addEventListener('click',function(){
+      genderBtns.forEach(function(x){x.classList.remove('sel');});
+      this.classList.add('sel');
+      sajuState.gender=this.dataset.gender;
+      checkSajuValid();
+    });
+  });
+
+  // 입력 변경 이벤트
+  ['sajuYear','sajuMonth','sajuDay'].forEach(function(id){
+    document.getElementById(id).addEventListener('change',checkSajuValid);
+    document.getElementById(id).addEventListener('input',checkSajuValid);
+  });
+
+  // CTA 버튼 → 입력 화면
+  document.getElementById('btnSajuCta').addEventListener('click',function(){goTo('s-saju-input');});
+
+  // 뒤로 가기 (입력 화면 → 결과)
+  document.getElementById('bkSaju').addEventListener('click',function(){goBack('s-result');});
+
+  // 사주 분석 시작
+  var sajuLoadMsgs=['천간지지 배열 중...','사주팔자 구성 중...','일간(日干) 분석 중...','오행 분포 측정 중...','기질 패턴 매칭 중...'];
+  document.getElementById('btnSajuStart').addEventListener('click',function(){
+    var y=parseInt(document.getElementById('sajuYear').value);
+    var m=parseInt(document.getElementById('sajuMonth').value);
+    var d=parseInt(document.getElementById('sajuDay').value);
+    var hv=document.getElementById('sajuHour').value;
+    var hour=hv===''?-1:parseInt(hv);
+    var name=document.getElementById('sajuName').value.trim();
+    sajuState={name:name,year:y,month:m,day:d,gender:sajuState.gender,hour:hour};
+
+    goTo('s-saju-load');
+    var i=0;
+    var iv=setInterval(function(){i=(i+1)%sajuLoadMsgs.length;document.getElementById('sajuLoadTxt').textContent=sajuLoadMsgs[i];},620);
+    setTimeout(function(){
+      clearInterval(iv);
+      sajuResult=calcSaju(y,m,d,hour);
+      renderSajuResult(sajuResult,name,y,m,d,hour);
+      goTo('s-saju-result');
+    },2300+Math.random()*500);
+  });
+
+  // 사주 결과 → 판별 결과로
+  document.getElementById('btnSajuBack').addEventListener('click',function(){goBack('s-result');});
+
+  // 결제 버튼 (준비 중)
+  document.getElementById('btnUnlock').addEventListener('click',function(){
+    showToast('🔐 결제 기능 곧 오픈해요!');
+  });
 
 });
 </script>
