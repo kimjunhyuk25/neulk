@@ -215,9 +215,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var cur = document.querySelector('.step.active');
     if (cur) { cur.classList.add('exit-left'); cur.classList.remove('active'); setTimeout(function(){cur.classList.remove('exit-left');},400); }
     var next = document.getElementById('step-'+id);
-    next.style.transform = 'translateX(40px)';
-    next.style.opacity = '0';
-    setTimeout(function(){ next.classList.add('active'); }, 10);
+    next.style.transform = '';
+    next.style.opacity = '';
+    setTimeout(function(){ next.classList.add('active'); }, 20);
     var nums = {0:0,1:1,2:2,3:3,4:4,5:5,'loading':6,'result':6};
     var n = nums[id] || 0;
     if (n > 0) { document.getElementById('progressWrap').style.display='block'; document.getElementById('progressBar').style.width=(n/TOTAL*100)+'%'; }
