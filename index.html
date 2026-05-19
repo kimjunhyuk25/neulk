@@ -165,15 +165,34 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
 .share-overlay{position:absolute;inset:0;z-index:100;display:flex;align-items:flex-end;pointer-events:none;opacity:0;transition:opacity .25s ease}
 .share-overlay.open{pointer-events:all;opacity:1}
 .share-dim{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-.share-sheet{position:relative;z-index:1;background:#fff;border-radius:24px 24px 0 0;padding:20px 20px 44px;width:100%;transform:translateY(100%);transition:transform .32s cubic-bezier(.25,.46,.45,.94)}
+.share-sheet{position:relative;z-index:1;background:#fff;border-radius:24px 24px 0 0;padding:20px 20px 40px;width:100%;transform:translateY(100%);transition:transform .32s cubic-bezier(.25,.46,.45,.94)}
 .share-overlay.open .share-sheet{transform:translateY(0)}
 .share-handle{width:40px;height:4px;background:var(--border);border-radius:100px;margin:0 auto 18px}
-.share-card-wrap{width:100%;aspect-ratio:1/1;border-radius:16px;overflow:hidden;margin-bottom:16px;background:#0d0d0d}
+.share-card-wrap{width:100%;aspect-ratio:1/1;border-radius:16px;overflow:hidden;margin-bottom:20px;background:#0d0d0d}
 #shareCanvas{width:100%;height:100%;display:block}
+
+/* 플랫폼 아이콘 행 */
+.share-platforms{display:flex;justify-content:space-around;align-items:flex-start;padding:0 4px;margin-bottom:20px}
+.sp-btn{display:flex;flex-direction:column;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:4px 8px;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.sp-btn:active .sp-icon{transform:scale(.91);opacity:.8}
+.sp-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;transition:transform .12s,opacity .12s;flex-shrink:0}
+.sp-label{font-size:11px;font-weight:700;color:var(--sub);white-space:nowrap;text-align:center;line-height:1.3}
+.sp-kakao{background:#FEE500}
+.sp-insta{background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)}
+.sp-x{background:#000}
+.sp-more{background:var(--chip)}
+
+/* 구분선 */
+.share-sep{height:1px;background:var(--border);margin:0 0 14px}
+
+/* 하단 보조 버튼 */
 .share-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .sh-btn{padding:14px 10px;background:var(--chip);border:none;border-radius:12px;font-family:inherit;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:all .12s;text-align:center}
 .sh-btn:active{transform:scale(.97)}
-.sh-btn.full{grid-column:1/-1;background:#111;color:#fff;font-size:14px;padding:16px}
+
+/* 인스타 토스트 */
+.insta-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:12px;font-weight:600;padding:10px 18px;border-radius:100px;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;z-index:10}
+.insta-toast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -316,13 +335,61 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
   <!-- SHARE OVERLAY -->
   <div class="share-overlay" id="shareOverlay">
     <div class="share-dim" id="shareDim"></div>
+    <div class="insta-toast" id="instaToast">📸 이미지 저장 후 스토리에 올려주세요!</div>
     <div class="share-sheet">
       <div class="share-handle"></div>
       <div class="share-card-wrap">
         <canvas id="shareCanvas"></canvas>
       </div>
+
+      <!-- 플랫폼 버튼 행 -->
+      <div class="share-platforms">
+        <!-- 카카오톡 -->
+        <button class="sp-btn" id="btnShareKakao">
+          <div class="sp-icon sp-kakao">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3C6.477 3 2 6.477 2 10.857c0 2.738 1.607 5.147 4.04 6.61l-.99 3.654 4.31-2.145c.85.158 1.73.24 2.64.24 5.523 0 10-3.477 10-7.857S17.523 3 12 3z" fill="#000"/>
+            </svg>
+          </div>
+          <span class="sp-label">카카오톡</span>
+        </button>
+        <!-- 인스타그램 -->
+        <button class="sp-btn" id="btnShareInsta">
+          <div class="sp-icon sp-insta">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="5" stroke="white" stroke-width="1.8"/>
+              <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+            </svg>
+          </div>
+          <span class="sp-label">인스타<br>스토리</span>
+        </button>
+        <!-- X (트위터) -->
+        <button class="sp-btn" id="btnShareX">
+          <div class="sp-icon sp-x">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </div>
+          <span class="sp-label">X (트위터)</span>
+        </button>
+        <!-- 더보기 -->
+        <button class="sp-btn" id="btnShareMore">
+          <div class="sp-icon sp-more">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="5" cy="12" r="2" fill="#555"/>
+              <circle cx="12" cy="12" r="2" fill="#555"/>
+              <circle cx="19" cy="12" r="2" fill="#555"/>
+            </svg>
+          </div>
+          <span class="sp-label">더보기</span>
+        </button>
+      </div>
+
+      <div class="share-sep"></div>
+
+      <!-- 보조 버튼 -->
       <div class="share-btns">
-        <button class="sh-btn full" id="btnNativeShare">📤 공유하기 (카카오 · 인스타 · 기타)</button>
         <button class="sh-btn" id="btnSaveImg">💾 이미지 저장</button>
         <button class="sh-btn" id="btnCopyLink">🔗 링크 복사</button>
       </div>
@@ -822,10 +889,80 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('shareOverlay').classList.remove('open');
   });
 
-  document.getElementById('btnNativeShare').addEventListener('click',function(){
+  /* 공통 유틸 */
+  function getShareFile(cb){
+    document.getElementById('shareCanvas').toBlob(function(blob){
+      cb(new File([blob],'늙_결과.png',{type:'image/png'}));
+    },'image/png');
+  }
+  function saveImgNow(labelId,defaultTxt){
     var cv=document.getElementById('shareCanvas');
-    cv.toBlob(function(blob){
-      var file=new File([blob],'늙_결과.png',{type:'image/png'});
+    var a=document.createElement('a');
+    a.download='늙_결과_'+shareResult.score+'%.png';
+    a.href=cv.toDataURL('image/png');a.click();
+    if(labelId){var b=document.getElementById(labelId);b.textContent='✅ 저장됨!';setTimeout(function(){b.textContent=defaultTxt;},2000);}
+  }
+  function showToast(msg){
+    var t=document.getElementById('instaToast');
+    t.textContent=msg;t.classList.add('show');
+    setTimeout(function(){t.classList.remove('show');},2800);
+  }
+
+  /* 카카오톡 — 네이티브 공유 시트 (모바일에서 카톡 포함) */
+  document.getElementById('btnShareKakao').addEventListener('click',function(){
+    getShareFile(function(file){
+      if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+        navigator.share({
+          title:'늙? — 꼰대 판별 결과',
+          text:shareResult.score+'% 나왔어요! '+shareResult.vMain+'\n나도 해봐 👉 neulk.vercel.app',
+          files:[file]
+        }).catch(function(){});
+      }else if(navigator.share){
+        navigator.share({
+          title:'늙? — 꼰대 판별 결과',
+          text:shareResult.score+'% 나왔어요! '+shareResult.vMain,
+          url:'https://neulk.vercel.app'
+        }).catch(function(){});
+      }else{
+        showToast('이미지 저장 후 카카오톡에 전송해주세요!');
+        saveImgNow(null,null);
+      }
+    });
+  });
+
+  /* 인스타그램 스토리 — 이미지 저장 + 앱 이동 안내 */
+  document.getElementById('btnShareInsta').addEventListener('click',function(){
+    saveImgNow(null,null);
+    // 모바일 Instagram URL scheme 시도
+    var ua=navigator.userAgent.toLowerCase();
+    var isIOS=/iphone|ipad|ipod/.test(ua);
+    var isAndroid=/android/.test(ua);
+    if(isIOS){
+      // iOS: 인스타 스토리 카메라 열기 시도
+      var tryApp=window.open('instagram://story-camera','_blank');
+      setTimeout(function(){
+        if(!tryApp||tryApp.closed){window.open('https://www.instagram.com/','_blank');}
+      },800);
+    }else if(isAndroid){
+      window.open('intent://instagram.com/#Intent;scheme=https;package=com.instagram.android;end','_blank');
+    }else{
+      window.open('https://www.instagram.com/','_blank');
+    }
+    showToast('📸 저장된 이미지를 스토리에 올려주세요!');
+  });
+
+  /* X (트위터) */
+  document.getElementById('btnShareX').addEventListener('click',function(){
+    var text=encodeURIComponent(
+      shareResult.score+'% 나왔어요! '+shareResult.vMain+'\n꼰대인지 직접 판별해봐 👇'
+    );
+    var url=encodeURIComponent('https://neulk.vercel.app');
+    window.open('https://twitter.com/intent/tweet?text='+text+'&url='+url,'_blank');
+  });
+
+  /* 더보기 — OS 기본 공유 시트 */
+  document.getElementById('btnShareMore').addEventListener('click',function(){
+    getShareFile(function(file){
       if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
         navigator.share({
           title:'늙? — 꼰대 판별 결과',
@@ -840,25 +977,17 @@ document.addEventListener('DOMContentLoaded', function(){
           url:'https://neulk.vercel.app'
         }).catch(function(){});
       }else{
-        // PC 폴백: 이미지 저장 유도
-        var btn=document.getElementById('btnNativeShare');
-        btn.textContent='⬇ PC는 이미지 저장 후 공유해주세요';
-        setTimeout(function(){btn.textContent='📤 공유하기 (카카오 · 인스타 · 기타)';},2500);
+        showToast('이미지를 저장해서 공유해주세요!');
       }
-    },'image/png');
+    });
   });
 
+  /* 이미지 저장 */
   document.getElementById('btnSaveImg').addEventListener('click',function(){
-    var cv=document.getElementById('shareCanvas');
-    var a=document.createElement('a');
-    a.download='늙_결과_'+shareResult.score+'%.png';
-    a.href=cv.toDataURL('image/png');
-    a.click();
-    var btn=document.getElementById('btnSaveImg');
-    btn.textContent='✅ 저장됨!';
-    setTimeout(function(){btn.textContent='💾 이미지 저장';},2000);
+    saveImgNow('btnSaveImg','💾 이미지 저장');
   });
 
+  /* 링크 복사 */
   document.getElementById('btnCopyLink').addEventListener('click',function(){
     var url='https://neulk.vercel.app';
     var btn=document.getElementById('btnCopyLink');
