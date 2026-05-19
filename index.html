@@ -9,41 +9,24 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#e8e6e0;--white:#fff;--border:#e0ddd5;
-  --text:#111;--sub:#666;--muted:#aaa;
+  --text:#111;--sub:#555;--muted:#aaa;
   --accent:#111;--red:#e63946;--chip:#f0efe9;
 }
 html{height:100%;width:100%}
-body{
-  height:100%;width:100%;background:var(--bg);
-  font-family:'Noto Sans KR',-apple-system,sans-serif;
-  display:flex;align-items:center;justify-content:center;
-  -webkit-tap-highlight-color:transparent;
-}
-#shell{
-  width:100%;max-width:390px;height:100vh;max-height:844px;
-  background:var(--white);position:relative;overflow:hidden;
-  display:flex;flex-direction:column;
-}
-@media(min-width:460px){
-  body{padding:24px}
-  #shell{border-radius:48px;box-shadow:0 24px 80px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06)}
-}
+body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
+#shell{width:100%;max-width:390px;height:100vh;max-height:844px;background:var(--white);position:relative;overflow:hidden;display:flex;flex-direction:column}
+@media(min-width:460px){body{padding:24px}#shell{border-radius:48px;box-shadow:0 24px 80px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06)}}
 
-/* STATUS BAR */
-#sb{position:absolute;top:0;left:0;right:0;height:50px;z-index:50;
-  display:flex;align-items:center;justify-content:space-between;padding:0 28px;pointer-events:none;transition:color .3s}
+/* STATUS / PROGRESS */
+#sb{position:absolute;top:0;left:0;right:0;height:50px;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 28px;pointer-events:none;transition:color .3s}
 #sb.dark{color:#fff}#sb.light{color:#111}
 .sb-t{font-size:15px;font-weight:700}
 .sb-i{font-size:11px;display:flex;gap:5px;align-items:center}
-
-/* PROGRESS */
 #pw{position:absolute;top:50px;left:0;right:0;height:2px;background:var(--border);z-index:49;display:none}
 #pb{height:100%;background:var(--accent);transition:width .45s ease;width:0%}
 
 /* SCREENS */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;
-  opacity:0;pointer-events:none;transform:translateX(28px);
-  transition:opacity .3s ease,transform .3s ease;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(28px);transition:opacity .3s ease,transform .3s ease;overflow:hidden}
 .screen.active{opacity:1;pointer-events:all;transform:translateX(0)}
 .screen.exit-left{opacity:0;transform:translateX(-28px);pointer-events:none}
 .screen.from-left{opacity:0;transform:translateX(-28px)}
@@ -56,7 +39,7 @@ body{
 .home-h .r{color:var(--red)}
 .home-p{font-size:14px;color:rgba(255,255,255,.45);text-align:center;line-height:1.65}
 .home-foot{padding:20px 24px 48px}
-.btn-start{width:100%;padding:20px;background:var(--red);color:#fff;border:none;border-radius:18px;font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;transition:transform .1s,opacity .1s;letter-spacing:.2px}
+.btn-start{width:100%;padding:20px;background:var(--red);color:#fff;border:none;border-radius:18px;font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;transition:transform .1s,opacity .1s}
 .btn-start:active{transform:scale(.97);opacity:.88}
 
 /* Q SCREENS */
@@ -70,56 +53,48 @@ body{
 .q-scroll{flex:1;overflow-y:auto;padding:0 24px;-webkit-overflow-scrolling:touch}
 .q-scroll::-webkit-scrollbar{display:none}
 
-/* CARDS */
+/* CHOICE CARDS */
 .c-list{display:flex;flex-direction:column;gap:9px;padding-bottom:16px}
 .c-card{display:flex;align-items:center;gap:15px;padding:17px 18px;background:var(--chip);border:2px solid transparent;border-radius:16px;cursor:pointer;transition:all .12s;width:100%;font-family:inherit;text-align:left}
 .c-card:active{transform:scale(.98)}
 .c-card.sel{background:var(--accent);border-color:var(--accent);color:#fff}
-.c-icon{font-size:26px;flex-shrink:0}
-.c-main{font-size:16px;font-weight:700}
-.c-sub{font-size:12px;opacity:.5;margin-top:2px}
-.c-card.sel .c-sub{opacity:.6}
+.c-icon{font-size:26px;flex-shrink:0}.c-main{font-size:16px;font-weight:700}.c-sub{font-size:12px;opacity:.5;margin-top:2px}.c-card.sel .c-sub{opacity:.6}
 .c-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding-bottom:20px}
-.c-grid .c-card{flex-direction:column;align-items:flex-start;gap:8px;padding:18px 16px}
-.c-grid .c-icon{font-size:30px}
+.c-grid .c-card{flex-direction:column;align-items:flex-start;gap:8px;padding:18px 16px}.c-grid .c-icon{font-size:30px}
 
-/* 기타 직접입력 */
-.other-input-wrap{overflow:hidden;max-height:0;transition:max-height .3s ease,opacity .3s ease;opacity:0;margin-bottom:0}
-.other-input-wrap.show{max-height:80px;opacity:1;margin-bottom:8px}
+/* 기타 입력 */
+.other-wrap{overflow:hidden;max-height:0;transition:max-height .3s ease,opacity .3s ease;opacity:0;margin-bottom:0}
+.other-wrap.show{max-height:80px;opacity:1;margin-bottom:8px}
 .other-input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:15px;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
-.other-input:focus{border-color:var(--accent)}
-.other-input::placeholder{color:var(--muted)}
+.other-input:focus{border-color:var(--accent)}.other-input::placeholder{color:var(--muted)}
 
 /* CHIPS */
 .chip-cat{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
 .chip-cat:first-child{margin-top:0}
 .chip-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
 .chip{display:inline-flex;align-items:center;gap:5px;padding:9px 13px;background:var(--chip);border:2px solid transparent;border-radius:100px;font-family:inherit;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .12s;white-space:nowrap}
-.chip:active{transform:scale(.93)}
-.chip.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip:active{transform:scale(.93)}.chip.sel{background:var(--accent);border-color:var(--accent);color:#fff}
 
-/* 직접입력 (chip-style toggle) */
+/* 직접입력 */
 .text-toggle{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;background:transparent;border:2px dashed var(--border);border-radius:100px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;margin-top:12px}
-.text-toggle:hover{border-color:var(--accent);color:var(--text)}
 .text-toggle.open{border-style:solid;border-color:var(--accent);color:var(--text);background:var(--chip)}
-.custom-text-wrap{overflow:hidden;max-height:0;transition:max-height .35s ease,opacity .35s ease;opacity:0}
-.custom-text-wrap.show{max-height:140px;opacity:1}
-.custom-textarea{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:14px;color:var(--text);background:var(--chip);outline:none;resize:none;min-height:100px;line-height:1.6;margin-top:10px;transition:border-color .15s}
-.custom-textarea:focus{border-color:var(--accent)}
-.custom-textarea::placeholder{color:var(--muted)}
+.custom-wrap{overflow:hidden;max-height:0;transition:max-height .35s ease,opacity .35s ease;opacity:0}
+.custom-wrap.show{max-height:160px;opacity:1}
+.custom-ta{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:14px;color:var(--text);background:var(--chip);outline:none;resize:none;min-height:110px;line-height:1.6;margin-top:10px;transition:border-color .15s}
+.custom-ta:focus{border-color:var(--accent)}.custom-ta::placeholder{color:var(--muted)}
 
 /* FOOTER */
 .q-foot{padding:10px 24px 44px;flex-shrink:0}
 .chip-info{text-align:center;font-size:12px;color:var(--muted);margin-bottom:10px}
-.btn-nxt{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s,opacity .1s}
+.btn-nxt{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s}
 .btn-nxt:active{transform:scale(.98)}
 
 /* LOADING */
 #s-load{background:#fff;align-items:center;justify-content:center}
 .load-emoji{font-size:60px;margin-bottom:20px;animation:bob .75s ease-in-out infinite alternate}
 @keyframes bob{from{transform:translateY(0)}to{transform:translateY(-14px)}}
-.load-title{font-size:22px;font-weight:900;margin-bottom:6px;color:var(--text)}
-.load-sub{font-size:13px;color:var(--muted);animation:blink 1.4s ease-in-out infinite}
+.load-title{font-size:22px;font-weight:900;margin-bottom:6px}
+.load-sub{font-size:13px;color:var(--muted);animation:blink 1.4s ease-in-out infinite;text-align:center;padding:0 32px}
 @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
 
 /* RESULT */
@@ -133,9 +108,31 @@ body{
 .res-num small{font-size:38px;font-weight:400;opacity:.45;letter-spacing:0}
 .res-grade{font-size:12px;font-weight:600;opacity:.4;margin-bottom:10px}
 .res-verdict{font-size:26px;font-weight:900;line-height:1.2;letter-spacing:-.5px}
-.res-body{padding:20px 24px 0}
-.res-desc{font-size:14px;color:var(--sub);line-height:1.7;padding:16px;background:var(--chip);border-radius:14px;margin-bottom:20px}
+
+.res-body{padding:0 24px 0}
+
+/* 공감 카드 */
+.empathy-card{margin:20px 0 16px;padding:18px;background:#fff7ed;border-radius:16px;border-left:4px solid #f97316}
+.empathy-emoji{font-size:22px;margin-bottom:8px}
+.empathy-text{font-size:14px;color:#7c3b00;line-height:1.7;font-weight:500}
+
+/* AI 분석 */
+.ai-box{margin-bottom:16px;background:#f0f0ff;border-radius:16px;padding:18px;border-left:4px solid #8b5cf6;display:none}
+.ai-box.show{display:block}
+.ai-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.ai-emoji{font-size:20px}
+.ai-title{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#6d28d9}
+.ai-content{font-size:13px;color:#4c1d95;line-height:1.7}
+.ai-content p{margin-bottom:7px}
+.ai-content p:last-child{margin-bottom:0}
+
+/* 상황 설명 */
+.res-desc{font-size:14px;color:var(--sub);line-height:1.75;padding:18px;background:var(--chip);border-radius:16px;margin-bottom:20px}
+
+/* 섹션 */
 .sec-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+/* 타입 그리드 */
 .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
 .t-card{padding:16px;background:var(--chip);border-radius:14px}
 .t-emoji{font-size:22px;margin-bottom:5px}
@@ -148,10 +145,15 @@ body{
 .t-narc .t-pct{color:#8b5cf6}.t-narc .t-bar{background:#8b5cf6}
 .t-rude .t-pct{color:#ef4444}.t-rude .t-bar{background:#ef4444}
 .t-cut .t-pct{color:#e63946}.t-cut .t-bar{background:#e63946}
-.act-box{background:var(--chip);border-radius:14px;padding:18px;margin-bottom:16px}
-.act-row{display:flex;gap:10px;font-size:13px;line-height:1.6;color:var(--sub);margin-bottom:7px}
-.act-row:last-child{margin-bottom:0}
-.act-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);margin-top:7px;flex-shrink:0}
+
+/* 대처 방법 */
+.act-section{margin-bottom:20px}
+.act-item{background:var(--chip);border-radius:14px;padding:16px 18px;margin-bottom:8px}
+.act-item-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.act-item-icon{font-size:18px;flex-shrink:0}
+.act-item-title{font-size:13px;font-weight:700;color:var(--text)}
+.act-item-body{font-size:13px;color:var(--sub);line-height:1.65;padding-left:28px}
+
 .btn-again{width:100%;padding:15px;background:var(--chip);border:none;border-radius:14px;font-family:inherit;font-size:14px;font-weight:700;color:var(--sub);cursor:pointer;margin-bottom:50px;transition:all .15s}
 .btn-again:active{transform:scale(.98)}
 .hi{height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -160,7 +162,6 @@ body{
 </head>
 <body>
 <div id="shell">
-
   <div id="sb" class="dark">
     <span class="sb-t" id="sbT">9:41</span>
     <div class="sb-i"><span>▋▋▋</span><span>WiFi</span><span>▉</span></div>
@@ -182,10 +183,7 @@ body{
   <!-- S1: 누구? -->
   <div class="screen" id="s1">
     <div class="q-top"><button class="btn-bk" id="bk1">←</button><span class="step-lbl">1 / 4</span></div>
-    <div class="q-head">
-      <h2 class="q-title">상대방이<br>누구예요?</h2>
-      <p class="q-hint">탭하면 바로 넘어가요</p>
-    </div>
+    <div class="q-head"><h2 class="q-title">상대방이<br>누구예요?</h2><p class="q-hint">탭하면 바로 넘어가요</p></div>
     <div class="q-scroll">
       <div class="c-list">
         <button class="c-card" data-rel="boss"><span class="c-icon">🏢</span><div><div class="c-main">직장 상사</div><div class="c-sub">팀장 / 임원 / 대표</div></div></button>
@@ -194,8 +192,7 @@ body{
         <button class="c-card" data-rel="parent"><span class="c-icon">👨‍👩‍👧</span><div><div class="c-main">부모 / 친척</div><div class="c-sub">가족 / 친인척</div></div></button>
         <button class="c-card" data-rel="elder"><span class="c-icon">👴</span><div><div class="c-main">동네 어른 / 지인</div><div class="c-sub">잘 모르는 어른</div></div></button>
         <button class="c-card" data-rel="other" id="cardOther"><span class="c-icon">✏️</span><div><div class="c-main">기타 (직접 입력)</div><div class="c-sub">위에 없는 관계</div></div></button>
-        <!-- 기타 직접입력 -->
-        <div class="other-input-wrap" id="otherWrap">
+        <div class="other-wrap" id="otherWrap">
           <input type="text" class="other-input" id="otherTxt" placeholder="어떤 관계인지 적어주세요 (예: 동창, 교수님...)">
         </div>
       </div>
@@ -206,12 +203,8 @@ body{
   <!-- S2: 뭘 했나요? -->
   <div class="screen" id="s2">
     <div class="q-top"><button class="btn-bk" id="bk2">←</button><span class="step-lbl">2 / 4</span></div>
-    <div class="q-head">
-      <h2 class="q-title">어떤 일이<br>있었나요?</h2>
-      <p class="q-hint">해당하는 것 모두 탭하세요</p>
-    </div>
+    <div class="q-head"><h2 class="q-title">어떤 일이<br>있었나요?</h2><p class="q-hint">해당하는 것 모두 탭하세요</p></div>
     <div class="q-scroll">
-
       <div class="chip-cat">🗣 말 한마디</div>
       <div class="chip-wrap">
         <button class="chip" data-cat="age">😤 나 때는~</button>
@@ -225,7 +218,6 @@ body{
         <button class="chip" data-cat="rude">비교하기</button>
         <button class="chip" data-cat="rude">조롱 / 비꼬기</button>
       </div>
-
       <div class="chip-cat">📱 연락 · 통제</div>
       <div class="chip-wrap">
         <button class="chip" data-cat="hard">🌙 새벽 카톡</button>
@@ -235,7 +227,6 @@ body{
         <button class="chip" data-cat="hard">야근 강요</button>
         <button class="chip" data-cat="hard">강제 회식 / 2차</button>
       </div>
-
       <div class="chip-cat">🏠 사생활 침범</div>
       <div class="chip-wrap">
         <button class="chip" data-cat="boundary">💍 결혼 압박</button>
@@ -245,7 +236,6 @@ body{
         <button class="chip" data-cat="boundary">집안 사정 캐기</button>
         <button class="chip" data-cat="boundary">종교 / 정치 강요</button>
       </div>
-
       <div class="chip-cat">🪞 나르시시스트 패턴</div>
       <div class="chip-wrap">
         <button class="chip" data-cat="narc">자기 자랑만</button>
@@ -255,7 +245,6 @@ body{
         <button class="chip" data-cat="narc">이중적 태도</button>
         <button class="chip" data-cat="narc">내 덕분에 / 너 때문에</button>
       </div>
-
       <div class="chip-cat">😤 태도 · 갑질</div>
       <div class="chip-wrap">
         <button class="chip" data-cat="hard">🚫 무시 / 투명인간</button>
@@ -265,13 +254,10 @@ body{
         <button class="chip" data-cat="hard">책임 전가</button>
         <button class="chip" data-cat="hard">면박 주기</button>
       </div>
-
-      <!-- 직접 입력 -->
       <button type="button" class="text-toggle" id="textToggle">✏️ 직접 입력하기</button>
-      <div class="custom-text-wrap" id="customWrap">
-        <textarea class="custom-textarea" id="customTxt" placeholder="위에 없는 상황을 자유롭게 적어주세요&#10;예: 내 기획안을 자기 이름으로 올렸어요..."></textarea>
+      <div class="custom-wrap" id="customWrap">
+        <textarea class="custom-ta" id="customTxt" placeholder="위에 없는 상황을 자유롭게 적어주세요&#10;예: 30만원 프리랜서 계약을 받아왔는데 저한테는 15만원만 준대요..."></textarea>
       </div>
-
       <div style="height:16px"></div>
     </div>
     <div class="q-foot">
@@ -283,10 +269,7 @@ body{
   <!-- S3: 빈도 -->
   <div class="screen" id="s3">
     <div class="q-top"><button class="btn-bk" id="bk3">←</button><span class="step-lbl">3 / 4</span></div>
-    <div class="q-head">
-      <h2 class="q-title">얼마나<br>자주요?</h2>
-      <p class="q-hint">탭하면 바로 넘어가요</p>
-    </div>
+    <div class="q-head"><h2 class="q-title">얼마나<br>자주요?</h2><p class="q-hint">탭하면 바로 넘어가요</p></div>
     <div class="q-scroll">
       <div class="c-list">
         <button class="c-card" data-rep="1"><span class="c-icon">1️⃣</span><div><div class="c-main">처음 있는 일이에요</div><div class="c-sub">이번 한 번뿐</div></div></button>
@@ -301,10 +284,7 @@ body{
   <!-- S4: 스트레스 -->
   <div class="screen" id="s4">
     <div class="q-top"><button class="btn-bk" id="bk4">←</button><span class="step-lbl">4 / 4</span></div>
-    <div class="q-head">
-      <h2 class="q-title">지금 스트레스가<br>얼마나요?</h2>
-      <p class="q-hint">탭하면 바로 판별 시작해요</p>
-    </div>
+    <div class="q-head"><h2 class="q-title">지금 스트레스가<br>얼마나요?</h2><p class="q-hint">탭하면 바로 판별 시작해요</p></div>
     <div class="q-scroll">
       <div class="c-grid">
         <button class="c-card" data-st="1"><span class="c-icon">😐</span><div><div class="c-main">별로 없음</div></div></button>
@@ -319,7 +299,7 @@ body{
 
   <!-- LOADING -->
   <div class="screen" id="s-load">
-    <div style="text-align:center;padding:0 24px">
+    <div style="text-align:center;padding:0 32px">
       <div class="load-emoji">🔍</div>
       <div class="load-title">판별 중...</div>
       <div class="load-sub" id="loadTxt">꼰대 데이터베이스 대조 중...</div>
@@ -336,40 +316,35 @@ body{
       <div id="resVerdict" class="res-verdict"></div>
     </div>
     <div class="res-body">
+      <!-- 공감 카드 -->
+      <div class="empathy-card" id="empathyCard">
+        <div class="empathy-emoji" id="empathyEmoji"></div>
+        <div class="empathy-text" id="empathyText"></div>
+      </div>
+      <!-- AI 상황 분석 (직접 입력 시) -->
+      <div class="ai-box" id="aiBox">
+        <div class="ai-header">
+          <span class="ai-emoji">🤖</span>
+          <span class="ai-title" id="aiTitle">상황 분석</span>
+        </div>
+        <div class="ai-content" id="aiContent"></div>
+      </div>
+      <!-- 상황 설명 -->
       <div id="resDesc" class="res-desc"></div>
+      <!-- 유형 분석 -->
       <div class="sec-lbl">유형 분석</div>
       <div class="type-grid">
-        <div class="t-card t-age">
-          <div class="t-emoji">👴</div>
-          <div class="t-lbl">걍 늙</div>
-          <div class="t-pct" id="pa">0<small>%</small></div>
-          <div class="t-bar-bg"><div class="t-bar" id="ba"></div></div>
-        </div>
-        <div class="t-card t-narc">
-          <div class="t-emoji">🏃</div>
-          <div class="t-lbl">나르시시스트인지도 몰라 도망쳐!</div>
-          <div class="t-pct" id="pn">0<small>%</small></div>
-          <div class="t-bar-bg"><div class="t-bar" id="bn"></div></div>
-        </div>
-        <div class="t-card t-rude">
-          <div class="t-emoji">😤</div>
-          <div class="t-lbl">타고난 무례함</div>
-          <div class="t-pct" id="pr">0<small>%</small></div>
-          <div class="t-bar-bg"><div class="t-bar" id="br"></div></div>
-        </div>
-        <div class="t-card t-cut">
-          <div class="t-emoji">✂️</div>
-          <div class="t-lbl">관계 정리</div>
-          <div class="t-pct" id="pc">0<small>%</small></div>
-          <div class="t-bar-bg"><div class="t-bar" id="bc"></div></div>
-        </div>
+        <div class="t-card t-age"><div class="t-emoji">👴</div><div class="t-lbl">걍 늙</div><div class="t-pct" id="pa">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="ba"></div></div></div>
+        <div class="t-card t-narc"><div class="t-emoji">🪞</div><div class="t-lbl">나르시시스트 의심</div><div class="t-pct" id="pn">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="bn"></div></div></div>
+        <div class="t-card t-rude"><div class="t-emoji">😤</div><div class="t-lbl">타고난 무례함</div><div class="t-pct" id="pr">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="br"></div></div></div>
+        <div class="t-card t-cut"><div class="t-emoji">✂️</div><div class="t-lbl">관계 정리</div><div class="t-pct" id="pc">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="bc"></div></div></div>
       </div>
+      <!-- 대처 방법 -->
       <div class="sec-lbl">대처 방법</div>
-      <div class="act-box" id="actList"></div>
+      <div class="act-section" id="actSection"></div>
       <button type="button" class="btn-again" id="btnAgain">↩ 다시 판별하기</button>
     </div>
   </div>
-
 </div>
 
 <script>
@@ -382,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var TOTAL=4;
   var CAT={hard:18,age:12,mid:10,boundary:12,power:15,narc:12,rude:8};
 
-  /* ── TRANSITIONS ── */
+  /* ── TRANSITION ── */
   function goTo(id){
     var cur=document.querySelector('.screen.active');
     if(cur){cur.classList.add('exit-left');cur.classList.remove('active');setTimeout(function(){cur.classList.remove('exit-left');},400);}
@@ -401,9 +376,8 @@ document.addEventListener('DOMContentLoaded', function(){
     updateUI(toId);
   }
   function updateUI(id){
-    var sb=document.getElementById('sb');
     var dark=(id==='s0'||id==='s-result'||id==='s-load');
-    sb.className=dark?'dark':'light';
+    document.getElementById('sb').className=dark?'dark':'light';
     var map={s1:1,s2:2,s3:3,s4:4,'s-load':5,'s-result':5};
     var n=map[id]||0;
     var pw=document.getElementById('pw');
@@ -415,36 +389,22 @@ document.addEventListener('DOMContentLoaded', function(){
   /* ── S0 ── */
   document.getElementById('btnStart').addEventListener('click',function(){goTo('s1');});
 
-  /* ── S1: 관계 ── */
+  /* ── S1 ── */
   var relCards=Array.from(document.querySelectorAll('#s1 .c-card'));
   relCards.forEach(function(b){
     b.addEventListener('click',function(){
       state.rel=this.dataset.rel;
       selCard(this,relCards);
       var wrap=document.getElementById('otherWrap');
-      if(state.rel==='other'){
-        wrap.classList.add('show');
-        document.getElementById('otherTxt').focus();
-        // 기타는 자동 넘어가지 않음 — 입력 후 스크롤 내려서 확인
-      } else {
-        wrap.classList.remove('show');
-        setTimeout(function(){goTo('s2');},220);
-      }
+      if(state.rel==='other'){wrap.classList.add('show');document.getElementById('otherTxt').focus();}
+      else{wrap.classList.remove('show');setTimeout(function(){goTo('s2');},220);}
     });
   });
-  // 기타 입력창 엔터 or 포커스아웃 → 다음으로
-  document.getElementById('otherTxt').addEventListener('keydown',function(e){
-    if(e.key==='Enter'){state.relCustom=this.value.trim();goTo('s2');}
-  });
-  // 기타 버튼 아래 자동 넘어가기 버튼 (scroll 내리면 보이는 방식)
-  // 단순히 탭 후 입력하면 넘어가도록 blur 시에 체크
-  document.getElementById('otherTxt').addEventListener('blur',function(){
-    state.relCustom=this.value.trim();
-    if(state.relCustom.length>0){setTimeout(function(){goTo('s2');},300);}
-  });
+  document.getElementById('otherTxt').addEventListener('keydown',function(e){if(e.key==='Enter'){state.relCustom=this.value.trim();this.blur();}});
+  document.getElementById('otherTxt').addEventListener('blur',function(){state.relCustom=this.value.trim();if(state.relCustom.length>0){setTimeout(function(){goTo('s2');},300);}});
   document.getElementById('bk1').addEventListener('click',function(){goBack('s0');});
 
-  /* ── S2: 칩 & 텍스트 ── */
+  /* ── S2 ── */
   var chipEls=Array.from(document.querySelectorAll('#s2 .chip'));
   chipEls.forEach(function(c){
     c.addEventListener('click',function(){
@@ -454,28 +414,28 @@ document.addEventListener('DOMContentLoaded', function(){
       ci.textContent=state.chips.length===0?'선택 없으면 해당 없음으로 판단해요':state.chips.length+'개 선택됨';
     });
   });
-  var textToggle=document.getElementById('textToggle');
-  var customWrap=document.getElementById('customWrap');
-  textToggle.addEventListener('click',function(){
-    var open=customWrap.classList.contains('show');
-    if(open){customWrap.classList.remove('show');textToggle.classList.remove('open');textToggle.textContent='✏️ 직접 입력하기';}
-    else{customWrap.classList.add('show');textToggle.classList.add('open');textToggle.textContent='✏️ 직접 입력 닫기';document.getElementById('customTxt').focus();}
+  var tog=document.getElementById('textToggle');
+  var cw=document.getElementById('customWrap');
+  tog.addEventListener('click',function(){
+    var open=cw.classList.contains('show');
+    if(open){cw.classList.remove('show');tog.classList.remove('open');tog.textContent='✏️ 직접 입력하기';}
+    else{cw.classList.add('show');tog.classList.add('open');tog.textContent='✏️ 직접 입력 닫기';document.getElementById('customTxt').focus();}
   });
   document.getElementById('customTxt').addEventListener('input',function(){state.customText=this.value;});
   document.getElementById('btnS2').addEventListener('click',function(){goTo('s3');});
   document.getElementById('bk2').addEventListener('click',function(){goBack('s1');});
 
-  /* ── S3: 빈도 ── */
+  /* ── S3 ── */
   var repCards=Array.from(document.querySelectorAll('#s3 .c-card'));
   repCards.forEach(function(b){b.addEventListener('click',function(){state.rep=parseInt(this.dataset.rep);selCard(this,repCards);setTimeout(function(){goTo('s4');},220);});});
   document.getElementById('bk3').addEventListener('click',function(){goBack('s2');});
 
-  /* ── S4: 스트레스 ── */
+  /* ── S4 ── */
   var stCards=Array.from(document.querySelectorAll('#s4 .c-card'));
   stCards.forEach(function(b){b.addEventListener('click',function(){state.st=parseInt(this.dataset.st);selCard(this,stCards);setTimeout(function(){startAnalysis();},260);});});
   document.getElementById('bk4').addEventListener('click',function(){goBack('s3');});
 
-  /* ── 다시하기 ── */
+  /* ── RESTART ── */
   document.getElementById('btnAgain').addEventListener('click',function(){
     state={rel:'boss',relCustom:'',rep:1,st:1,chips:[],customText:''};
     document.querySelectorAll('.c-card,.chip').forEach(function(b){b.classList.remove('sel');});
@@ -490,115 +450,233 @@ document.addEventListener('DOMContentLoaded', function(){
     goTo('s0');
   });
 
-  /* ── ANALYSIS ── */
+  /* ── LOADING ── */
   var loadMsgs=['꼰대 발언 데이터베이스 대조 중...','선 넘음 게이지 측정 중...','나르시시스트 패턴 스캔 중...','관계 정리 필요성 계산 중...','최종 판정 준비 중...'];
 
   function startAnalysis(){
     goTo('s-load');
     var i=0;
     var iv=setInterval(function(){i=(i+1)%loadMsgs.length;document.getElementById('loadTxt').textContent=loadMsgs[i];},650);
-    setTimeout(function(){clearInterval(iv);var r=buildResult();renderResult(r);goTo('s-result');},2200+Math.random()*600);
+    setTimeout(function(){clearInterval(iv);var r=buildResult();renderResult(r);goTo('s-result');},2400+Math.random()*600);
   }
 
-  /* ── 텍스트 키워드 추가 점수 ── */
+  /* ── 텍스트 키워드 ── */
   var txtKw={
-    hard:['야근','강제','욕설','폭언','협박','카톡','새벽','주말','휴일','모욕','무시','창피','망신','인격','꺼져','나가','해고','불이익','갈굼','갈구','윽박','고함','잔소리','회식','억지','억압','면박','반말','감시','통제'],
-    age:['나때는','나 때는','예전엔','옛날엔','내가 해봐서','가봐서 알아','인생 선배','요즘 것들','요즘 애들','어리니까','철없어','세대 차이'],
+    hard:['야근','강제','욕설','폭언','협박','카톡','새벽','주말','휴일','모욕','무시','창피','망신','인격','꺼져','나가','해고','불이익','갈굼','윽박','고함','잔소리','회식','억지','억압','면박','반말','감시','통제','갑질','을'],
+    age:['나때는','나 때는','예전엔','옛날엔','내가 해봐서','가봐서 알아','인생 선배','요즘 것들','요즘 애들','어리니까','철없어','세대 차이','꼰대'],
     mid:['당연히','원래 그래','그것도 못','기본도','프로답지','알아서 해','월급 받잖아','돈 받잖아','감사해야','고마운 줄','충고','잘 되라고','너 생각해서','실망','기대','네 태도','문제가 있어'],
-    boundary:['사생활','집안','부모님','결혼','연애','월급','연봉','나이','외모','몸무게','꾸밈','화장','옷차림','종교','정치'],
-    power:['갑질','을질','거래처','클라이언트','돈 주는'],
-    narc:['자기 얘기','최고','내가 없으면','내 덕분에','너 때문에','내 말이 맞','감사할 줄','내가 키워','잘난 척','공로','공 가로채','이중적','뒤에서 깎아','칭찬 요구'],
+    boundary:['사생활','집안','부모님','결혼','연애','월급','연봉','나이','외모','몸무게','꾸밈','화장','옷차림','종교','정치','취업','진로'],
+    power:['갑질','을질','거래처','클라이언트','돈 주는','계약'],
+    narc:['자기 얘기','최고','내가 없으면','내 덕분에','너 때문에','내 말이 맞','감사할 줄','내가 키워','잘난 척','공로','공 가로채','이중적','뒤에서 깎아','칭찬 요구','인정'],
     rude:['비교','조롱','비꼬','무시','차별','비하','놀림','빈정']
   };
 
   function scoreText(text){
-    var scores={hard:0,age:0,mid:0,boundary:0,power:0,narc:0,rude:0};
-    Object.keys(txtKw).forEach(function(cat){
-      txtKw[cat].forEach(function(kw){if(text.includes(kw))scores[cat]++;});
-    });
-    return scores;
+    var s={hard:0,age:0,mid:0,boundary:0,power:0,narc:0,rude:0};
+    Object.keys(txtKw).forEach(function(cat){txtKw[cat].forEach(function(kw){if(text.includes(kw))s[cat]++;});});
+    return s;
   }
 
+  /* ── AI 상황 분석 ── */
+  function analyzeCustomText(text){
+    if(!text||text.trim().length<15)return null;
+    var t=text;
+    var low=t.toLowerCase();
+
+    // 돈 / 불공정 분배
+    var moneys=t.match(/([0-9]+)\s*만\s*원/g);
+    var hasSplit=low.includes('반반')||low.includes('절반')||low.includes('반씩')||low.includes('나누');
+    var hasWork=low.includes('편집')||low.includes('업무')||low.includes('작업')||low.includes('기획')||low.includes('촬영')||low.includes('디자인');
+    var hasIntro=low.includes('받아왔')||low.includes('연결')||low.includes('소개')||low.includes('중개')||low.includes('알아와');
+    if(moneys&&moneys.length>=2&&(hasSplit||hasIntro)){
+      var amounts=moneys.map(function(m){return parseInt(m.replace(/[^0-9]/g,''));});
+      amounts.sort(function(a,b){return b-a;});
+      var total=amounts[0],myPay=amounts[amounts.length-1];
+      var myRatio=Math.round(myPay/total*100);
+      var theirRatio=100-myRatio;
+      return{emoji:'💰',title:'급여 배분 분석',paras:[
+        '실제 작업을 하는 분이 전체의 '+myRatio+'%를 받는 구조예요.',
+        '업무를 연결·중개만 한 경우의 합리적 수수료 기준은 보통 10~20%예요. 실무자가 더 많은 보수를 받아야 정상이에요.',
+        '지금 구조는 실무 없이 연결만 한 쪽이 '+theirRatio+'%를 가져가는 거라 불공정할 가능성이 높아요.',
+        '협상 여지가 있다면 "실제 작업 시간 기준 배분"을 제안해보세요. 70:30이나 80:20이 더 합리적이에요.'
+      ]};
+    }
+
+    // 성과 / 공 가로채기
+    if((low.includes('이름')&&(low.includes('올렸')||low.includes('제출')))||low.includes('공 가로채')||low.includes('내 기획')){
+      return{emoji:'📋',title:'성과 가로채기 분석',paras:[
+        '내 결과물이 타인 이름으로 제출된 경우, 원본 파일의 생성일·수정일이 핵심 증거가 돼요.',
+        '작업 기록을 이메일·카톡으로 남겨두는 습관이 중요해요. "제가 만든 파일 공유할게요"처럼 흔적을 남기세요.',
+        '반복된다면 상사에게 직접 보고 채널을 만들거나 HR에 상담하세요.',
+        '이건 직장 내 갑질이자 업무 윤리 위반이에요.'
+      ]};
+    }
+
+    // 야근 / 강제 노동
+    if(low.includes('야근')||low.includes('새벽')||(low.includes('주말')&&(low.includes('연락')||low.includes('일')))){
+      return{emoji:'⏰',title:'근무 환경 분석',paras:[
+        '퇴근 후·주말·새벽 연락은 원칙적으로 거부할 수 있어요. 법적으로 "업무 지시"와 "사적 연락"은 구분이 필요해요.',
+        '연장근무에 대한 추가 수당은 근로기준법상 당연한 권리예요.',
+        '지속되는 야근·초과 근무는 출퇴근 기록과 카톡 타임스탬프를 캡처해두세요.',
+        '고용노동부 신고를 통해 수당 미지급을 청구할 수 있어요.'
+      ]};
+    }
+
+    // 폭언 / 언어폭력
+    if(low.includes('욕')||low.includes('폭언')||low.includes('소리 지')||low.includes('고함')||low.includes('怒')||low.includes('화를')){
+      return{emoji:'🚨',title:'언어 폭력 분석',paras:[
+        '직장 내 폭언은 "직장 내 괴롭힘 금지법(근로기준법 제76조의2)"에 해당할 수 있어요.',
+        '발생 날짜, 장소, 발언 내용, 목격자를 즉시 기록해두세요.',
+        '가능하다면 음성 녹음도 유효한 증거가 돼요 (대화 당사자 녹음은 합법).',
+        '고용노동부 익명 신고 또는 노동청 방문 상담을 받아볼 수 있어요.'
+      ]};
+    }
+
+    // 비교 / 차별
+    if(low.includes('비교')||(low.includes('왜 너만')||low.includes('차별'))){
+      return{emoji:'⚖️',title:'불공정 대우 분석',paras:[
+        '반복적 비교와 차별적 대우는 심리적 소진(번아웃)의 원인이에요.',
+        '구체적인 불이익(업무 배제, 평가 차별 등)이 있다면 날짜와 내용을 기록해두세요.',
+        '인사팀 상담이나 직장 내 괴롭힘 신고를 고려해볼 수 있어요.',
+        '자신의 성과를 객관적으로 정리해두면 평가 불공정에 대응할 수 있어요.'
+      ]};
+    }
+
+    // 계약 / 불공정 조건
+    if(low.includes('계약')||low.includes('조건')||low.includes('약속')){
+      return{emoji:'📝',title:'계약 / 약속 관련 분석',paras:[
+        '구두 약속도 증거(카톡, 이메일)가 있으면 법적 효력이 인정될 수 있어요.',
+        '계약서와 다른 요구를 받고 있다면 서면으로 내용을 확인하고 거절 의사를 표현하세요.',
+        '불공정 계약 조건은 표준 계약서 또는 법률 무료 상담(법률구조공단)을 통해 확인할 수 있어요.'
+      ]};
+    }
+
+    // 일반 분석
+    var detected=[];
+    if(low.includes('강요')||low.includes('강제'))detected.push('강압적 태도');
+    if(low.includes('무시'))detected.push('무시·경시');
+    if(low.includes('모욕')||low.includes('인격'))detected.push('인격 침해');
+    if(low.includes('사생활')||low.includes('개인적'))detected.push('사생활 침범');
+    if(low.includes('돈')||low.includes('만원'))detected.push('금전 관련 갈등');
+    if(detected.length>0){
+      return{emoji:'🔍',title:'상황 분석',paras:[
+        '입력하신 내용에서 '+detected.join(', ')+' 패턴이 감지됐어요.',
+        '이런 상황이 반복된다면 날짜·발언 내용·상황을 꼭 기록해두세요.',
+        '신뢰할 수 있는 사람과 상황을 공유하고 피드백을 먼저 받아보세요.',
+        '감정적으로 힘드시다면 심리 상담 연결을 권장해요 (정신건강복지센터, 직장인 EAP).'
+      ]};
+    }
+    return null;
+  }
+
+  /* ── BUILD RESULT ── */
   var relCfg={
-    boss:{name:'직장 상사',w:1.1,cutBonus:10},
-    senior:{name:'직장 선배',w:0.95,cutBonus:5},
-    client:{name:'고객/갑',w:1.15,cutBonus:8},
-    parent:{name:'부모/친척',w:0.8,cutBonus:0},
-    elder:{name:'동네 어른',w:0.75,cutBonus:0},
-    other:{name:'기타',w:1.0,cutBonus:5}
+    boss:{name:'직장 상사',w:1.1,cutBonus:10},senior:{name:'직장 선배',w:0.95,cutBonus:5},
+    client:{name:'고객/갑',w:1.15,cutBonus:8},parent:{name:'부모/친척',w:0.8,cutBonus:0},
+    elder:{name:'동네 어른',w:0.75,cutBonus:0},other:{name:'기타',w:1.0,cutBonus:5}
   };
   var grades=[
-    {min:0,max:20,lbl:'이해 가능 범위'},
-    {min:20,max:40,lbl:'미묘한 선'},
-    {min:40,max:60,lbl:'주의 꼰대'},
-    {min:60,max:75,lbl:'꼰대 확정'},
-    {min:75,max:88,lbl:'명백한 갑질'},
-    {min:88,max:101,lbl:'갓꼰대 (최종형태)'}
+    {min:0,max:20,lbl:'이해 가능 범위'},{min:20,max:40,lbl:'미묘한 선'},
+    {min:40,max:60,lbl:'주의 꼰대'},{min:60,max:75,lbl:'꼰대 확정'},
+    {min:75,max:88,lbl:'명백한 갑질'},{min:88,max:101,lbl:'갓꼰대 (최종형태)'}
   ];
 
   function buildResult(){
     var cfg=relCfg[state.rel]||relCfg.other;
     var rW=[0.85,1.0,1.2,1.4][state.rep-1];
-
-    // 칩 점수
     var raw=0,hard=0,age=0,mid=0,bnd=0,pwr=0,narc=0,rude=0;
     state.chips.forEach(function(cat){
       raw+=CAT[cat]||0;
       if(cat==='hard')hard++;if(cat==='age')age++;if(cat==='mid')mid++;
       if(cat==='boundary')bnd++;if(cat==='power')pwr++;if(cat==='narc')narc++;if(cat==='rude')rude++;
     });
-
-    // 텍스트 점수 추가
-    var txt=(state.customText||'').toLowerCase();
+    var txt=state.customText.toLowerCase();
     if(txt.length>3){
       var ts=scoreText(txt);
       raw+=ts.hard*14+ts.age*10+ts.mid*8+ts.boundary*10+ts.power*13+ts.narc*10+ts.rude*7;
       hard+=ts.hard;age+=ts.age;mid+=ts.mid;bnd+=ts.boundary;pwr+=ts.power;narc+=ts.narc;rude+=ts.rude;
     }
-
     var score=Math.min(97,Math.round(raw*cfg.w*rW));
     var floor=[0,12,25,40,56][state.st-1];
     if(score<floor)score=floor+Math.round(Math.random()*8);
     score=Math.min(97,score);
-
     var grade=grades.find(function(g){return score>=g.min&&score<g.max;})||grades[grades.length-1];
-
-    // 유형 분석
     var agePct=Math.min(95,age*26+mid*8+(['boss','senior','parent','elder'].includes(state.rel)?15:0));
     var narcPct=Math.min(95,narc*30+hard*4+(state.rep>=3?20:0)+(['boss','client'].includes(state.rel)?12:0));
     var rudePct=Math.min(95,hard*16+rude*18+bnd*10+pwr*15+(state.rep>=2?8:0));
-
-    // 관계 정리 % = 이 관계를 정리해야 할 확률
     var cutPct=Math.min(95,Math.round(score*0.75+(state.rep>=3?20:0)+(state.st>=4?12:0)+cfg.cutBonus));
     if(state.rep===4)cutPct=Math.min(95,cutPct+12);
     cutPct=Math.max(5,cutPct);
 
-    var vType,vMain,vDesc,actions;
+    // 지배적 유형
+    var dominantType='balanced';
+    if(narcPct>=agePct&&narcPct>=rudePct&&narcPct>40)dominantType='narc';
+    else if(agePct>=narcPct&&agePct>=rudePct&&agePct>40)dominantType='age';
+    else if(rudePct>40)dominantType='rude';
+
+    var empathy,vType,vMain,vDesc,actions;
     if(score<20){
-      vType='safe';vMain='선은 안 넘은 것 같아요';
-      vDesc='불편할 수 있지만 대체로 이해 가능한 범위예요. 민감도 차이일 수 있어요.';
-      actions=['내 감정이 정확히 무엇인지 정리해보세요.','상대방 의도를 먼저 확인하거나 대화로 풀어보세요.','비슷한 일이 반복된다면 그때 다시 판단해보세요.'];
+      vType='safe';
+      empathy={emoji:'🌿',text:'솔직히 많이 헷갈리셨겠어요. 불편한 감정이 드는 건 맞는데, 뭐라 딱 잘라 말하기 어려운 상황이죠. 그 감각 믿어도 돼요.'};
+      vMain='선은 안 넘은 것 같아요';
+      vDesc='상대방의 언행이 불편하게 느껴질 수 있지만, 현재 정보로는 명확한 선 넘음으로 보기 어려워요. 세대 차이나 소통 방식의 차이일 가능성이 있어요. 단, 같은 느낌이 반복된다면 그때는 다시 판단해봐야 해요.';
+      actions=[
+        {icon:'💬',title:'대화로 풀기',body:'상대방 의도를 먼저 확인해보세요. "그 표현이 좀 불편했어요"라고 차분하게 말하는 게 가장 빠른 해결책이에요.'},
+        {icon:'📓',title:'기록해두기',body:'비슷한 상황이 반복된다면 날짜와 내용을 메모해두세요. 패턴이 보이면 더 명확하게 판단할 수 있어요.'},
+        {icon:'🧘',title:'감정 정리하기',body:'내가 왜 불편했는지 구체적으로 써보면 도움이 돼요. 감정을 명확히 알면 대응도 쉬워져요.'}
+      ];
     }else if(score<40){
-      vType='gray';vMain='미묘한 선상에 있어요';
-      vDesc='딱 잘라 말하기 애매하지만, 분명히 불편함이 있는 상황이에요. 반복되면 누적 피로가 쌓여요.';
-      actions=['처음인지 반복인지가 핵심이에요.','불편했던 순간들을 날짜와 함께 메모해두세요.','가볍게 "그 말이 좀 불편했어요"라고 표현해보세요.'];
+      vType='gray';
+      empathy={emoji:'😶',text:'찜찜한 그 느낌, 본능적으로 맞는 경우가 많아요. 이런 감정이 드는 건 뭔가 불편한 게 있다는 신호예요. 무시하지 마세요.'};
+      vMain='미묘하게 선을 밟았어요';
+      vDesc='딱 잘라 말하기 어렵지만, 분명히 뭔가 불편한 상황이에요. 상대방이 의도했는지와 무관하게, 당신이 느끼는 불편함은 유효해요. 이런 상황은 반복될 경우 조금씩 감정 에너지를 소모시켜요.';
+      actions=[
+        {icon:'📏',title:'경계선 표현하기',body:'"그 말이 저는 좀 불편하게 들렸어요"처럼 가볍게 표현해보세요. 처음 한 번 말하면 많은 게 달라져요.'},
+        {icon:'📓',title:'반복 여부 체크',body:'이게 처음인지, 패턴인지가 핵심이에요. 비슷한 상황이 또 생기면 기록해두세요.'},
+        {icon:'🤝',title:'제3자 의견 구하기',body:'신뢰할 수 있는 사람에게 상황을 설명하고 피드백을 받아보세요. 외부 시각이 큰 도움이 돼요.'}
+      ];
     }else if(score<65){
-      vType='warn';vMain='선 꽤 넘었습니다';
-      vDesc=cfg.name+'이 권력 차이를 이용해 경계를 침범한 거예요. 당신이 불편한 건 예민한 게 아닙니다.';
-      actions=['날짜·발언·상황을 즉시 기록해두세요.','신뢰할 수 있는 동료나 친구에게 털어놓으세요.','반복된다면 HR·상담 채널을 활용하세요.','지금 당장 대응하기 어렵다면 감정 거리두기부터 시작해요.'];
+      vType='warn';
+      empathy={emoji:'😟',text:'불편하셨을 텐데, 그 감정 맞아요. 몸은 좀 괜찮아요? 이런 상황이 쌓이면 생각보다 몸이 먼저 반응해요.'};
+      vMain='선 꽤 넘었습니다';
+      vDesc=''+cfg.name+'이 권력 차이 또는 나이 차이를 이용해 당신의 경계를 침범한 거예요. 불편함을 느끼는 건 예민한 게 아니라 정상적인 반응이에요. 이 상황을 계속 혼자 삭이면 감정 소진이 쌓여요.';
+      actions=[
+        {icon:'📸',title:'기록 & 증거 확보',body:'날짜, 발언 내용, 장소, 목격자를 지금 바로 메모하세요. 나중에 꼭 필요해질 수 있어요.'},
+        {icon:'😶‍🌫️',title:'감정 거리두기',body:'상대방의 말을 "내 문제"로 받아들이지 마세요. 반응을 최소화하고 필요한 말만 하는 것도 좋은 전략이에요.'},
+        {icon:'🗣️',title:'도움 요청하기',body:'신뢰할 수 있는 동료나 HR에 상황을 공유하세요. 혼자 감당하려 하지 마세요.'},
+        {icon:'🔇',title:'대응 불가 시 거리두기',body:'당장 대응이 어렵다면 접촉 자체를 줄이는 것도 방법이에요. 꼭 맞서야만 하는 건 아니에요.'}
+      ];
     }else if(score<82){
-      vType='danger';vMain='명백한 꼰대 행동입니다';
-      vDesc='이건 참아야 할 상황이 아니에요. 당신의 불편함은 100% 정당합니다. 혼자 감당하려 하지 마세요.';
-      actions=['지금 바로 텍스트·스크린샷·녹음으로 증거 확보하세요.','혼자 삭이지 말고 주변이나 HR에 공유하세요.','직장 내 괴롭힘 관련 법적 보호를 알아두세요.','심리적으로 힘들다면 상담사 연결을 권장해요.'];
+      vType='danger';
+      empathy={emoji:'💔',text:'이 정도면 많이 지치셨겠다... 잠은 제대로 자고 있어요? 오래 참아온 것 같은데, 혼자 다 감당하려 하지 않아도 돼요.'};
+      vMain='명백한 꼰대 행동입니다';
+      vDesc='이건 참아야 할 상황이 아니에요. 상대방의 행동은 당신의 자존감과 심리적 안정감에 영향을 주고 있어요. 당신의 불편함은 100% 정당하고, 이걸 느끼는 게 당연해요.';
+      actions=[
+        {icon:'📱',title:'지금 당장 증거 확보',body:'텍스트, 카톡, 이메일, 음성 녹음 등 가능한 모든 걸 저장해두세요. 대화 당사자 녹음은 합법이에요.'},
+        {icon:'🧊',title:'그레이록 기법 적용',body:'나르시시스트나 무례한 상대에겐 감정 반응을 최대한 줄이세요. 재미없고 단조롭게 반응하면 상대방이 흥미를 잃어요. 이게 "그레이록(Grey Rock)" 기법이에요.'},
+        {icon:'🏃',title:'물리적 거리두기',body:'관계를 당장 끊기 어렵다면 접촉 빈도를 줄이세요. 같은 공간에 있어야 하더라도 불필요한 대화를 최소화하는 것만으로도 달라져요.'},
+        {icon:'⚖️',title:'법적 보호 수단 확인',body:'직장 내 괴롭힘 신고, 노동청 상담, 법률구조공단 무료 상담을 활용할 수 있어요.'}
+      ];
     }else{
-      vType='danger';vMain='절대 참으면 안 됩니다';
-      vDesc='존엄성을 침해하는 수준이에요. 이 상황이 반복된다면 당신의 건강에 직접적인 영향을 줄 수 있어요.';
-      actions=['모든 증거를 지금 확보하세요. (문자·카톡·이메일·녹음)','고용노동부 직장내괴롭힘 신고 채널을 검토하세요.','신뢰할 수 있는 사람에게 즉시 알리세요.','전문 상담사를 통한 심리 지원을 강력히 권장해요.'];
+      vType='danger';
+      empathy={emoji:'🆘',text:'몸에 어디 이상 없어요? 이 정도 상황이 반복됐다면 어디 하나쯤은 아플 거 같은데... 정말 많이 힘드셨겠어요. 이건 당신 잘못이 아니에요.'};
+      vMain='절대 참으면 안 됩니다';
+      vDesc='존엄성을 침해하는 수준이에요. 이 상황이 지속된다면 신체적·심리적 건강에 직접적인 영향을 줄 수 있어요. 지금 당장 혼자 감당하려 하지 마세요. 이건 반드시 외부의 도움이 필요한 상황이에요.';
+      actions=[
+        {icon:'🆘',title:'즉각 증거 확보',body:'모든 기록을 지금 바로 저장하세요. 문자·카톡·이메일·음성녹음·목격자. 삭제되기 전에 빠르게 움직여야 해요.'},
+        {icon:'📞',title:'신고 채널 활용',body:'고용노동부 직장내괴롭힘 신고(1350), 국가인권위원회 상담, 노동청 방문 상담을 즉시 고려하세요.'},
+        {icon:'🤝',title:'반드시 주변에 알리기',body:'동료, 가족, 친구 중 신뢰할 수 있는 누군가에게 지금 바로 털어놓으세요. 혼자 감당하는 건 지금 상황에서 옳지 않아요.'},
+        {icon:'🧠',title:'심리 상담 연결',body:'심리적으로 많이 소모된 상태예요. 정신건강복지센터(무료), 직장 EAP(기업 심리상담), 전문 상담사를 통한 지원을 강력히 권장해요.'},
+        {icon:'🔌',title:'관계 차단',body:'가능하다면 지금 이 관계에서 벗어나는 것을 진지하게 고려해야 해요. 참고 견디는 것이 답이 아닌 상황이에요.'}
+      ];
     }
 
-    return{score,grade,vType,vMain,vDesc,actions,agePct,narcPct,rudePct,cutPct};
+    var aiAnalysis=analyzeCustomText(state.customText);
+
+    return{score,grade,vType,vMain,vDesc,empathy,actions,aiAnalysis,agePct,narcPct,rudePct,cutPct,dominantType};
   }
 
+  /* ── RENDER ── */
   function renderResult(r){
     var bm={safe:['rb-safe','✓ 안전 범위'],gray:['rb-gray','△ 경계선'],warn:['rb-warn','⚠ 선 넘음'],danger:['rb-danger','✕ 심각']};
     var bd=bm[r.vType];
@@ -608,17 +686,36 @@ document.addEventListener('DOMContentLoaded', function(){
     var nEl=document.getElementById('resNum');nEl.style.color=cm[r.vType];
     setTimeout(function(){animN(nEl,0,r.score,1200);},200);
     document.getElementById('resVerdict').textContent=r.vMain;
+
+    // 공감
+    document.getElementById('empathyEmoji').textContent=r.empathy.emoji;
+    document.getElementById('empathyText').textContent=r.empathy.text;
+
+    // AI 분석
+    var aiBox=document.getElementById('aiBox');
+    if(r.aiAnalysis){
+      document.getElementById('aiTitle').textContent=r.aiAnalysis.title;
+      document.getElementById('aiContent').innerHTML=r.aiAnalysis.paras.map(function(p){return '<p>'+p+'</p>';}).join('');
+      aiBox.classList.add('show');
+    }else{
+      aiBox.classList.remove('show');
+    }
+
     document.getElementById('resDesc').textContent=r.vDesc;
+
+    // 유형
     var types=[{id:'a',pct:r.agePct},{id:'n',pct:r.narcPct},{id:'r',pct:r.rudePct},{id:'c',pct:r.cutPct}];
     types.forEach(function(t){
-      setTimeout(function(){
-        animN(document.getElementById('p'+t.id),0,t.pct,900);
-        document.getElementById('b'+t.id).style.width=t.pct+'%';
-      },500);
+      setTimeout(function(){animN(document.getElementById('p'+t.id),0,t.pct,900);document.getElementById('b'+t.id).style.width=t.pct+'%';},500);
     });
-    document.getElementById('actList').innerHTML=r.actions.map(function(a){
-      return '<div class="act-row"><div class="act-dot"></div><span>'+a+'</span></div>';
+
+    // 대처
+    document.getElementById('actSection').innerHTML=r.actions.map(function(a){
+      return '<div class="act-item"><div class="act-item-head"><span class="act-item-icon">'+a.icon+'</span><span class="act-item-title">'+a.title+'</span></div><div class="act-item-body">'+a.body+'</div></div>';
     }).join('');
+
+    // 스크롤 최상단
+    document.getElementById('s-result').scrollTop=0;
   }
 
   function animN(el,from,to,dur){
