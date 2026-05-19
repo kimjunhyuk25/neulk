@@ -158,6 +158,22 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
 .btn-again:active{transform:scale(.98)}
 .hi{height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hi-bar{width:120px;height:4px;border-radius:100px;background:rgba(0,0,0,.12)}
+
+/* SHARE */
+.btn-share{width:100%;padding:17px;background:#111;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:800;color:#fff;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s,opacity .1s}
+.btn-share:active{transform:scale(.98);opacity:.88}
+.share-overlay{position:absolute;inset:0;z-index:100;display:flex;align-items:flex-end;pointer-events:none;opacity:0;transition:opacity .25s ease}
+.share-overlay.open{pointer-events:all;opacity:1}
+.share-dim{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.share-sheet{position:relative;z-index:1;background:#fff;border-radius:24px 24px 0 0;padding:20px 20px 44px;width:100%;transform:translateY(100%);transition:transform .32s cubic-bezier(.25,.46,.45,.94)}
+.share-overlay.open .share-sheet{transform:translateY(0)}
+.share-handle{width:40px;height:4px;background:var(--border);border-radius:100px;margin:0 auto 18px}
+.share-card-wrap{width:100%;aspect-ratio:1/1;border-radius:16px;overflow:hidden;margin-bottom:16px;background:#0d0d0d}
+#shareCanvas{width:100%;height:100%;display:block}
+.share-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sh-btn{padding:14px 10px;background:var(--chip);border:none;border-radius:12px;font-family:inherit;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:all .12s;text-align:center}
+.sh-btn:active{transform:scale(.97)}
+.sh-btn.full{grid-column:1/-1;background:#111;color:#fff;font-size:14px;padding:16px}
 </style>
 </head>
 <body>
@@ -297,6 +313,22 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
     <div class="hi"><div class="hi-bar"></div></div>
   </div>
 
+  <!-- SHARE OVERLAY -->
+  <div class="share-overlay" id="shareOverlay">
+    <div class="share-dim" id="shareDim"></div>
+    <div class="share-sheet">
+      <div class="share-handle"></div>
+      <div class="share-card-wrap">
+        <canvas id="shareCanvas"></canvas>
+      </div>
+      <div class="share-btns">
+        <button class="sh-btn full" id="btnNativeShare">📤 공유하기 (카카오 · 인스타 · 기타)</button>
+        <button class="sh-btn" id="btnSaveImg">💾 이미지 저장</button>
+        <button class="sh-btn" id="btnCopyLink">🔗 링크 복사</button>
+      </div>
+    </div>
+  </div>
+
   <!-- LOADING -->
   <div class="screen" id="s-load">
     <div style="text-align:center;padding:0 32px">
@@ -342,6 +374,7 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
       <!-- 대처 방법 -->
       <div class="sec-lbl">대처 방법</div>
       <div class="act-section" id="actSection"></div>
+      <button type="button" class="btn-share" id="btnShare">📤 결과 공유하기</button>
       <button type="button" class="btn-again" id="btnAgain">↩ 다시 판별하기</button>
     </div>
   </div>
@@ -676,10 +709,178 @@ document.addEventListener('DOMContentLoaded', function(){
     return{score,grade,vType,vMain,vDesc,empathy,actions,aiAnalysis,agePct,narcPct,rudePct,cutPct,dominantType};
   }
 
+  /* ── SHARE ── */
+  var shareResult=null;
+
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+    ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);
+    ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+  }
+
+  function drawShareCard(r){
+    var DPR=Math.min(window.devicePixelRatio||1,2);
+    var W=800,H=800;
+    var cv=document.getElementById('shareCanvas');
+    cv.width=W*DPR;cv.height=H*DPR;
+    var ctx=cv.getContext('2d');
+    ctx.scale(DPR,DPR);
+
+    // bg
+    ctx.fillStyle='#0d0d0d';ctx.fillRect(0,0,W,H);
+
+    // glow circle behind number
+    var cm={safe:'#60a5fa',gray:'#94a3b8',warn:'#fbbf24',danger:'#f87171'};
+    var col=cm[r.vType]||'#f87171';
+    var grad=ctx.createRadialGradient(W/2,H*0.35,0,W/2,H*0.35,220);
+    grad.addColorStop(0,col+'28');grad.addColorStop(1,'transparent');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+
+    // top divider line (accent color)
+    ctx.fillStyle=col;ctx.fillRect(0,0,W,4);
+
+    // app name — top left
+    ctx.fillStyle='rgba(255,255,255,0.35)';
+    ctx.font='700 22px "Noto Sans KR",sans-serif';
+    ctx.textAlign='left';ctx.fillText('늙?',36,54);
+
+    // grade label — top right
+    var gradeMap={safe:'안전 범위',gray:'경계선',warn:'선 넘음',danger:'심각'};
+    ctx.fillStyle=col;
+    ctx.font='700 18px "Noto Sans KR",sans-serif';
+    ctx.textAlign='right';ctx.fillText(gradeMap[r.vType]||'',W-36,54);
+
+    // big percentage
+    ctx.fillStyle=col;
+    ctx.font='900 168px "Noto Sans KR",sans-serif';
+    ctx.textAlign='center';ctx.fillText(r.score+'%',W/2,H*0.44);
+
+    // grade text
+    ctx.fillStyle='rgba(255,255,255,0.35)';
+    ctx.font='600 18px "Noto Sans KR",sans-serif';
+    ctx.fillText(r.grade.lbl,W/2,H*0.44+36);
+
+    // verdict
+    ctx.fillStyle='#fff';
+    ctx.font='800 30px "Noto Sans KR",sans-serif';
+    ctx.fillText(r.vMain,W/2,H*0.59);
+
+    // separator
+    ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(36,H*0.64);ctx.lineTo(W-36,H*0.64);ctx.stroke();
+
+    // 4 type cards
+    var types=[
+      {lbl:'걍 늙',pct:r.agePct,col:'#f97316'},
+      {lbl:'나르시시스트',pct:r.narcPct,col:'#8b5cf6'},
+      {lbl:'타고난 무례함',pct:r.rudePct,col:'#ef4444'},
+      {lbl:'관계 정리',pct:r.cutPct,col:'#e63946'}
+    ];
+    var cardW=172,cardH=74,gapX=10,gapY=10;
+    var startX=(W-(cardW*2+gapX))/2;
+    var startY=H*0.67;
+    types.forEach(function(t,i){
+      var x=startX+(i%2)*(cardW+gapX);
+      var y=startY+Math.floor(i/2)*(cardH+gapY);
+      ctx.fillStyle='rgba(255,255,255,0.06)';
+      roundRect(ctx,x,y,cardW,cardH,12);ctx.fill();
+      // bar bg
+      ctx.fillStyle='rgba(255,255,255,0.08)';
+      roundRect(ctx,x+12,y+cardH-10,cardW-24,3,2);ctx.fill();
+      // bar fill
+      var bw=Math.round((cardW-24)*t.pct/100);
+      ctx.fillStyle=t.col;
+      roundRect(ctx,x+12,y+cardH-10,bw,3,2);ctx.fill();
+      // label
+      ctx.fillStyle='rgba(255,255,255,0.5)';
+      ctx.font='600 11px "Noto Sans KR",sans-serif';
+      ctx.textAlign='left';ctx.fillText(t.lbl,x+12,y+22);
+      // pct
+      ctx.fillStyle=t.col;
+      ctx.font='800 24px "Noto Sans KR",sans-serif';
+      ctx.fillText(t.pct+'%',x+12,y+52);
+    });
+
+    // url watermark
+    ctx.fillStyle='rgba(255,255,255,0.18)';
+    ctx.font='500 16px "Noto Sans KR",sans-serif';
+    ctx.textAlign='center';ctx.fillText('neulk.vercel.app',W/2,H-22);
+
+    return cv;
+  }
+
+  function openShareSheet(){
+    if(!shareResult)return;
+    document.fonts.ready.then(function(){
+      drawShareCard(shareResult);
+      document.getElementById('shareOverlay').classList.add('open');
+    });
+  }
+
+  document.getElementById('btnShare').addEventListener('click',openShareSheet);
+  document.getElementById('shareDim').addEventListener('click',function(){
+    document.getElementById('shareOverlay').classList.remove('open');
+  });
+
+  document.getElementById('btnNativeShare').addEventListener('click',function(){
+    var cv=document.getElementById('shareCanvas');
+    cv.toBlob(function(blob){
+      var file=new File([blob],'늙_결과.png',{type:'image/png'});
+      if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+        navigator.share({
+          title:'늙? — 꼰대 판별 결과',
+          text:shareResult.score+'% 나왔어요! '+shareResult.vMain,
+          url:'https://neulk.vercel.app',
+          files:[file]
+        }).catch(function(){});
+      }else if(navigator.share){
+        navigator.share({
+          title:'늙? — 꼰대 판별 결과',
+          text:shareResult.score+'% 나왔어요! '+shareResult.vMain,
+          url:'https://neulk.vercel.app'
+        }).catch(function(){});
+      }else{
+        // PC 폴백: 이미지 저장 유도
+        var btn=document.getElementById('btnNativeShare');
+        btn.textContent='⬇ PC는 이미지 저장 후 공유해주세요';
+        setTimeout(function(){btn.textContent='📤 공유하기 (카카오 · 인스타 · 기타)';},2500);
+      }
+    },'image/png');
+  });
+
+  document.getElementById('btnSaveImg').addEventListener('click',function(){
+    var cv=document.getElementById('shareCanvas');
+    var a=document.createElement('a');
+    a.download='늙_결과_'+shareResult.score+'%.png';
+    a.href=cv.toDataURL('image/png');
+    a.click();
+    var btn=document.getElementById('btnSaveImg');
+    btn.textContent='✅ 저장됨!';
+    setTimeout(function(){btn.textContent='💾 이미지 저장';},2000);
+  });
+
+  document.getElementById('btnCopyLink').addEventListener('click',function(){
+    var url='https://neulk.vercel.app';
+    var btn=document.getElementById('btnCopyLink');
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(url).then(function(){
+        btn.textContent='✅ 복사됨!';
+        setTimeout(function(){btn.textContent='🔗 링크 복사';},2000);
+      });
+    }else{
+      var ta=document.createElement('textarea');ta.value=url;
+      document.body.appendChild(ta);ta.select();document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent='✅ 복사됨!';
+      setTimeout(function(){btn.textContent='🔗 링크 복사';},2000);
+    }
+  });
+
   /* ── RENDER ── */
   function renderResult(r){
     var bm={safe:['rb-safe','✓ 안전 범위'],gray:['rb-gray','△ 경계선'],warn:['rb-warn','⚠ 선 넘음'],danger:['rb-danger','✕ 심각']};
     var bd=bm[r.vType];
+    shareResult=r;
     var bEl=document.getElementById('resBadge');bEl.className='res-badge '+bd[0];bEl.textContent=bd[1];
     document.getElementById('resGrade').textContent=r.grade.lbl;
     var cm={safe:'#60a5fa',gray:'#94a3b8',warn:'#fbbf24',danger:'#f87171'};
