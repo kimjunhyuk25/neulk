@@ -8,235 +8,138 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#e8e6e0;
-  --white:#ffffff;
-  --border:#e0ddd5;
-  --text:#111111;
-  --sub:#666666;
-  --muted:#aaaaaa;
-  --accent:#111111;
-  --red:#e63946;
-  --chip:#f0efe9;
+  --bg:#e8e6e0;--white:#fff;--border:#e0ddd5;
+  --text:#111;--sub:#666;--muted:#aaa;
+  --accent:#111;--red:#e63946;--chip:#f0efe9;
 }
 html{height:100%;width:100%}
 body{
-  height:100%;
-  width:100%;
-  background:var(--bg);
+  height:100%;width:100%;background:var(--bg);
   font-family:'Noto Sans KR',-apple-system,sans-serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display:flex;align-items:center;justify-content:center;
   -webkit-tap-highlight-color:transparent;
 }
 #shell{
-  width:100%;
-  max-width:390px;
-  height:100vh;
-  max-height:844px;
-  background:var(--white);
-  position:relative;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
+  width:100%;max-width:390px;height:100vh;max-height:844px;
+  background:var(--white);position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
 }
 @media(min-width:460px){
   body{padding:24px}
-  #shell{border-radius:48px;box-shadow:0 24px 80px rgba(0,0,0,0.22),0 0 0 1px rgba(0,0,0,0.06)}
+  #shell{border-radius:48px;box-shadow:0 24px 80px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06)}
 }
 
-/* ── STATUS BAR ── */
-#statusBar{
-  position:absolute;top:0;left:0;right:0;
-  height:50px;z-index:50;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 28px;
-  pointer-events:none;
-  transition:color 0.3s;
-}
-#statusBar.dark{color:#fff}
-#statusBar.light{color:#111}
-.sb-time{font-size:15px;font-weight:700}
-.sb-icons{font-size:11px;display:flex;gap:5px;align-items:center}
+/* STATUS BAR */
+#sb{position:absolute;top:0;left:0;right:0;height:50px;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;padding:0 28px;pointer-events:none;transition:color .3s}
+#sb.dark{color:#fff}#sb.light{color:#111}
+.sb-t{font-size:15px;font-weight:700}
+.sb-i{font-size:11px;display:flex;gap:5px;align-items:center}
 
-/* ── PROGRESS ── */
-#progressWrap{
-  position:absolute;top:50px;left:0;right:0;
-  height:2px;background:var(--border);z-index:49;
-  display:none;
-}
-#progressBar{height:100%;background:var(--accent);transition:width 0.45s ease;width:0%}
+/* PROGRESS */
+#pw{position:absolute;top:50px;left:0;right:0;height:2px;background:var(--border);z-index:49;display:none}
+#pb{height:100%;background:var(--accent);transition:width .45s ease;width:0%}
 
-/* ── SCREENS ── */
-.screen{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  opacity:0;pointer-events:none;
-  transform:translateX(28px);
-  transition:opacity 0.3s ease,transform 0.3s ease;
-  overflow:hidden;
-}
+/* SCREENS */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transform:translateX(28px);
+  transition:opacity .3s ease,transform .3s ease;overflow:hidden}
 .screen.active{opacity:1;pointer-events:all;transform:translateX(0)}
 .screen.exit-left{opacity:0;transform:translateX(-28px);pointer-events:none}
 .screen.from-left{opacity:0;transform:translateX(-28px)}
 
-/* ═══════════════════════════════
-   HOME
-═══════════════════════════════ */
+/* HOME */
 #s0{background:#0d0d0d;justify-content:flex-end}
-.home-visual{
-  flex:1;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:80px 32px 24px;
-}
-.app-icon{
-  width:88px;height:88px;background:var(--red);
-  border-radius:22px;display:flex;align-items:center;
-  justify-content:center;font-size:40px;margin-bottom:32px;
-}
-.home-h{
-  font-size:100px;font-weight:900;letter-spacing:-6px;
-  line-height:1;color:#fff;margin-bottom:10px;
-}
+.home-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px 24px}
+.app-icon{width:88px;height:88px;background:var(--red);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:32px}
+.home-h{font-size:100px;font-weight:900;letter-spacing:-6px;line-height:1;color:#fff;margin-bottom:10px}
 .home-h .r{color:var(--red)}
-.home-p{font-size:14px;color:rgba(255,255,255,0.45);text-align:center;line-height:1.65}
-.home-footer{padding:20px 24px 48px}
-.btn-start{
-  width:100%;padding:20px;background:var(--red);color:#fff;
-  border:none;border-radius:18px;font-family:inherit;
-  font-size:17px;font-weight:800;cursor:pointer;
-  transition:transform 0.1s,opacity 0.1s;letter-spacing:0.2px;
-}
-.btn-start:active{transform:scale(0.97);opacity:0.88}
+.home-p{font-size:14px;color:rgba(255,255,255,.45);text-align:center;line-height:1.65}
+.home-foot{padding:20px 24px 48px}
+.btn-start{width:100%;padding:20px;background:var(--red);color:#fff;border:none;border-radius:18px;font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;transition:transform .1s,opacity .1s;letter-spacing:.2px}
+.btn-start:active{transform:scale(.97);opacity:.88}
 
-/* ═══════════════════════════════
-   QUESTION SCREENS (1–4)
-═══════════════════════════════ */
-.q-topbar{
-  display:flex;align-items:center;gap:14px;
-  padding:60px 20px 0;flex-shrink:0;
-}
-.btn-bk{
-  width:34px;height:34px;border-radius:50%;
-  background:var(--chip);border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;flex-shrink:0;transition:background 0.15s;
-}
+/* Q SCREENS */
+.q-top{display:flex;align-items:center;gap:14px;padding:60px 20px 0;flex-shrink:0}
+.btn-bk{width:34px;height:34px;border-radius:50%;background:var(--chip);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:background .15s}
 .btn-bk:active{background:var(--border)}
 .step-lbl{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
-
 .q-head{padding:16px 24px 0;flex-shrink:0}
 .q-title{font-size:32px;font-weight:900;letter-spacing:-1.5px;line-height:1.2;color:var(--text);margin-bottom:5px}
 .q-hint{font-size:13px;color:var(--muted);margin-bottom:20px}
-
 .q-scroll{flex:1;overflow-y:auto;padding:0 24px;-webkit-overflow-scrolling:touch}
 .q-scroll::-webkit-scrollbar{display:none}
 
-/* ── Choice list ── */
-.choice-list{display:flex;flex-direction:column;gap:9px;padding-bottom:20px}
-.c-card{
-  display:flex;align-items:center;gap:15px;
-  padding:17px 18px;
-  background:var(--chip);border:2px solid transparent;
-  border-radius:16px;cursor:pointer;
-  transition:all 0.12s;width:100%;font-family:inherit;text-align:left;
-}
-.c-card:active{transform:scale(0.98)}
+/* CARDS */
+.c-list{display:flex;flex-direction:column;gap:9px;padding-bottom:16px}
+.c-card{display:flex;align-items:center;gap:15px;padding:17px 18px;background:var(--chip);border:2px solid transparent;border-radius:16px;cursor:pointer;transition:all .12s;width:100%;font-family:inherit;text-align:left}
+.c-card:active{transform:scale(.98)}
 .c-card.sel{background:var(--accent);border-color:var(--accent);color:#fff}
 .c-icon{font-size:26px;flex-shrink:0}
 .c-main{font-size:16px;font-weight:700}
-.c-sub{font-size:12px;opacity:0.5;margin-top:2px}
-.c-card.sel .c-sub{opacity:0.6}
+.c-sub{font-size:12px;opacity:.5;margin-top:2px}
+.c-card.sel .c-sub{opacity:.6}
+.c-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding-bottom:20px}
+.c-grid .c-card{flex-direction:column;align-items:flex-start;gap:8px;padding:18px 16px}
+.c-grid .c-icon{font-size:30px}
 
-/* ── 2-col grid (stress) ── */
-.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding-bottom:20px}
-.choice-grid .c-card{flex-direction:column;align-items:flex-start;gap:8px;padding:18px 16px}
-.choice-grid .c-icon{font-size:30px}
+/* 기타 직접입력 */
+.other-input-wrap{overflow:hidden;max-height:0;transition:max-height .3s ease,opacity .3s ease;opacity:0;margin-bottom:0}
+.other-input-wrap.show{max-height:80px;opacity:1;margin-bottom:8px}
+.other-input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:15px;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
+.other-input:focus{border-color:var(--accent)}
+.other-input::placeholder{color:var(--muted)}
 
-/* ── Chips ── */
-.chip-cat{
-  font-size:10px;font-weight:700;letter-spacing:2px;
-  text-transform:uppercase;color:var(--muted);
-  margin:14px 0 8px;
-}
+/* CHIPS */
+.chip-cat{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
 .chip-cat:first-child{margin-top:0}
 .chip-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
-.chip{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:9px 13px;background:var(--chip);
-  border:2px solid transparent;border-radius:100px;
-  font-family:inherit;font-size:13px;font-weight:600;
-  color:var(--text);cursor:pointer;
-  transition:all 0.12s;white-space:nowrap;
-}
-.chip:active{transform:scale(0.93)}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:9px 13px;background:var(--chip);border:2px solid transparent;border-radius:100px;font-family:inherit;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .12s;white-space:nowrap}
+.chip:active{transform:scale(.93)}
 .chip.sel{background:var(--accent);border-color:var(--accent);color:#fff}
 
-/* ── Footer button ── */
+/* 직접입력 (chip-style toggle) */
+.text-toggle{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;background:transparent;border:2px dashed var(--border);border-radius:100px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;margin-top:12px}
+.text-toggle:hover{border-color:var(--accent);color:var(--text)}
+.text-toggle.open{border-style:solid;border-color:var(--accent);color:var(--text);background:var(--chip)}
+.custom-text-wrap{overflow:hidden;max-height:0;transition:max-height .35s ease,opacity .35s ease;opacity:0}
+.custom-text-wrap.show{max-height:140px;opacity:1}
+.custom-textarea{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:14px;color:var(--text);background:var(--chip);outline:none;resize:none;min-height:100px;line-height:1.6;margin-top:10px;transition:border-color .15s}
+.custom-textarea:focus{border-color:var(--accent)}
+.custom-textarea::placeholder{color:var(--muted)}
+
+/* FOOTER */
 .q-foot{padding:10px 24px 44px;flex-shrink:0}
 .chip-info{text-align:center;font-size:12px;color:var(--muted);margin-bottom:10px}
-.btn-nxt{
-  width:100%;padding:18px;background:var(--accent);color:#fff;
-  border:none;border-radius:16px;font-family:inherit;
-  font-size:16px;font-weight:700;cursor:pointer;
-  transition:transform 0.1s,opacity 0.1s;
-}
-.btn-nxt:active{transform:scale(0.98)}
+.btn-nxt{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s,opacity .1s}
+.btn-nxt:active{transform:scale(.98)}
 
-/* ═══════════════════════════════
-   LOADING
-═══════════════════════════════ */
+/* LOADING */
 #s-load{background:#fff;align-items:center;justify-content:center}
-.load-emoji{font-size:60px;margin-bottom:20px;animation:bob 0.75s ease-in-out infinite alternate}
+.load-emoji{font-size:60px;margin-bottom:20px;animation:bob .75s ease-in-out infinite alternate}
 @keyframes bob{from{transform:translateY(0)}to{transform:translateY(-14px)}}
 .load-title{font-size:22px;font-weight:900;margin-bottom:6px;color:var(--text)}
 .load-sub{font-size:13px;color:var(--muted);animation:blink 1.4s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:0.4}50%{opacity:1}}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
 
-/* ═══════════════════════════════
-   RESULT
-═══════════════════════════════ */
+/* RESULT */
 #s-result{overflow-y:auto;-webkit-overflow-scrolling:touch}
 #s-result::-webkit-scrollbar{display:none}
-
-.res-hero{
-  padding:56px 24px 28px;
-  background:#0d0d0d;color:#fff;flex-shrink:0;
-}
-.res-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:5px 12px;border-radius:100px;
-  font-size:11px;font-weight:700;letter-spacing:1px;
-  text-transform:uppercase;margin-bottom:14px;
-}
-.rb-safe{background:#dbeafe;color:#1d4ed8}
-.rb-gray{background:#e2e8f0;color:#475569}
-.rb-warn{background:#fef3c7;color:#b45309}
-.rb-danger{background:#fee2e2;color:#b91c1c}
-
-.res-num{
-  font-size:100px;font-weight:900;letter-spacing:-6px;
-  line-height:1;margin-bottom:4px;
-}
-.res-num small{font-size:38px;font-weight:400;opacity:0.45;letter-spacing:0}
-.res-grade{font-size:12px;font-weight:600;opacity:0.4;margin-bottom:10px}
-.res-verdict{font-size:26px;font-weight:900;line-height:1.2;letter-spacing:-0.5px}
-
+.res-hero{padding:56px 24px 28px;background:#0d0d0d;color:#fff;flex-shrink:0}
+.res-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.rb-safe{background:#dbeafe;color:#1d4ed8}.rb-gray{background:#e2e8f0;color:#475569}
+.rb-warn{background:#fef3c7;color:#b45309}.rb-danger{background:#fee2e2;color:#b91c1c}
+.res-num{font-size:100px;font-weight:900;letter-spacing:-6px;line-height:1;margin-bottom:4px}
+.res-num small{font-size:38px;font-weight:400;opacity:.45;letter-spacing:0}
+.res-grade{font-size:12px;font-weight:600;opacity:.4;margin-bottom:10px}
+.res-verdict{font-size:26px;font-weight:900;line-height:1.2;letter-spacing:-.5px}
 .res-body{padding:20px 24px 0}
-
-.res-desc{
-  font-size:14px;color:var(--sub);line-height:1.7;
-  padding:16px;background:var(--chip);border-radius:14px;
-  margin-bottom:20px;
-}
-.sec-lbl{
-  font-size:10px;font-weight:700;letter-spacing:2px;
-  text-transform:uppercase;color:var(--muted);margin-bottom:10px;
-}
+.res-desc{font-size:14px;color:var(--sub);line-height:1.7;padding:16px;background:var(--chip);border-radius:14px;margin-bottom:20px}
+.sec-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
 .t-card{padding:16px;background:var(--chip);border-radius:14px}
 .t-emoji{font-size:22px;margin-bottom:5px}
-.t-lbl{font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.t-lbl{font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;line-height:1.4}
 .t-pct{font-size:28px;font-weight:900;letter-spacing:-1px}
 .t-pct small{font-size:12px;font-weight:400;color:var(--muted)}
 .t-bar-bg{height:3px;background:var(--border);border-radius:100px;overflow:hidden;margin-top:8px}
@@ -244,120 +147,132 @@ body{
 .t-age .t-pct{color:#f97316}.t-age .t-bar{background:#f97316}
 .t-narc .t-pct{color:#8b5cf6}.t-narc .t-bar{background:#8b5cf6}
 .t-rude .t-pct{color:#ef4444}.t-rude .t-bar{background:#ef4444}
-.t-self .t-pct{color:#3b82f6}.t-self .t-bar{background:#3b82f6}
-
+.t-cut .t-pct{color:#e63946}.t-cut .t-bar{background:#e63946}
 .act-box{background:var(--chip);border-radius:14px;padding:18px;margin-bottom:16px}
 .act-row{display:flex;gap:10px;font-size:13px;line-height:1.6;color:var(--sub);margin-bottom:7px}
 .act-row:last-child{margin-bottom:0}
 .act-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);margin-top:7px;flex-shrink:0}
-
-.btn-again{
-  width:100%;padding:15px;background:var(--chip);border:none;
-  border-radius:14px;font-family:inherit;font-size:14px;
-  font-weight:700;color:var(--sub);cursor:pointer;
-  margin-bottom:50px;transition:all 0.15s;
-}
-.btn-again:active{transform:scale(0.98)}
-
-/* ── Home indicator ── */
+.btn-again{width:100%;padding:15px;background:var(--chip);border:none;border-radius:14px;font-family:inherit;font-size:14px;font-weight:700;color:var(--sub);cursor:pointer;margin-bottom:50px;transition:all .15s}
+.btn-again:active{transform:scale(.98)}
 .hi{height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.hi-bar{width:120px;height:4px;border-radius:100px;background:rgba(0,0,0,0.12)}
-.dark-hi .hi-bar{background:rgba(255,255,255,0.2)}
+.hi-bar{width:120px;height:4px;border-radius:100px;background:rgba(0,0,0,.12)}
 </style>
 </head>
 <body>
 <div id="shell">
 
-  <!-- STATUS BAR -->
-  <div id="statusBar" class="dark">
-    <span class="sb-time" id="sbTime">9:41</span>
-    <div class="sb-icons"><span>▋▋▋</span><span>WiFi</span><span>▉</span></div>
+  <div id="sb" class="dark">
+    <span class="sb-t" id="sbT">9:41</span>
+    <div class="sb-i"><span>▋▋▋</span><span>WiFi</span><span>▉</span></div>
   </div>
+  <div id="pw"><div id="pb"></div></div>
 
-  <!-- PROGRESS -->
-  <div id="progressWrap"><div id="progressBar"></div></div>
-
-  <!-- ══ S0: HOME ══ -->
+  <!-- HOME -->
   <div class="screen active" id="s0">
-    <div class="home-visual">
+    <div class="home-top">
       <div class="app-icon">👴</div>
       <div class="home-h"><span class="r">늙</span>?</div>
       <p class="home-p">선 넘은 건지 내가 예민한 건지<br>30초 만에 판별해드려요</p>
     </div>
-    <div class="home-footer">
+    <div class="home-foot">
       <button type="button" class="btn-start" id="btnStart">판별 시작하기 →</button>
     </div>
   </div>
 
-  <!-- ══ S1: 누구? ══ -->
+  <!-- S1: 누구? -->
   <div class="screen" id="s1">
-    <div class="q-topbar">
-      <button class="btn-bk" id="bk1">←</button>
-      <span class="step-lbl">1 / 4</span>
-    </div>
+    <div class="q-top"><button class="btn-bk" id="bk1">←</button><span class="step-lbl">1 / 4</span></div>
     <div class="q-head">
       <h2 class="q-title">상대방이<br>누구예요?</h2>
       <p class="q-hint">탭하면 바로 넘어가요</p>
     </div>
     <div class="q-scroll">
-      <div class="choice-list">
+      <div class="c-list">
         <button class="c-card" data-rel="boss"><span class="c-icon">🏢</span><div><div class="c-main">직장 상사</div><div class="c-sub">팀장 / 임원 / 대표</div></div></button>
         <button class="c-card" data-rel="senior"><span class="c-icon">👔</span><div><div class="c-main">직장 선배</div><div class="c-sub">선임 / 연차 높은 동료</div></div></button>
         <button class="c-card" data-rel="client"><span class="c-icon">💼</span><div><div class="c-main">고객 / 갑</div><div class="c-sub">거래처 / 클라이언트</div></div></button>
         <button class="c-card" data-rel="parent"><span class="c-icon">👨‍👩‍👧</span><div><div class="c-main">부모 / 친척</div><div class="c-sub">가족 / 친인척</div></div></button>
         <button class="c-card" data-rel="elder"><span class="c-icon">👴</span><div><div class="c-main">동네 어른 / 지인</div><div class="c-sub">잘 모르는 어른</div></div></button>
-        <button class="c-card" data-rel="other"><span class="c-icon">🤷</span><div><div class="c-main">기타</div><div class="c-sub">위에 없는 관계</div></div></button>
+        <button class="c-card" data-rel="other" id="cardOther"><span class="c-icon">✏️</span><div><div class="c-main">기타 (직접 입력)</div><div class="c-sub">위에 없는 관계</div></div></button>
+        <!-- 기타 직접입력 -->
+        <div class="other-input-wrap" id="otherWrap">
+          <input type="text" class="other-input" id="otherTxt" placeholder="어떤 관계인지 적어주세요 (예: 동창, 교수님...)">
+        </div>
       </div>
     </div>
     <div class="hi"><div class="hi-bar"></div></div>
   </div>
 
-  <!-- ══ S2: 뭘 했나요? ══ -->
+  <!-- S2: 뭘 했나요? -->
   <div class="screen" id="s2">
-    <div class="q-topbar">
-      <button class="btn-bk" id="bk2">←</button>
-      <span class="step-lbl">2 / 4</span>
-    </div>
+    <div class="q-top"><button class="btn-bk" id="bk2">←</button><span class="step-lbl">2 / 4</span></div>
     <div class="q-head">
       <h2 class="q-title">어떤 일이<br>있었나요?</h2>
-      <p class="q-hint">해당하는 것 모두 탭하세요 (중복 선택 가능)</p>
+      <p class="q-hint">해당하는 것 모두 탭하세요</p>
     </div>
     <div class="q-scroll">
+
       <div class="chip-cat">🗣 말 한마디</div>
       <div class="chip-wrap">
-        <button class="chip" data-cat="mid">😤 나 때는~</button>
-        <button class="chip" data-cat="mid">🙄 요즘 것들이</button>
+        <button class="chip" data-cat="age">😤 나 때는~</button>
+        <button class="chip" data-cat="age">🙄 요즘 것들이</button>
+        <button class="chip" data-cat="age">내가 다 해봐서 알아</button>
         <button class="chip" data-cat="mid">그것도 못해?</button>
-        <button class="chip" data-cat="mid">충고라고</button>
+        <button class="chip" data-cat="mid">잘 되라고 하는 말</button>
+        <button class="chip" data-cat="mid">반말 강요</button>
         <button class="chip" data-cat="hard">인격 모독</button>
         <button class="chip" data-cat="hard">🤬 욕설 / 폭언</button>
+        <button class="chip" data-cat="rude">비교하기</button>
+        <button class="chip" data-cat="rude">조롱 / 비꼬기</button>
       </div>
+
       <div class="chip-cat">📱 연락 · 통제</div>
       <div class="chip-wrap">
         <button class="chip" data-cat="hard">🌙 새벽 카톡</button>
         <button class="chip" data-cat="hard">주말 / 휴일 연락</button>
+        <button class="chip" data-cat="hard">답장 강요</button>
         <button class="chip" data-cat="hard">🔍 감시 / 통제</button>
         <button class="chip" data-cat="hard">야근 강요</button>
-        <button class="chip" data-cat="hard">강제 회식</button>
+        <button class="chip" data-cat="hard">강제 회식 / 2차</button>
       </div>
+
       <div class="chip-cat">🏠 사생활 침범</div>
       <div class="chip-wrap">
         <button class="chip" data-cat="boundary">💍 결혼 압박</button>
         <button class="chip" data-cat="boundary">연애 간섭</button>
-        <button class="chip" data-cat="boundary">외모 언급</button>
+        <button class="chip" data-cat="boundary">외모 / 몸매 언급</button>
         <button class="chip" data-cat="boundary">연봉 질문</button>
-        <button class="chip" data-cat="boundary">집안 사정</button>
+        <button class="chip" data-cat="boundary">집안 사정 캐기</button>
+        <button class="chip" data-cat="boundary">종교 / 정치 강요</button>
       </div>
+
+      <div class="chip-cat">🪞 나르시시스트 패턴</div>
+      <div class="chip-wrap">
+        <button class="chip" data-cat="narc">자기 자랑만</button>
+        <button class="chip" data-cat="narc">공 가로채기</button>
+        <button class="chip" data-cat="narc">인정 / 칭찬 요구</button>
+        <button class="chip" data-cat="narc">나 없으면 안 돼</button>
+        <button class="chip" data-cat="narc">이중적 태도</button>
+        <button class="chip" data-cat="narc">내 덕분에 / 너 때문에</button>
+      </div>
+
       <div class="chip-cat">😤 태도 · 갑질</div>
       <div class="chip-wrap">
-        <button class="chip" data-cat="hard">🚫 무시당함</button>
-        <button class="chip" data-cat="hard">망신주기</button>
-        <button class="chip" data-cat="hard">협박</button>
+        <button class="chip" data-cat="hard">🚫 무시 / 투명인간</button>
+        <button class="chip" data-cat="hard">공개 망신</button>
+        <button class="chip" data-cat="hard">협박 / 해고 언급</button>
         <button class="chip" data-cat="power">⚡ 갑질</button>
-        <button class="chip" data-cat="narc">자기 자랑만</button>
-        <button class="chip" data-cat="narc">인정 요구</button>
         <button class="chip" data-cat="hard">책임 전가</button>
+        <button class="chip" data-cat="hard">면박 주기</button>
       </div>
+
+      <!-- 직접 입력 -->
+      <button type="button" class="text-toggle" id="textToggle">✏️ 직접 입력하기</button>
+      <div class="custom-text-wrap" id="customWrap">
+        <textarea class="custom-textarea" id="customTxt" placeholder="위에 없는 상황을 자유롭게 적어주세요&#10;예: 내 기획안을 자기 이름으로 올렸어요..."></textarea>
+      </div>
+
+      <div style="height:16px"></div>
     </div>
     <div class="q-foot">
       <div class="chip-info" id="chipInfo">선택 없으면 해당 없음으로 판단해요</div>
@@ -365,39 +280,33 @@ body{
     </div>
   </div>
 
-  <!-- ══ S3: 빈도 ══ -->
+  <!-- S3: 빈도 -->
   <div class="screen" id="s3">
-    <div class="q-topbar">
-      <button class="btn-bk" id="bk3">←</button>
-      <span class="step-lbl">3 / 4</span>
-    </div>
+    <div class="q-top"><button class="btn-bk" id="bk3">←</button><span class="step-lbl">3 / 4</span></div>
     <div class="q-head">
       <h2 class="q-title">얼마나<br>자주요?</h2>
       <p class="q-hint">탭하면 바로 넘어가요</p>
     </div>
     <div class="q-scroll">
-      <div class="choice-list">
-        <button class="c-card" data-rep="1"><span class="c-icon">1️⃣</span><div><div class="c-main">처음 있는 일이에요</div></div></button>
-        <button class="c-card" data-rep="2"><span class="c-icon">🔁</span><div><div class="c-main">가끔 있어요</div></div></button>
-        <button class="c-card" data-rep="3"><span class="c-icon">😮‍💨</span><div><div class="c-main">자주 반복돼요</div></div></button>
-        <button class="c-card" data-rep="4"><span class="c-icon">💀</span><div><div class="c-main">거의 매일이에요</div></div></button>
+      <div class="c-list">
+        <button class="c-card" data-rep="1"><span class="c-icon">1️⃣</span><div><div class="c-main">처음 있는 일이에요</div><div class="c-sub">이번 한 번뿐</div></div></button>
+        <button class="c-card" data-rep="2"><span class="c-icon">🔁</span><div><div class="c-main">가끔 있어요</div><div class="c-sub">한 달에 몇 번 정도</div></div></button>
+        <button class="c-card" data-rep="3"><span class="c-icon">😮‍💨</span><div><div class="c-main">자주 반복돼요</div><div class="c-sub">매주, 꽤 잦은 빈도</div></div></button>
+        <button class="c-card" data-rep="4"><span class="c-icon">💀</span><div><div class="c-main">거의 매일이에요</div><div class="c-sub">일상이 됐어요</div></div></button>
       </div>
     </div>
     <div class="hi"><div class="hi-bar"></div></div>
   </div>
 
-  <!-- ══ S4: 스트레스 ══ -->
+  <!-- S4: 스트레스 -->
   <div class="screen" id="s4">
-    <div class="q-topbar">
-      <button class="btn-bk" id="bk4">←</button>
-      <span class="step-lbl">4 / 4</span>
-    </div>
+    <div class="q-top"><button class="btn-bk" id="bk4">←</button><span class="step-lbl">4 / 4</span></div>
     <div class="q-head">
       <h2 class="q-title">지금 스트레스가<br>얼마나요?</h2>
       <p class="q-hint">탭하면 바로 판별 시작해요</p>
     </div>
     <div class="q-scroll">
-      <div class="choice-grid">
+      <div class="c-grid">
         <button class="c-card" data-st="1"><span class="c-icon">😐</span><div><div class="c-main">별로 없음</div></div></button>
         <button class="c-card" data-st="2"><span class="c-icon">😕</span><div><div class="c-main">약간 있음</div></div></button>
         <button class="c-card" data-st="3"><span class="c-icon">😤</span><div><div class="c-main">꽤 힘듦</div></div></button>
@@ -408,9 +317,9 @@ body{
     <div class="hi"><div class="hi-bar"></div></div>
   </div>
 
-  <!-- ══ LOADING ══ -->
+  <!-- LOADING -->
   <div class="screen" id="s-load">
-    <div style="text-align:center">
+    <div style="text-align:center;padding:0 24px">
       <div class="load-emoji">🔍</div>
       <div class="load-title">판별 중...</div>
       <div class="load-sub" id="loadTxt">꼰대 데이터베이스 대조 중...</div>
@@ -418,7 +327,7 @@ body{
     <div class="hi"><div class="hi-bar"></div></div>
   </div>
 
-  <!-- ══ RESULT ══ -->
+  <!-- RESULT -->
   <div class="screen" id="s-result">
     <div class="res-hero">
       <div id="resBadge" class="res-badge"></div>
@@ -430,10 +339,30 @@ body{
       <div id="resDesc" class="res-desc"></div>
       <div class="sec-lbl">유형 분석</div>
       <div class="type-grid">
-        <div class="t-card t-age"><div class="t-emoji">👴</div><div class="t-lbl">늙어서 그런 건지</div><div class="t-pct" id="pa">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="ba"></div></div></div>
-        <div class="t-card t-narc"><div class="t-emoji">🪞</div><div class="t-lbl">나르시시스트인지</div><div class="t-pct" id="pn">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="bn"></div></div></div>
-        <div class="t-card t-rude"><div class="t-emoji">😤</div><div class="t-lbl">그냥 무례한 건지</div><div class="t-pct" id="pr">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="br"></div></div></div>
-        <div class="t-card t-self"><div class="t-emoji">🪩</div><div class="t-lbl">내가 문제인 건지</div><div class="t-pct" id="ps">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="bs"></div></div></div>
+        <div class="t-card t-age">
+          <div class="t-emoji">👴</div>
+          <div class="t-lbl">걍 늙</div>
+          <div class="t-pct" id="pa">0<small>%</small></div>
+          <div class="t-bar-bg"><div class="t-bar" id="ba"></div></div>
+        </div>
+        <div class="t-card t-narc">
+          <div class="t-emoji">🏃</div>
+          <div class="t-lbl">나르시시스트인지도 몰라 도망쳐!</div>
+          <div class="t-pct" id="pn">0<small>%</small></div>
+          <div class="t-bar-bg"><div class="t-bar" id="bn"></div></div>
+        </div>
+        <div class="t-card t-rude">
+          <div class="t-emoji">😤</div>
+          <div class="t-lbl">타고난 무례함</div>
+          <div class="t-pct" id="pr">0<small>%</small></div>
+          <div class="t-bar-bg"><div class="t-bar" id="br"></div></div>
+        </div>
+        <div class="t-card t-cut">
+          <div class="t-emoji">✂️</div>
+          <div class="t-lbl">관계 정리</div>
+          <div class="t-pct" id="pc">0<small>%</small></div>
+          <div class="t-bar-bg"><div class="t-bar" id="bc"></div></div>
+        </div>
       </div>
       <div class="sec-lbl">대처 방법</div>
       <div class="act-box" id="actList"></div>
@@ -441,22 +370,19 @@ body{
     </div>
   </div>
 
-</div><!-- /shell -->
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function(){
 
-  /* clock */
-  function tick(){var n=new Date(),h=n.getHours(),m=n.getMinutes();document.getElementById('sbTime').textContent=h+':'+(m<10?'0':'')+m;}
-  tick(); setInterval(tick,15000);
+  function tick(){var n=new Date(),h=n.getHours(),m=n.getMinutes();document.getElementById('sbT').textContent=h+':'+(m<10?'0':'')+m;}
+  tick();setInterval(tick,15000);
 
-  var state={rel:'boss',rep:1,st:1,chips:[]};
+  var state={rel:'boss',relCustom:'',rep:1,st:1,chips:[],customText:''};
   var TOTAL=4;
+  var CAT={hard:18,age:12,mid:10,boundary:12,power:15,narc:12,rude:8};
 
-  /* chip scores */
-  var CAT={hard:18,mid:10,boundary:12,power:15,narc:11,mild:4};
-
-  /* ── transitions ── */
+  /* ── TRANSITIONS ── */
   function goTo(id){
     var cur=document.querySelector('.screen.active');
     if(cur){cur.classList.add('exit-left');cur.classList.remove('active');setTimeout(function(){cur.classList.remove('exit-left');},400);}
@@ -475,62 +401,97 @@ document.addEventListener('DOMContentLoaded', function(){
     updateUI(toId);
   }
   function updateUI(id){
-    var sb=document.getElementById('statusBar');
-    var pw=document.getElementById('progressWrap');
-    var pb=document.getElementById('progressBar');
+    var sb=document.getElementById('sb');
     var dark=(id==='s0'||id==='s-result'||id==='s-load');
     sb.className=dark?'dark':'light';
     var map={s1:1,s2:2,s3:3,s4:4,'s-load':5,'s-result':5};
     var n=map[id]||0;
-    if(n>0&&id!=='s-result'&&id!=='s-load'){pw.style.display='block';pb.style.width=(n/TOTAL*100)+'%';}
+    var pw=document.getElementById('pw');
+    if(n>0&&id!=='s-result'&&id!=='s-load'){pw.style.display='block';document.getElementById('pb').style.width=(n/TOTAL*100)+'%';}
     else{pw.style.display='none';}
   }
-
   function selCard(card,group){group.forEach(function(c){c.classList.remove('sel');});card.classList.add('sel');}
 
-  /* ── S0 home ── */
+  /* ── S0 ── */
   document.getElementById('btnStart').addEventListener('click',function(){goTo('s1');});
 
-  /* ── S1 관계 ── */
+  /* ── S1: 관계 ── */
   var relCards=Array.from(document.querySelectorAll('#s1 .c-card'));
-  relCards.forEach(function(b){b.addEventListener('click',function(){state.rel=this.dataset.rel;selCard(this,relCards);setTimeout(function(){goTo('s2');},220);});});
+  relCards.forEach(function(b){
+    b.addEventListener('click',function(){
+      state.rel=this.dataset.rel;
+      selCard(this,relCards);
+      var wrap=document.getElementById('otherWrap');
+      if(state.rel==='other'){
+        wrap.classList.add('show');
+        document.getElementById('otherTxt').focus();
+        // 기타는 자동 넘어가지 않음 — 입력 후 스크롤 내려서 확인
+      } else {
+        wrap.classList.remove('show');
+        setTimeout(function(){goTo('s2');},220);
+      }
+    });
+  });
+  // 기타 입력창 엔터 or 포커스아웃 → 다음으로
+  document.getElementById('otherTxt').addEventListener('keydown',function(e){
+    if(e.key==='Enter'){state.relCustom=this.value.trim();goTo('s2');}
+  });
+  // 기타 버튼 아래 자동 넘어가기 버튼 (scroll 내리면 보이는 방식)
+  // 단순히 탭 후 입력하면 넘어가도록 blur 시에 체크
+  document.getElementById('otherTxt').addEventListener('blur',function(){
+    state.relCustom=this.value.trim();
+    if(state.relCustom.length>0){setTimeout(function(){goTo('s2');},300);}
+  });
   document.getElementById('bk1').addEventListener('click',function(){goBack('s0');});
 
-  /* ── S2 칩 ── */
+  /* ── S2: 칩 & 텍스트 ── */
   var chipEls=Array.from(document.querySelectorAll('#s2 .chip'));
   chipEls.forEach(function(c){
     c.addEventListener('click',function(){
       this.classList.toggle('sel');
-      var sel=chipEls.filter(function(x){return x.classList.contains('sel');});
-      state.chips=sel.map(function(x){return x.dataset.cat;});
+      state.chips=chipEls.filter(function(x){return x.classList.contains('sel');}).map(function(x){return x.dataset.cat;});
       var ci=document.getElementById('chipInfo');
-      ci.textContent=sel.length===0?'선택 없으면 해당 없음으로 판단해요':sel.length+'개 선택됨';
+      ci.textContent=state.chips.length===0?'선택 없으면 해당 없음으로 판단해요':state.chips.length+'개 선택됨';
     });
   });
+  var textToggle=document.getElementById('textToggle');
+  var customWrap=document.getElementById('customWrap');
+  textToggle.addEventListener('click',function(){
+    var open=customWrap.classList.contains('show');
+    if(open){customWrap.classList.remove('show');textToggle.classList.remove('open');textToggle.textContent='✏️ 직접 입력하기';}
+    else{customWrap.classList.add('show');textToggle.classList.add('open');textToggle.textContent='✏️ 직접 입력 닫기';document.getElementById('customTxt').focus();}
+  });
+  document.getElementById('customTxt').addEventListener('input',function(){state.customText=this.value;});
   document.getElementById('btnS2').addEventListener('click',function(){goTo('s3');});
   document.getElementById('bk2').addEventListener('click',function(){goBack('s1');});
 
-  /* ── S3 빈도 ── */
+  /* ── S3: 빈도 ── */
   var repCards=Array.from(document.querySelectorAll('#s3 .c-card'));
   repCards.forEach(function(b){b.addEventListener('click',function(){state.rep=parseInt(this.dataset.rep);selCard(this,repCards);setTimeout(function(){goTo('s4');},220);});});
   document.getElementById('bk3').addEventListener('click',function(){goBack('s2');});
 
-  /* ── S4 스트레스 ── */
+  /* ── S4: 스트레스 ── */
   var stCards=Array.from(document.querySelectorAll('#s4 .c-card'));
   stCards.forEach(function(b){b.addEventListener('click',function(){state.st=parseInt(this.dataset.st);selCard(this,stCards);setTimeout(function(){startAnalysis();},260);});});
   document.getElementById('bk4').addEventListener('click',function(){goBack('s3');});
 
   /* ── 다시하기 ── */
   document.getElementById('btnAgain').addEventListener('click',function(){
-    state={rel:'boss',rep:1,st:1,chips:[]};
+    state={rel:'boss',relCustom:'',rep:1,st:1,chips:[],customText:''};
     document.querySelectorAll('.c-card,.chip').forEach(function(b){b.classList.remove('sel');});
     document.getElementById('chipInfo').textContent='선택 없으면 해당 없음으로 판단해요';
+    document.getElementById('otherWrap').classList.remove('show');
+    document.getElementById('otherTxt').value='';
+    document.getElementById('customTxt').value='';
+    document.getElementById('customWrap').classList.remove('show');
+    document.getElementById('textToggle').classList.remove('open');
+    document.getElementById('textToggle').textContent='✏️ 직접 입력하기';
     document.querySelectorAll('.t-bar').forEach(function(b){b.style.width='0%';});
     goTo('s0');
   });
 
-  /* ── Analysis ── */
-  var loadMsgs=['꼰대 발언 데이터베이스 대조 중...','선 넘음 게이지 측정 중...','나르시시스트 패턴 스캔 중...','최종 판정 준비 중...'];
+  /* ── ANALYSIS ── */
+  var loadMsgs=['꼰대 발언 데이터베이스 대조 중...','선 넘음 게이지 측정 중...','나르시시스트 패턴 스캔 중...','관계 정리 필요성 계산 중...','최종 판정 준비 중...'];
 
   function startAnalysis(){
     goTo('s-load');
@@ -539,54 +500,103 @@ document.addEventListener('DOMContentLoaded', function(){
     setTimeout(function(){clearInterval(iv);var r=buildResult();renderResult(r);goTo('s-result');},2200+Math.random()*600);
   }
 
+  /* ── 텍스트 키워드 추가 점수 ── */
+  var txtKw={
+    hard:['야근','강제','욕설','폭언','협박','카톡','새벽','주말','휴일','모욕','무시','창피','망신','인격','꺼져','나가','해고','불이익','갈굼','갈구','윽박','고함','잔소리','회식','억지','억압','면박','반말','감시','통제'],
+    age:['나때는','나 때는','예전엔','옛날엔','내가 해봐서','가봐서 알아','인생 선배','요즘 것들','요즘 애들','어리니까','철없어','세대 차이'],
+    mid:['당연히','원래 그래','그것도 못','기본도','프로답지','알아서 해','월급 받잖아','돈 받잖아','감사해야','고마운 줄','충고','잘 되라고','너 생각해서','실망','기대','네 태도','문제가 있어'],
+    boundary:['사생활','집안','부모님','결혼','연애','월급','연봉','나이','외모','몸무게','꾸밈','화장','옷차림','종교','정치'],
+    power:['갑질','을질','거래처','클라이언트','돈 주는'],
+    narc:['자기 얘기','최고','내가 없으면','내 덕분에','너 때문에','내 말이 맞','감사할 줄','내가 키워','잘난 척','공로','공 가로채','이중적','뒤에서 깎아','칭찬 요구'],
+    rude:['비교','조롱','비꼬','무시','차별','비하','놀림','빈정']
+  };
+
+  function scoreText(text){
+    var scores={hard:0,age:0,mid:0,boundary:0,power:0,narc:0,rude:0};
+    Object.keys(txtKw).forEach(function(cat){
+      txtKw[cat].forEach(function(kw){if(text.includes(kw))scores[cat]++;});
+    });
+    return scores;
+  }
+
   var relCfg={
-    boss:{name:'직장 상사',w:1.1,sp:0.7},
-    senior:{name:'직장 선배',w:0.95,sp:0.75},
-    client:{name:'고객/갑',w:1.15,sp:0.65},
-    parent:{name:'부모/친척',w:0.8,sp:0.9},
-    elder:{name:'동네 어른',w:0.75,sp:0.95},
-    other:{name:'기타',w:1.0,sp:0.8}
+    boss:{name:'직장 상사',w:1.1,cutBonus:10},
+    senior:{name:'직장 선배',w:0.95,cutBonus:5},
+    client:{name:'고객/갑',w:1.15,cutBonus:8},
+    parent:{name:'부모/친척',w:0.8,cutBonus:0},
+    elder:{name:'동네 어른',w:0.75,cutBonus:0},
+    other:{name:'기타',w:1.0,cutBonus:5}
   };
   var grades=[
     {min:0,max:20,lbl:'이해 가능 범위'},
     {min:20,max:40,lbl:'미묘한 선'},
     {min:40,max:60,lbl:'주의 꼰대'},
-    {min:60,max:80,lbl:'꼰대 확정'},
-    {min:80,max:90,lbl:'명백한 갑질'},
-    {min:90,max:101,lbl:'갓꼰대 (최종형태)'}
+    {min:60,max:75,lbl:'꼰대 확정'},
+    {min:75,max:88,lbl:'명백한 갑질'},
+    {min:88,max:101,lbl:'갓꼰대 (최종형태)'}
   ];
 
   function buildResult(){
     var cfg=relCfg[state.rel]||relCfg.other;
-    var rW=[0.85,1.0,1.15,1.3][state.rep-1];
-    var raw=0,hard=0,mid=0,bnd=0,pwr=0,narc=0;
+    var rW=[0.85,1.0,1.2,1.4][state.rep-1];
+
+    // 칩 점수
+    var raw=0,hard=0,age=0,mid=0,bnd=0,pwr=0,narc=0,rude=0;
     state.chips.forEach(function(cat){
       raw+=CAT[cat]||0;
-      if(cat==='hard')hard++;
-      if(cat==='mid')mid++;
-      if(cat==='boundary')bnd++;
-      if(cat==='power')pwr++;
-      if(cat==='narc')narc++;
+      if(cat==='hard')hard++;if(cat==='age')age++;if(cat==='mid')mid++;
+      if(cat==='boundary')bnd++;if(cat==='power')pwr++;if(cat==='narc')narc++;if(cat==='rude')rude++;
     });
+
+    // 텍스트 점수 추가
+    var txt=(state.customText||'').toLowerCase();
+    if(txt.length>3){
+      var ts=scoreText(txt);
+      raw+=ts.hard*14+ts.age*10+ts.mid*8+ts.boundary*10+ts.power*13+ts.narc*10+ts.rude*7;
+      hard+=ts.hard;age+=ts.age;mid+=ts.mid;bnd+=ts.boundary;pwr+=ts.power;narc+=ts.narc;rude+=ts.rude;
+    }
+
     var score=Math.min(97,Math.round(raw*cfg.w*rW));
     var floor=[0,12,25,40,56][state.st-1];
     if(score<floor)score=floor+Math.round(Math.random()*8);
     score=Math.min(97,score);
+
     var grade=grades.find(function(g){return score>=g.min&&score<g.max;})||grades[grades.length-1];
-    var agePct=Math.min(95,mid*24+(['boss','senior','parent','elder'].includes(state.rel)?15:0));
-    var narcPct=Math.min(92,narc*28+hard*4+(state.rep>=3?18:0)+(['boss','client'].includes(state.rel)?10:0));
-    var rudePct=Math.min(95,hard*16+bnd*12+pwr*15+(state.rep>=2?8:0));
-    var selfPct=Math.max(3,Math.round((100-raw*1.4)*cfg.sp*0.5));
-    if(state.st>=4)selfPct=Math.max(3,selfPct-15);
-    if(state.rep>=3)selfPct=Math.max(3,selfPct-10);
-    selfPct=Math.min(65,selfPct);
+
+    // 유형 분석
+    var agePct=Math.min(95,age*26+mid*8+(['boss','senior','parent','elder'].includes(state.rel)?15:0));
+    var narcPct=Math.min(95,narc*30+hard*4+(state.rep>=3?20:0)+(['boss','client'].includes(state.rel)?12:0));
+    var rudePct=Math.min(95,hard*16+rude*18+bnd*10+pwr*15+(state.rep>=2?8:0));
+
+    // 관계 정리 % = 이 관계를 정리해야 할 확률
+    var cutPct=Math.min(95,Math.round(score*0.75+(state.rep>=3?20:0)+(state.st>=4?12:0)+cfg.cutBonus));
+    if(state.rep===4)cutPct=Math.min(95,cutPct+12);
+    cutPct=Math.max(5,cutPct);
+
     var vType,vMain,vDesc,actions;
-    if(score<20){vType='safe';vMain='선은 안 넘은 것 같아요';vDesc='불편할 수 있지만 대체로 이해 가능한 범위에 있어 보여요.';actions=['감정이 무엇인지 구체적으로 파악해보세요.','상대방 의도를 확인하거나 솔직하게 이야기해보세요.','반복된다면 기록을 시작해두세요.'];}
-    else if(score<40){vType='gray';vMain='미묘한 선상에 있어요';vDesc='딱 잘라 말하기 애매하지만, 분명히 불편함이 있는 상황이에요.';actions=['처음인지 반복인지 확인해보세요.','불편했던 순간들을 간략히 기록해두세요.','가볍게 불편함을 표현해보세요.'];}
-    else if(score<65){vType='warn';vMain='선 꽤 넘었습니다';vDesc=cfg.name+'으로서 적절하지 않은 언행이에요. 불편함을 느끼는 건 정당한 반응이에요.';actions=['날짜, 내용, 감정을 함께 기록해두세요.','신뢰할 수 있는 사람에게 이야기하세요.','반복된다면 인사팀이나 상담창구를 활용하세요.'];}
-    else if(score<82){vType='danger';vMain='명백한 꼰대 행동입니다';vDesc='이건 참아야 할 상황이 아니에요. 당신의 불편함은 완전히 정당합니다.';actions=['지금 텍스트·스크린샷·녹음으로 기록하세요.','주변에 알리거나 HR에 공유하세요.','전문 상담을 활용하는 것도 고려하세요.','법적 보호 수단이 있다는 것도 알아두세요.'];}
-    else{vType='danger';vMain='절대 참으면 안 됩니다';vDesc='심각한 수준의 선 넘음입니다. 존엄성을 침해하는 수준이에요. 즉각적인 대응이 필요합니다.';actions=['모든 증거를 바로 확보하세요. (문자, 카톡, 녹음)','신뢰할 수 있는 동료나 가족에게 알리세요.','직장 내 괴롭힘 신고 채널 또는 노동부 신고를 검토하세요.','심리적 피해가 있다면 전문 상담사를 찾아가세요.'];}
-    return{score,grade,vType,vMain,vDesc,actions,agePct,narcPct,rudePct,selfPct};
+    if(score<20){
+      vType='safe';vMain='선은 안 넘은 것 같아요';
+      vDesc='불편할 수 있지만 대체로 이해 가능한 범위예요. 민감도 차이일 수 있어요.';
+      actions=['내 감정이 정확히 무엇인지 정리해보세요.','상대방 의도를 먼저 확인하거나 대화로 풀어보세요.','비슷한 일이 반복된다면 그때 다시 판단해보세요.'];
+    }else if(score<40){
+      vType='gray';vMain='미묘한 선상에 있어요';
+      vDesc='딱 잘라 말하기 애매하지만, 분명히 불편함이 있는 상황이에요. 반복되면 누적 피로가 쌓여요.';
+      actions=['처음인지 반복인지가 핵심이에요.','불편했던 순간들을 날짜와 함께 메모해두세요.','가볍게 "그 말이 좀 불편했어요"라고 표현해보세요.'];
+    }else if(score<65){
+      vType='warn';vMain='선 꽤 넘었습니다';
+      vDesc=cfg.name+'이 권력 차이를 이용해 경계를 침범한 거예요. 당신이 불편한 건 예민한 게 아닙니다.';
+      actions=['날짜·발언·상황을 즉시 기록해두세요.','신뢰할 수 있는 동료나 친구에게 털어놓으세요.','반복된다면 HR·상담 채널을 활용하세요.','지금 당장 대응하기 어렵다면 감정 거리두기부터 시작해요.'];
+    }else if(score<82){
+      vType='danger';vMain='명백한 꼰대 행동입니다';
+      vDesc='이건 참아야 할 상황이 아니에요. 당신의 불편함은 100% 정당합니다. 혼자 감당하려 하지 마세요.';
+      actions=['지금 바로 텍스트·스크린샷·녹음으로 증거 확보하세요.','혼자 삭이지 말고 주변이나 HR에 공유하세요.','직장 내 괴롭힘 관련 법적 보호를 알아두세요.','심리적으로 힘들다면 상담사 연결을 권장해요.'];
+    }else{
+      vType='danger';vMain='절대 참으면 안 됩니다';
+      vDesc='존엄성을 침해하는 수준이에요. 이 상황이 반복된다면 당신의 건강에 직접적인 영향을 줄 수 있어요.';
+      actions=['모든 증거를 지금 확보하세요. (문자·카톡·이메일·녹음)','고용노동부 직장내괴롭힘 신고 채널을 검토하세요.','신뢰할 수 있는 사람에게 즉시 알리세요.','전문 상담사를 통한 심리 지원을 강력히 권장해요.'];
+    }
+
+    return{score,grade,vType,vMain,vDesc,actions,agePct,narcPct,rudePct,cutPct};
   }
 
   function renderResult(r){
@@ -599,9 +609,16 @@ document.addEventListener('DOMContentLoaded', function(){
     setTimeout(function(){animN(nEl,0,r.score,1200);},200);
     document.getElementById('resVerdict').textContent=r.vMain;
     document.getElementById('resDesc').textContent=r.vDesc;
-    var types=[{id:'a',pct:r.agePct},{id:'n',pct:r.narcPct},{id:'r',pct:r.rudePct},{id:'s',pct:r.selfPct}];
-    types.forEach(function(t){setTimeout(function(){animN(document.getElementById('p'+t.id),0,t.pct,900);document.getElementById('b'+t.id).style.width=t.pct+'%';},500);});
-    document.getElementById('actList').innerHTML=r.actions.map(function(a){return '<div class="act-row"><div class="act-dot"></div><span>'+a+'</span></div>';}).join('');
+    var types=[{id:'a',pct:r.agePct},{id:'n',pct:r.narcPct},{id:'r',pct:r.rudePct},{id:'c',pct:r.cutPct}];
+    types.forEach(function(t){
+      setTimeout(function(){
+        animN(document.getElementById('p'+t.id),0,t.pct,900);
+        document.getElementById('b'+t.id).style.width=t.pct+'%';
+      },500);
+    });
+    document.getElementById('actList').innerHTML=r.actions.map(function(a){
+      return '<div class="act-row"><div class="act-dot"></div><span>'+a+'</span></div>';
+    }).join('');
   }
 
   function animN(el,from,to,dur){
