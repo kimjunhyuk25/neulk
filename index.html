@@ -15,7 +15,12 @@ html,body{height:100%;font-family:'Noto Sans KR',-apple-system,sans-serif;backgr
 .step{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;opacity:0;pointer-events:none;transition:opacity 0.35s ease,transform 0.35s ease;transform:translateX(40px);overflow-y:auto}
 .step.active{opacity:1;pointer-events:all;transform:translateX(0)}
 .step.exit-left{opacity:0;transform:translateX(-40px);pointer-events:none}
+.step.from-left{opacity:0;transform:translateX(-40px)}
 .step-inner{width:100%;max-width:520px}
+.btn-back{display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--text-muted);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:28px;transition:color 0.15s;letter-spacing:0}
+.btn-back:hover{color:var(--text)}
+.btn-back-arrow{font-size:16px;transition:transform 0.15s}
+.btn-back:hover .btn-back-arrow{transform:translateX(-3px)}
 .step-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px}
 .step-question{font-size:clamp(22px,5vw,32px);font-weight:900;line-height:1.25;letter-spacing:-1px;margin-bottom:10px;color:var(--text)}
 .step-desc{font-size:14px;color:var(--text-sub);margin-bottom:32px;line-height:1.6}
@@ -110,6 +115,7 @@ footer{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;c
 
 <div class="step" id="step-1">
   <div class="step-inner">
+    <button type="button" class="btn-back" id="back1"><span class="btn-back-arrow">←</span> 뒤로</button>
     <div class="step-label">Step 1 / 5</div>
     <h2 class="step-question">상대방이 누구예요?</h2>
     <p class="step-desc">선택하면 바로 다음으로 넘어가요</p>
@@ -126,6 +132,7 @@ footer{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;c
 
 <div class="step" id="step-2">
   <div class="step-inner">
+    <button type="button" class="btn-back" id="back2"><span class="btn-back-arrow">←</span> 뒤로</button>
     <div class="step-label">Step 2 / 5</div>
     <h2 class="step-question">어떤 말이나<br>행동을 했어요?</h2>
     <p class="step-desc">기억나는 대로 편하게 적어주세요</p>
@@ -136,6 +143,7 @@ footer{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;c
 
 <div class="step" id="step-3">
   <div class="step-inner">
+    <button type="button" class="btn-back" id="back3"><span class="btn-back-arrow">←</span> 뒤로</button>
     <div class="step-label">Step 3 / 5</div>
     <h2 class="step-question">이런 일이<br>얼마나 자주 있어요?</h2>
     <p class="step-desc">선택하면 바로 다음으로 넘어가요</p>
@@ -150,6 +158,7 @@ footer{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;c
 
 <div class="step" id="step-4">
   <div class="step-inner">
+    <button type="button" class="btn-back" id="back4"><span class="btn-back-arrow">←</span> 뒤로</button>
     <div class="step-label">Step 4 / 5</div>
     <h2 class="step-question">그때 어떤<br>기분이었어요?</h2>
     <p class="step-desc">선택사항이에요 — 건너뛰어도 돼요</p>
@@ -161,6 +170,7 @@ footer{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;c
 
 <div class="step" id="step-5">
   <div class="step-inner">
+    <button type="button" class="btn-back" id="back5"><span class="btn-back-arrow">←</span> 뒤로</button>
     <div class="step-label">Step 5 / 5</div>
     <h2 class="step-question">지금 스트레스가<br>얼마나 돼요?</h2>
     <p class="step-desc">선택하면 바로 판별 시작해요</p>
@@ -211,139 +221,210 @@ document.addEventListener('DOMContentLoaded', function() {
   var state = {rel:'boss',rep:1,st:1,situation:'',feel:''};
   var TOTAL = 5;
 
+  // 앞으로 이동 (오른쪽에서 들어옴)
   function goTo(id) {
     var cur = document.querySelector('.step.active');
-    if (cur) { cur.classList.add('exit-left'); cur.classList.remove('active'); setTimeout(function(){cur.classList.remove('exit-left');},400); }
-    var next = document.getElementById('step-'+id);
+    if (cur) {
+      cur.classList.add('exit-left');
+      cur.classList.remove('active');
+      setTimeout(function(){ cur.classList.remove('exit-left'); }, 400);
+    }
+    var next = document.getElementById('step-' + id);
     next.style.transform = '';
     next.style.opacity = '';
     setTimeout(function(){ next.classList.add('active'); }, 20);
-    var nums = {0:0,1:1,2:2,3:3,4:4,5:5,'loading':6,'result':6};
-    var n = nums[id] || 0;
-    if (n > 0) { document.getElementById('progressWrap').style.display='block'; document.getElementById('progressBar').style.width=(n/TOTAL*100)+'%'; }
-    else { document.getElementById('progressWrap').style.display='none'; }
+    updateProgress(id);
   }
 
+  // 뒤로 이동 (왼쪽에서 들어옴)
+  function goBack(toId) {
+    var cur = document.querySelector('.step.active');
+    if (cur) {
+      // 현재 스텝은 오른쪽으로 퇴장 (exit-left 없이 그냥 active 제거 → 기본 translateX(40px)로)
+      cur.classList.remove('active');
+    }
+    var prev = document.getElementById('step-' + toId);
+    // transition 잠깐 끄고 -40px 위치로 순간 이동
+    prev.style.transition = 'none';
+    prev.classList.add('from-left');
+    prev.offsetHeight; // reflow 강제
+    prev.style.transition = '';
+    setTimeout(function(){
+      prev.classList.remove('from-left');
+      prev.classList.add('active');
+    }, 20);
+    updateProgress(toId);
+  }
+
+  function updateProgress(id) {
+    var nums = {'0':0,'1':1,'2':2,'3':3,'4':4,'5':5,'loading':6,'result':6};
+    var n = nums[String(id)] || 0;
+    if (n > 0) {
+      document.getElementById('progressWrap').style.display = 'block';
+      document.getElementById('progressBar').style.width = (n / TOTAL * 100) + '%';
+    } else {
+      document.getElementById('progressWrap').style.display = 'none';
+    }
+  }
+
+  // 옵션 카드 선택 시 같은 그룹 내 선택 초기화
+  function selectCard(card, group) {
+    group.forEach(function(c){ c.classList.remove('selected'); });
+    card.classList.add('selected');
+  }
+
+  // ── 시작 ──
   document.getElementById('btnStart').addEventListener('click', function(){ goTo(1); });
 
-  document.querySelectorAll('#step-1 .option-card').forEach(function(btn){
-    btn.addEventListener('click', function(){ state.rel=this.dataset.rel; this.classList.add('selected'); setTimeout(function(){goTo(2);},260); });
+  // ── Step 1: 관계 ──
+  var relCards = document.querySelectorAll('#step-1 .option-card');
+  relCards.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      state.rel = this.dataset.rel;
+      selectCard(this, Array.from(relCards));
+      setTimeout(function(){ goTo(2); }, 260);
+    });
   });
+  document.getElementById('back1').addEventListener('click', function(){ goBack(0); });
 
+  // ── Step 2: 상황 ──
   document.getElementById('btnStep2Next').addEventListener('click', function(){
     var val = document.getElementById('situationInput').value.trim();
-    if (val.length < 8) { document.getElementById('situationInput').style.borderColor='#e63946'; setTimeout(function(){document.getElementById('situationInput').style.borderColor='';},1500); return; }
-    state.situation = val; goTo(3);
+    if (val.length < 8) {
+      document.getElementById('situationInput').style.borderColor = '#e63946';
+      setTimeout(function(){ document.getElementById('situationInput').style.borderColor = ''; }, 1500);
+      return;
+    }
+    state.situation = val;
+    goTo(3);
   });
+  document.getElementById('back2').addEventListener('click', function(){ goBack(1); });
 
-  document.querySelectorAll('#step-3 .option-card').forEach(function(btn){
-    btn.addEventListener('click', function(){ state.rep=parseInt(this.dataset.rep); this.classList.add('selected'); setTimeout(function(){goTo(4);},260); });
+  // ── Step 3: 빈도 ──
+  var repCards = document.querySelectorAll('#step-3 .option-card');
+  repCards.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      state.rep = parseInt(this.dataset.rep);
+      selectCard(this, Array.from(repCards));
+      setTimeout(function(){ goTo(4); }, 260);
+    });
   });
+  document.getElementById('back3').addEventListener('click', function(){ goBack(2); });
 
-  document.getElementById('btnStep4Next').addEventListener('click', function(){ state.feel=document.getElementById('feelInput').value.trim(); goTo(5); });
-  document.getElementById('btnStep4Skip').addEventListener('click', function(){ state.feel=''; goTo(5); });
+  // ── Step 4: 기분 ──
+  document.getElementById('btnStep4Next').addEventListener('click', function(){ state.feel = document.getElementById('feelInput').value.trim(); goTo(5); });
+  document.getElementById('btnStep4Skip').addEventListener('click', function(){ state.feel = ''; goTo(5); });
+  document.getElementById('back4').addEventListener('click', function(){ goBack(3); });
 
-  document.querySelectorAll('#step-5 .option-card').forEach(function(btn){
-    btn.addEventListener('click', function(){ state.st=parseInt(this.dataset.st); this.classList.add('selected'); setTimeout(function(){startAnalysis();},300); });
+  // ── Step 5: 스트레스 ──
+  var stCards = document.querySelectorAll('#step-5 .option-card');
+  stCards.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      state.st = parseInt(this.dataset.st);
+      selectCard(this, Array.from(stCards));
+      setTimeout(function(){ startAnalysis(); }, 300);
+    });
   });
+  document.getElementById('back5').addEventListener('click', function(){ goBack(4); });
 
+  // ── 다시 판별 ──
   document.getElementById('btnRestart').addEventListener('click', function(){
-    state={rel:'boss',rep:1,st:1,situation:'',feel:''};
-    document.getElementById('situationInput').value='';
-    document.getElementById('feelInput').value='';
-    document.querySelectorAll('.option-card').forEach(function(b){b.classList.remove('selected');});
-    document.getElementById('gaugeFill').style.width='0%';
-    document.querySelectorAll('.type-bar').forEach(function(b){b.style.width='0%';});
+    state = {rel:'boss', rep:1, st:1, situation:'', feel:''};
+    document.getElementById('situationInput').value = '';
+    document.getElementById('feelInput').value = '';
+    document.querySelectorAll('.option-card').forEach(function(b){ b.classList.remove('selected'); });
+    document.getElementById('gaugeFill').style.width = '0%';
+    document.querySelectorAll('.type-bar').forEach(function(b){ b.style.width = '0%'; });
     goTo(0);
   });
 
-  var loadingTexts=['꼰대 발언 데이터베이스 대조 중...','선 넘음 게이지 측정 중...','나르시시스트 패턴 스캔 중...','내가 문제일 확률 계산 중...','최종 판정 준비 중...'];
+  var loadingTexts = ['꼰대 발언 데이터베이스 대조 중...','선 넘음 게이지 측정 중...','나르시시스트 패턴 스캔 중...','내가 문제일 확률 계산 중...','최종 판정 준비 중...'];
 
   function startAnalysis(){
     goTo('loading');
-    document.getElementById('progressBar').style.width='100%';
-    var i=0;
-    var iv=setInterval(function(){ i=(i+1)%loadingTexts.length; document.getElementById('loadingText').textContent=loadingTexts[i]; },600);
-    setTimeout(function(){ clearInterval(iv); var r=buildResult(); renderResult(r); goTo('result'); }, 2400+Math.random()*600);
+    document.getElementById('progressBar').style.width = '100%';
+    var i = 0;
+    var iv = setInterval(function(){ i = (i+1) % loadingTexts.length; document.getElementById('loadingText').textContent = loadingTexts[i]; }, 600);
+    setTimeout(function(){ clearInterval(iv); var r = buildResult(); renderResult(r); goTo('result'); }, 2400 + Math.random()*600);
   }
 
-  var hard=['야근','강요','강제','욕설','폭언','협박','때려','개인연락','카톡','새벽','주말','휴일','성희롱','성추행','모욕','무시','창피','망신','인격','꺼져','나가','해고','자르','짤','인사고과','불이익','갈굼','갈구','윽박','고함','잔소리','회식','2차','억지','억압','차별','성별','외모','용모'];
-  var mid=['나때는','나 때는','예전엔','옛날엔','당연히','원래 그래','그것도 못','기본도','왜 이렇게','프로답지','요즘 것들','요즘 애들','어리니까','사회생활','사회경험','철없어','내 밑에서','알아서 해','월급 받잖아','돈 받잖아','감사해야','고마운 줄','조언이라고','충고','잘 되라고','너 생각해서','실망','기대','네 태도','그 태도','문제가 있어','글러먹','답 없어','구제불능'];
-  var mild=['왜 그랬어','왜 그래','한번만','이번만','조심해','주의해','참아','좀 봐줘','오해야','기분 나쁘게','그런 뜻 아니야','예민하게','예민한','과민반응','예민해'];
-  var boundary=['사생활','집안','부모님','결혼','연애','남자친구','여자친구','월급','연봉','나이','외모','몸무게','살','뚱','마른','꾸밈','화장','옷차림'];
-  var power=['갑질','을질','계약','거래처','클라이언트','업체','우리가 돈 주는','돈 주는 입장'];
-  var narc=['자기 얘기만','자기가 최고','인정','내가 없으면','내 덕분에','너 때문에','내 말이 맞','항상 내가','감사할 줄 알아야','내가 키워줬','특별한','선택받은','능력 없어','무능','잘난 척','다 내가 했','공로','내 공','인정 안 해'];
-  var age=['나때는','나 때는','예전엔','옛날엔','어른이','어른을','어른한테','연장자','나이가','나이 먹어서','나이 값','젊은 게','철이 없','애가','세대 차이','요즘 것들','요즘 애들','꼰대','옛날 사람','구식'];
-  var relCfg={boss:{name:'직장 상사',weight:1.1,sp:0.7},senior:{name:'직장 선배',weight:0.95,sp:0.75},client:{name:'고객/갑',weight:1.15,sp:0.65},parent:{name:'부모/친척',weight:0.8,sp:0.9},elder:{name:'동네 어른',weight:0.75,sp:0.95},other:{name:'기타',weight:1.0,sp:0.8}};
-  var grades=[{min:0,max:20,label:'이해 가능 범위'},{min:20,max:40,label:'미묘한 선'},{min:40,max:60,label:'주의 꼰대'},{min:60,max:80,label:'꼰대 확정'},{min:80,max:90,label:'명백한 갑질'},{min:90,max:101,label:'갓꼰대 (최종형태)'}];
+  var hard = ['야근','강요','강제','욕설','폭언','협박','때려','개인연락','카톡','새벽','주말','휴일','성희롱','성추행','모욕','무시','창피','망신','인격','꺼져','나가','해고','자르','짤','인사고과','불이익','갈굼','갈구','윽박','고함','잔소리','회식','2차','억지','억압','차별','성별','외모','용모'];
+  var mid = ['나때는','나 때는','예전엔','옛날엔','당연히','원래 그래','그것도 못','기본도','왜 이렇게','프로답지','요즘 것들','요즘 애들','어리니까','사회생활','사회경험','철없어','내 밑에서','알아서 해','월급 받잖아','돈 받잖아','감사해야','고마운 줄','조언이라고','충고','잘 되라고','너 생각해서','실망','기대','네 태도','그 태도','문제가 있어','글러먹','답 없어','구제불능'];
+  var mild = ['왜 그랬어','왜 그래','한번만','이번만','조심해','주의해','참아','좀 봐줘','오해야','기분 나쁘게','그런 뜻 아니야','예민하게','예민한','과민반응','예민해'];
+  var boundary = ['사생활','집안','부모님','결혼','연애','남자친구','여자친구','월급','연봉','나이','외모','몸무게','살','뚱','마른','꾸밈','화장','옷차림'];
+  var power = ['갑질','을질','계약','거래처','클라이언트','업체','우리가 돈 주는','돈 주는 입장'];
+  var narc = ['자기 얘기만','자기가 최고','인정','내가 없으면','내 덕분에','너 때문에','내 말이 맞','항상 내가','감사할 줄 알아야','내가 키워줬','특별한','선택받은','능력 없어','무능','잘난 척','다 내가 했','공로','내 공','인정 안 해'];
+  var age = ['나때는','나 때는','예전엔','옛날엔','어른이','어른을','어른한테','연장자','나이가','나이 먹어서','나이 값','젊은 게','철이 없','애가','세대 차이','요즘 것들','요즘 애들','꼰대','옛날 사람','구식'];
+  var relCfg = {boss:{name:'직장 상사',weight:1.1,sp:0.7},senior:{name:'직장 선배',weight:0.95,sp:0.75},client:{name:'고객/갑',weight:1.15,sp:0.65},parent:{name:'부모/친척',weight:0.8,sp:0.9},elder:{name:'동네 어른',weight:0.75,sp:0.95},other:{name:'기타',weight:1.0,sp:0.8}};
+  var grades = [{min:0,max:20,label:'이해 가능 범위'},{min:20,max:40,label:'미묘한 선'},{min:40,max:60,label:'주의 꼰대'},{min:60,max:80,label:'꼰대 확정'},{min:80,max:90,label:'명백한 갑질'},{min:90,max:101,label:'갓꼰대 (최종형태)'}];
 
   function sc(text, arr) { var s=0,m=[]; arr.forEach(function(k){if(text.includes(k)){s++;m.push(k);}}); return {s:s,m:m}; }
 
   function buildResult(){
-    var t=state.situation+' '+state.feel;
+    var t = state.situation + ' ' + state.feel;
     var rH=sc(t,hard),rM=sc(t,mid),rMi=sc(t,mild),rB=sc(t,boundary),rP=sc(t,power),rN=sc(t,narc),rA=sc(t,age);
-    var rawScore=rH.s*18+rM.s*10+rMi.s*4+rB.s*12+rP.s*15;
-    var cfg=relCfg[state.rel]||relCfg.other;
-    var rW=[0.85,1.0,1.15,1.3][state.rep-1];
-    var score=Math.min(97,Math.round(rawScore*cfg.weight*rW));
-    var sFloor=[0,15,28,42,58][state.st-1];
-    if(score<sFloor) score=sFloor+Math.round(Math.random()*8);
-    score=Math.min(97,score);
-    var grade=grades.find(function(g){return score>=g.min&&score<g.max;})||grades[grades.length-1];
-    var agePct=Math.min(95,rA.s*20+rM.s*8);
-    if(['boss','senior','parent','elder'].includes(state.rel)) agePct=Math.min(95,agePct+15);
-    var narcPct=Math.min(92,rN.s*22+rH.s*6+(state.rep>=3?20:0));
-    if(['boss','client'].includes(state.rel)) narcPct=Math.min(92,narcPct+10);
-    var rudePct=Math.min(95,rH.s*15+rB.s*12+rP.s*14+(state.rep>=2?10:0));
-    var selfPct=Math.max(3,Math.round((100-rawScore*1.5)*cfg.sp*0.5));
-    if(state.st>=4) selfPct=Math.max(3,selfPct-15);
-    if(state.rep>=3) selfPct=Math.max(3,selfPct-10);
-    selfPct=Math.min(70,selfPct);
+    var rawScore = rH.s*18 + rM.s*10 + rMi.s*4 + rB.s*12 + rP.s*15;
+    var cfg = relCfg[state.rel] || relCfg.other;
+    var rW = [0.85,1.0,1.15,1.3][state.rep-1];
+    var score = Math.min(97, Math.round(rawScore * cfg.weight * rW));
+    var sFloor = [0,15,28,42,58][state.st-1];
+    if (score < sFloor) score = sFloor + Math.round(Math.random()*8);
+    score = Math.min(97, score);
+    var grade = grades.find(function(g){ return score>=g.min && score<g.max; }) || grades[grades.length-1];
+    var agePct = Math.min(95, rA.s*20 + rM.s*8);
+    if (['boss','senior','parent','elder'].includes(state.rel)) agePct = Math.min(95, agePct+15);
+    var narcPct = Math.min(92, rN.s*22 + rH.s*6 + (state.rep>=3?20:0));
+    if (['boss','client'].includes(state.rel)) narcPct = Math.min(92, narcPct+10);
+    var rudePct = Math.min(95, rH.s*15 + rB.s*12 + rP.s*14 + (state.rep>=2?10:0));
+    var selfPct = Math.max(3, Math.round((100-rawScore*1.5)*cfg.sp*0.5));
+    if (state.st>=4) selfPct = Math.max(3, selfPct-15);
+    if (state.rep>=3) selfPct = Math.max(3, selfPct-10);
+    selfPct = Math.min(70, selfPct);
     var vType,vMain,vDesc,actions,tags;
-    if(score<20){vType='safe';vMain='선은 안 넘은 것 같아요';vDesc='상대방의 말이나 행동이 다소 불편할 수 있지만, 대체로 이해 가능한 범위에 있어 보여요.';tags=['감정 정리 필요','소통으로 해결 가능','오해일 수 있음'];actions=['본인의 감정이 무엇인지 구체적으로 파악해보세요.','상대방 의도를 확인하거나 솔직하게 이야기해보세요.','불편함이 반복된다면 기록을 시작해두세요.'];}
-    else if(score<40){vType='gray';vMain='미묘한 선상에 있어요';vDesc='딱 잘라 말하기 애매하지만, 분명히 불편함이 있는 상황이에요. 반복된다면 누적 피로가 쌓일 수 있어요.';tags=['경계 모호','반복 여부 중요','누적 피로 주의'];actions=['처음인지 반복인지 확인해보세요.','불편했던 순간들을 간략히 기록해두세요.','불편하다고 가볍게 한 번 표현해보세요.'];}
-    else if(score<65){vType='warn';vMain='선 꽤 넘었습니다';vDesc=cfg.name+'으로서 적절하지 않은 언행이에요. 불편함을 느끼는 건 정상적인 반응이고, 오해가 아닙니다.';tags=['선 넘음','정당한 불쾌감','대응 필요'];actions=['상황을 날짜, 내용, 감정과 함께 기록해두세요.','신뢰할 수 있는 사람에게 이야기하고 피드백을 받으세요.','반복된다면 인사팀이나 상담창구를 활용하세요.'];}
-    else if(score<82){vType='danger';vMain='명백한 꼰대 행동입니다';vDesc='이건 참아야 할 상황이 아니에요. 당신의 불편함은 완전히 정당합니다. 혼자 감당하려 하지 마세요.';tags=['갑질 수준','참을 필요 없음','조치 권고'];actions=['지금 당장 상황을 텍스트, 스크린샷, 녹음으로 기록하세요.','주변에 알리거나 HR에 공유하세요.','전문 상담을 활용하는 것도 고려하세요.','법적 보호 수단이 있다는 것도 알아두세요.'];}
+    if (score<20){vType='safe';vMain='선은 안 넘은 것 같아요';vDesc='상대방의 말이나 행동이 다소 불편할 수 있지만, 대체로 이해 가능한 범위에 있어 보여요.';tags=['감정 정리 필요','소통으로 해결 가능','오해일 수 있음'];actions=['본인의 감정이 무엇인지 구체적으로 파악해보세요.','상대방 의도를 확인하거나 솔직하게 이야기해보세요.','불편함이 반복된다면 기록을 시작해두세요.'];}
+    else if (score<40){vType='gray';vMain='미묘한 선상에 있어요';vDesc='딱 잘라 말하기 애매하지만, 분명히 불편함이 있는 상황이에요. 반복된다면 누적 피로가 쌓일 수 있어요.';tags=['경계 모호','반복 여부 중요','누적 피로 주의'];actions=['처음인지 반복인지 확인해보세요.','불편했던 순간들을 간략히 기록해두세요.','불편하다고 가볍게 한 번 표현해보세요.'];}
+    else if (score<65){vType='warn';vMain='선 꽤 넘었습니다';vDesc=cfg.name+'으로서 적절하지 않은 언행이에요. 불편함을 느끼는 건 정상적인 반응이고, 오해가 아닙니다.';tags=['선 넘음','정당한 불쾌감','대응 필요'];actions=['상황을 날짜, 내용, 감정과 함께 기록해두세요.','신뢰할 수 있는 사람에게 이야기하고 피드백을 받으세요.','반복된다면 인사팀이나 상담창구를 활용하세요.'];}
+    else if (score<82){vType='danger';vMain='명백한 꼰대 행동입니다';vDesc='이건 참아야 할 상황이 아니에요. 당신의 불편함은 완전히 정당합니다. 혼자 감당하려 하지 마세요.';tags=['갑질 수준','참을 필요 없음','조치 권고'];actions=['지금 당장 상황을 텍스트, 스크린샷, 녹음으로 기록하세요.','주변에 알리거나 HR에 공유하세요.','전문 상담을 활용하는 것도 고려하세요.','법적 보호 수단이 있다는 것도 알아두세요.'];}
     else{vType='danger';vMain='이건 절대 참으면 안 됩니다';vDesc='심각한 수준의 선 넘음입니다. 개인의 존엄성을 침해하는 수준이에요. 즉각적인 대응이 필요합니다.';tags=['매우 심각','즉각 조치 필요','법적 보호 가능'];actions=['지금 바로 모든 증거를 확보하세요. (문자, 카톡, 이메일, 녹음)','신뢰할 수 있는 동료나 가족에게 알리세요.','직장 내 괴롭힘 신고 채널 또는 노동부 신고를 검토하세요.','심리적 피해가 있다면 전문 상담사를 찾아가세요.'];}
     return {score:score,grade:grade,vType:vType,vMain:vMain,vDesc:vDesc,tags:tags,actions:actions,types:{agePct:agePct,narcPct:narcPct,rudePct:rudePct,selfPct:selfPct}};
   }
 
-  function tdesc(type,pct){
-    if(type==='age'){return pct<25?'세대 차이보다 다른 요인이 더 커 보여요.':pct<55?'세대 차이 영향이 일부 있지만 전부는 아니에요.':'"나 때는~" 세대 중심 사고방식이 강하게 감지돼요.';}
-    if(type==='narc'){return pct<25?'나르시시스트 패턴은 뚜렷하지 않아요.':pct<55?'자기중심적 패턴이 일부 보여요.':'타인 감정을 고려하지 않는 패턴이 감지돼요.';}
-    if(type==='rude'){return pct<25?'의도적 무례함보다 인식 차이일 수 있어요.':pct<55?'상당한 무례함이 있어요.':'명백한 무례함이에요.';}
-    if(type==='self'){return pct<20?'당신의 반응은 정당해요.':pct<45?'일부 오해 가능성이 있으니 확인해보세요.':'소통 문제일 수 있어요. 대화를 먼저 시도해보세요.';}
+  function tdesc(type, pct){
+    if (type==='age'){return pct<25?'세대 차이보다 다른 요인이 더 커 보여요.':pct<55?'세대 차이 영향이 일부 있지만 전부는 아니에요.':'"나 때는~" 세대 중심 사고방식이 강하게 감지돼요.';}
+    if (type==='narc'){return pct<25?'나르시시스트 패턴은 뚜렷하지 않아요.':pct<55?'자기중심적 패턴이 일부 보여요.':'타인 감정을 고려하지 않는 패턴이 감지돼요.';}
+    if (type==='rude'){return pct<25?'의도적 무례함보다 인식 차이일 수 있어요.':pct<55?'상당한 무례함이 있어요.':'명백한 무례함이에요.';}
+    if (type==='self'){return pct<20?'당신의 반응은 정당해요.':pct<45?'일부 오해 가능성이 있으니 확인해보세요.':'소통 문제일 수 있어요. 대화를 먼저 시도해보세요.';}
     return '';
   }
 
   function renderResult(r){
-    var bm={safe:['rv-safe','✓ 안전 범위'],gray:['rv-gray','△ 경계선'],warn:['rv-warn','⚠ 선 넘음'],danger:['rv-danger','✕ 심각']};
-    var bd=bm[r.vType];
-    var vEl=document.getElementById('resultVerdict'); vEl.className='result-verdict '+bd[0]; vEl.textContent=bd[1];
-    document.getElementById('resultGrade').textContent=r.grade.label;
-    var cm={safe:'#1d4ed8',gray:'#475569',warn:'#b45309',danger:'#b91c1c'};
-    var sEl=document.getElementById('resultScore'); sEl.style.color=cm[r.vType];
-    var gc=r.score<30?'linear-gradient(90deg,#3b82f6,#60a5fa)':r.score<55?'linear-gradient(90deg,#f59e0b,#fbbf24)':r.score<75?'linear-gradient(90deg,#f97316,#fb923c)':'linear-gradient(90deg,#ef4444,#f87171)';
-    document.getElementById('gaugeFill').style.background=gc;
-    setTimeout(function(){ document.getElementById('gaugeFill').style.width=r.score+'%'; animN(sEl,0,r.score,1200); },200);
-    document.getElementById('resultMain').textContent=r.vMain;
-    document.getElementById('resultDesc').textContent=r.vDesc;
-    document.getElementById('resultTags').innerHTML=r.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('');
-    var types=[{id:'age',pct:r.types.agePct},{id:'narc',pct:r.types.narcPct},{id:'rude',pct:r.types.rudePct},{id:'self',pct:r.types.selfPct}];
+    var bm = {safe:['rv-safe','✓ 안전 범위'],gray:['rv-gray','△ 경계선'],warn:['rv-warn','⚠ 선 넘음'],danger:['rv-danger','✕ 심각']};
+    var bd = bm[r.vType];
+    var vEl = document.getElementById('resultVerdict'); vEl.className = 'result-verdict ' + bd[0]; vEl.textContent = bd[1];
+    document.getElementById('resultGrade').textContent = r.grade.label;
+    var cm = {safe:'#1d4ed8',gray:'#475569',warn:'#b45309',danger:'#b91c1c'};
+    var sEl = document.getElementById('resultScore'); sEl.style.color = cm[r.vType];
+    var gc = r.score<30?'linear-gradient(90deg,#3b82f6,#60a5fa)':r.score<55?'linear-gradient(90deg,#f59e0b,#fbbf24)':r.score<75?'linear-gradient(90deg,#f97316,#fb923c)':'linear-gradient(90deg,#ef4444,#f87171)';
+    document.getElementById('gaugeFill').style.background = gc;
+    setTimeout(function(){ document.getElementById('gaugeFill').style.width = r.score+'%'; animN(sEl,0,r.score,1200); }, 200);
+    document.getElementById('resultMain').textContent = r.vMain;
+    document.getElementById('resultDesc').textContent = r.vDesc;
+    document.getElementById('resultTags').innerHTML = r.tags.map(function(t){ return '<span class="tag">'+t+'</span>'; }).join('');
+    var types = [{id:'age',pct:r.types.agePct},{id:'narc',pct:r.types.narcPct},{id:'rude',pct:r.types.rudePct},{id:'self',pct:r.types.selfPct}];
     types.forEach(function(tp){
-      document.getElementById('desc-'+tp.id).textContent=tdesc(tp.id,tp.pct);
-      setTimeout(function(){ animN(document.getElementById('pct-'+tp.id),0,tp.pct,1000); document.getElementById('bar-'+tp.id).style.width=tp.pct+'%'; },400);
+      document.getElementById('desc-'+tp.id).textContent = tdesc(tp.id, tp.pct);
+      setTimeout(function(){ animN(document.getElementById('pct-'+tp.id),0,tp.pct,1000); document.getElementById('bar-'+tp.id).style.width = tp.pct+'%'; }, 400);
     });
-    document.getElementById('actionList').innerHTML=r.actions.map(function(a){return '<div class="action-item"><div class="action-dot"></div><span>'+a+'</span></div>';}).join('');
+    document.getElementById('actionList').innerHTML = r.actions.map(function(a){ return '<div class="action-item"><div class="action-dot"></div><span>'+a+'</span></div>'; }).join('');
   }
 
-  function animN(el,from,to,dur){
-    var start=performance.now();
+  function animN(el, from, to, dur){
+    var start = performance.now();
     function step(now){
-      var t=Math.min((now-start)/dur,1);
-      var ease=1-Math.pow(1-t,3);
-      el.innerHTML=Math.round(from+(to-from)*ease)+'<small>%</small>';
-      if(t<1) requestAnimationFrame(step);
+      var t = Math.min((now-start)/dur, 1);
+      var ease = 1 - Math.pow(1-t, 3);
+      el.innerHTML = Math.round(from+(to-from)*ease) + '<small>%</small>';
+      if (t < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
