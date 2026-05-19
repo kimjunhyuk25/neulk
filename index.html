@@ -5,978 +5,349 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>늙? — 꼰대 선 넘음 판별기</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #f5f4f0;
-    --surface: #ffffff;
-    --border: #e0ddd6;
-    --text: #1a1a1a;
-    --text-sub: #6b6b6b;
-    --text-muted: #a0a0a0;
-    --accent: #2d2d2d;
-    --safe: #3b82f6;
-    --warn: #f59e0b;
-    --danger: #ef4444;
-    --radius: 16px;
-    --shadow: 0 4px 24px rgba(0,0,0,0.07);
-  }
-
-  body {
-    font-family: 'Noto Sans KR', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px 80px;
-  }
-
-  /* ── HEADER ── */
-  header { text-align: center; margin-bottom: 40px; }
-  .app-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 5px 14px;
-    border-radius: 100px;
-    margin-bottom: 16px;
-  }
-  .app-title {
-    font-size: clamp(42px, 8vw, 72px);
-    font-weight: 900;
-    letter-spacing: -3px;
-    line-height: 1;
-    color: var(--text);
-    margin-bottom: 10px;
-  }
-  .app-title .red { color: var(--danger); }
-  .app-title .q { color: var(--text); }
-  .app-sub { font-size: 14px; color: var(--text-sub); font-weight: 400; }
-
-  /* ── CARD ── */
-  .card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    padding: 36px;
-    width: 100%;
-    max-width: 620px;
-    margin-bottom: 20px;
-  }
-
-  .section-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-  }
-
-  /* ── RELATIONSHIP ── */
-  .rel-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .rel-btn {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    padding: 12px 12px;
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    background: #fafaf8;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: left;
-  }
-  .rel-btn:hover { border-color: var(--accent); background: #f0efec; }
-  .rel-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; }
-  .rel-btn .rel-icon { font-size: 16px; }
-  .rel-btn .rel-name { font-size: 12px; font-weight: 700; }
-  .rel-btn .rel-desc { font-size: 10px; opacity: 0.55; line-height: 1.3; }
-  .rel-btn.active .rel-desc { opacity: 0.7; }
-
-  .rel-custom-wrap {
-    margin-bottom: 24px;
-  }
-  .rel-custom-wrap input {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-family: inherit;
-    font-size: 13px;
-    color: var(--text);
-    background: #fafaf8;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .rel-custom-wrap input:focus { border-color: var(--accent); background: #fff; }
-  .rel-custom-wrap input::placeholder { color: var(--text-muted); }
-
-  /* ── FIELDS ── */
-  .field-wrap { margin-bottom: 18px; }
-  textarea {
-    width: 100%;
-    padding: 14px 16px;
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 14px;
-    color: var(--text);
-    background: #fafaf8;
-    outline: none;
-    transition: border-color 0.15s;
-    resize: none;
-    line-height: 1.6;
-    min-height: 100px;
-  }
-  textarea:focus { border-color: var(--accent); background: #fff; }
-  .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
-
-  /* ── REPEAT RADIO ── */
-  .repeat-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
-  .repeat-btn {
-    flex: 1;
-    padding: 9px 6px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    background: #fafaf8;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-sub);
-    transition: all 0.15s;
-    text-align: center;
-  }
-  .repeat-btn:hover { border-color: var(--accent); }
-  .repeat-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; }
-
-  /* ── DIVIDER ── */
-  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
-
-  /* ── STRESS ── */
-  .stress-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-  .stress-btn {
-    flex: 1;
-    padding: 10px 6px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    background: #fafaf8;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-sub);
-    transition: all 0.15s;
-    text-align: center;
-    line-height: 1.4;
-  }
-  .stress-btn:hover { border-color: var(--accent); }
-  .stress-btn.s1 { }
-  .stress-btn.s2 { }
-  .stress-btn.s3 { }
-  .stress-btn.s4 { }
-  .stress-btn.s5 { }
-  .stress-btn.active-s1 { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
-  .stress-btn.active-s2 { border-color: #22c55e; background: #f0fdf4; color: #15803d; }
-  .stress-btn.active-s3 { border-color: #f59e0b; background: #fffbeb; color: #92400e; }
-  .stress-btn.active-s4 { border-color: #f97316; background: #fff7ed; color: #9a3412; }
-  .stress-btn.active-s5 { border-color: #ef4444; background: #fef2f2; color: #b91c1c; }
-
-  /* ── SUBMIT ── */
-  .btn-analyze {
-    width: 100%;
-    padding: 16px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.5px;
-  }
-  .btn-analyze:hover { background: #111; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
-  .btn-analyze:active { transform: translateY(0); }
-
-  .error-msg {
-    display: none;
-    padding: 12px 16px;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 10px;
-    font-size: 13px;
-    color: #b91c1c;
-    margin-top: 12px;
-  }
-  .error-msg.show { display: block; }
-
-  /* ── LOADING ── */
-  .loading { display: none; text-align: center; padding: 40px 0; }
-  .loading.show { display: block; }
-  .spinner {
-    width: 36px; height: 36px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    margin: 0 auto 16px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { font-size: 13px; color: var(--text-sub); animation: pulse 1.5s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
-
-  /* ── RESULT CARD ── */
-  .result-card {
-    display: none;
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    padding: 36px;
-    width: 100%;
-    max-width: 620px;
-    margin-bottom: 20px;
-  }
-  .result-card.show { display: block; animation: slideUp 0.4s ease; }
-  @keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-
-  .result-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 28px;
-  }
-  .verdict-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 16px;
-    border-radius: 100px;
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .verdict-badge.v-safe { background: #eff6ff; color: #1d4ed8; }
-  .verdict-badge.v-gray { background: #f1f5f9; color: #475569; }
-  .verdict-badge.v-warn { background: #fffbeb; color: #92400e; }
-  .verdict-badge.v-danger { background: #fef2f2; color: #b91c1c; }
-  .grade-tag { font-size: 12px; font-weight: 600; color: var(--text-muted); }
-
-  /* Main gauge */
-  .gauge-wrap { margin-bottom: 24px; }
-  .gauge-labels { display: flex; justify-content: space-between; margin-bottom: 10px; }
-  .gauge-labels span { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-  .gauge-track { height: 12px; background: #f0eeea; border-radius: 100px; overflow: hidden; }
-  .gauge-fill { height: 100%; border-radius: 100px; width: 0%; transition: width 1.2s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .gauge-number { text-align: right; font-size: 48px; font-weight: 900; letter-spacing: -2px; margin-top: 10px; line-height: 1; }
-  .gauge-number small { font-size: 18px; font-weight: 400; color: var(--text-muted); letter-spacing: 0; }
-
-  /* Verdict text */
-  .verdict-main { font-size: 20px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
-  .verdict-desc { font-size: 13px; color: var(--text-sub); line-height: 1.7; }
-  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-  .tag { padding: 4px 10px; background: #f0eeea; border-radius: 100px; font-size: 11px; font-weight: 600; color: var(--text-sub); }
-
-  /* ── TYPE ANALYSIS (4-way) ── */
-  .type-section { margin: 24px 0 0; }
-  .type-section-title {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-  }
-  .type-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .type-block {
-    padding: 16px 18px;
-    background: #fafaf8;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  .type-block::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    height: 3px;
-    width: 0%;
-    border-radius: 0 0 0 3px;
-    transition: width 1.2s cubic-bezier(0.25,0.46,0.45,0.94);
-  }
-  .type-block.t-age::before   { background: #f97316; }
-  .type-block.t-narc::before  { background: #8b5cf6; }
-  .type-block.t-rude::before  { background: #ef4444; }
-  .type-block.t-self::before  { background: #3b82f6; }
-
-  .type-icon { font-size: 22px; margin-bottom: 6px; }
-  .type-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-  .type-pct  { font-size: 26px; font-weight: 900; letter-spacing: -1px; line-height: 1; }
-  .type-pct small { font-size: 13px; font-weight: 400; color: var(--text-muted); }
-  .type-desc { font-size: 11px; color: var(--text-sub); margin-top: 6px; line-height: 1.45; }
-
-  .type-block.t-age   .type-pct { color: #f97316; }
-  .type-block.t-narc  .type-pct { color: #8b5cf6; }
-  .type-block.t-rude  .type-pct { color: #ef4444; }
-  .type-block.t-self  .type-pct { color: #3b82f6; }
-
-  /* Analysis blocks */
-  .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-  .analysis-block { padding: 14px 16px; background: #fafaf8; border-radius: 12px; border: 1px solid var(--border); }
-  .analysis-block.full { grid-column: 1 / -1; }
-  .ab-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 7px; }
-  .ab-value { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.5; }
-
-  /* Action */
-  .action-box { margin-top: 20px; padding: 18px 20px; border-radius: 12px; border: 1.5px solid var(--border); background: #f8f7f3; }
-  .action-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 13px; line-height: 1.55; }
-  .action-item:last-child { margin-bottom: 0; }
-  .action-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-top: 6px; flex-shrink: 0; }
-
-  /* Reset */
-  .btn-reset {
-    width: 100%;
-    padding: 13px;
-    background: transparent;
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-sub);
-    cursor: pointer;
-    transition: all 0.15s;
-    margin-top: 16px;
-  }
-  .btn-reset:hover { border-color: var(--accent); color: var(--text); }
-
-  footer { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 20px; line-height: 1.8; }
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f7f6f2;--surface:#ffffff;--border:#e4e1d9;--text:#1a1a1a;--text-sub:#6b6b6b;--text-muted:#a8a8a8;--accent:#1a1a1a;--danger:#e63946;--radius:20px}
+html,body{height:100%;font-family:'Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+#app{height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+#progressWrap{position:fixed;top:0;left:0;right:0;z-index:100;height:3px;background:var(--border);display:none}
+#progressBar{height:100%;background:var(--accent);transition:width 0.4s ease;width:0%}
+.step{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;opacity:0;pointer-events:none;transition:opacity 0.35s ease,transform 0.35s ease;transform:translateX(40px);overflow-y:auto}
+.step.active{opacity:1;pointer-events:all;transform:translateX(0)}
+.step.exit-left{opacity:0;transform:translateX(-40px);pointer-events:none}
+.step-inner{width:100%;max-width:520px}
+.step-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px}
+.step-question{font-size:clamp(22px,5vw,32px);font-weight:900;line-height:1.25;letter-spacing:-1px;margin-bottom:10px;color:var(--text)}
+.step-desc{font-size:14px;color:var(--text-sub);margin-bottom:32px;line-height:1.6}
+.option-list{display:flex;flex-direction:column;gap:10px}
+.option-card{display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;cursor:pointer;transition:all 0.15s;text-align:left;width:100%;font-family:inherit}
+.option-card:hover{border-color:var(--accent);background:#f0efeb;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+.option-card.selected{border-color:var(--accent);background:var(--accent);color:#fff}
+.option-icon{font-size:22px;flex-shrink:0}
+.option-text{flex:1}
+.option-name{font-size:15px;font-weight:700}
+.option-sub{font-size:12px;opacity:0.6;margin-top:2px}
+.option-card.selected .option-sub{opacity:0.7}
+.option-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px}
+.option-grid .option-card{flex-direction:column;align-items:center;text-align:center;padding:18px 12px;gap:8px}
+.option-grid .option-icon{font-size:28px}
+.option-grid .option-name{font-size:13px}
+.step-textarea{width:100%;padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;font-family:inherit;font-size:15px;color:var(--text);background:var(--surface);outline:none;transition:border-color 0.15s;resize:none;line-height:1.65;min-height:140px;margin-bottom:16px}
+.step-textarea:focus{border-color:var(--accent)}
+.step-textarea::placeholder{color:var(--text-muted)}
+.btn-next{width:100%;padding:16px;background:var(--accent);color:#fff;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.15s;letter-spacing:0.3px}
+.btn-next:hover{background:#333;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.15)}
+.btn-next.secondary{background:transparent;color:var(--text-muted);border:1.5px solid var(--border);margin-top:10px;font-weight:500;box-shadow:none}
+.btn-next.secondary:hover{border-color:var(--accent);color:var(--text);background:transparent}
+.intro-badge{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:24px}
+.intro-title{font-size:clamp(56px,14vw,90px);font-weight:900;letter-spacing:-4px;line-height:1;margin-bottom:16px}
+.intro-title .red{color:var(--danger)}
+.intro-sub{font-size:15px;color:var(--text-sub);margin-bottom:40px;line-height:1.6}
+.intro-sub strong{color:var(--text);font-weight:700}
+.btn-start{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;background:var(--accent);color:#fff;border:none;border-radius:100px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.btn-start:hover{background:#333;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+.loading-wrap{text-align:center}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-title{font-size:22px;font-weight:900;letter-spacing:-0.5px;margin-bottom:8px}
+.loading-sub{font-size:13px;color:var(--text-sub);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.result-wrap{width:100%;max-width:520px}
+.result-verdict{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:12px;font-weight:700;margin-bottom:20px}
+.rv-safe{background:#eff6ff;color:#1d4ed8}
+.rv-gray{background:#f1f5f9;color:#475569}
+.rv-warn{background:#fffbeb;color:#b45309}
+.rv-danger{background:#fef2f2;color:#b91c1c}
+.result-grade{font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:8px}
+.result-score{font-size:clamp(64px,16vw,96px);font-weight:900;letter-spacing:-4px;line-height:1;margin-bottom:4px}
+.result-score small{font-size:28px;font-weight:400;color:var(--text-muted);letter-spacing:0}
+.gauge-track{height:8px;background:var(--border);border-radius:100px;overflow:hidden;margin-bottom:20px}
+.gauge-fill{height:100%;border-radius:100px;width:0%;transition:width 1.2s cubic-bezier(0.25,0.46,0.45,0.94)}
+.result-main{font-size:22px;font-weight:800;margin-bottom:8px;line-height:1.3}
+.result-desc{font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:20px}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.tag{padding:4px 10px;background:#eeece7;border-radius:100px;font-size:11px;font-weight:600;color:var(--text-sub)}
+.type-section-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.type-block{padding:16px;background:var(--surface);border-radius:14px;border:1px solid var(--border)}
+.type-icon{font-size:20px;margin-bottom:4px}
+.type-name{font-size:11px;font-weight:700;color:var(--text-sub);margin-bottom:6px}
+.type-pct{font-size:26px;font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:4px}
+.type-pct small{font-size:13px;font-weight:400;color:var(--text-muted)}
+.type-desc-text{font-size:11px;color:var(--text-muted);line-height:1.4}
+.t-age .type-pct{color:#f97316}
+.t-narc .type-pct{color:#8b5cf6}
+.t-rude .type-pct{color:#ef4444}
+.t-self .type-pct{color:#3b82f6}
+.type-bar-wrap{height:3px;background:var(--border);border-radius:100px;overflow:hidden;margin-top:8px}
+.type-bar{height:100%;width:0%;border-radius:100px;transition:width 1.1s cubic-bezier(0.25,0.46,0.45,0.94)}
+.t-age .type-bar{background:#f97316}
+.t-narc .type-bar{background:#8b5cf6}
+.t-rude .type-bar{background:#ef4444}
+.t-self .type-bar{background:#3b82f6}
+.action-box{padding:18px 20px;background:var(--surface);border-radius:14px;border:1px solid var(--border);margin-bottom:16px}
+.action-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
+.action-item{display:flex;gap:10px;font-size:13px;line-height:1.55;margin-bottom:8px}
+.action-item:last-child{margin-bottom:0}
+.action-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);margin-top:6px;flex-shrink:0}
+.btn-restart{width:100%;padding:14px;background:transparent;border:1.5px solid var(--border);border-radius:14px;font-family:inherit;font-size:13px;font-weight:600;color:var(--text-sub);cursor:pointer;transition:all 0.15s}
+.btn-restart:hover{border-color:var(--accent);color:var(--text)}
+footer{position:fixed;bottom:0;left:0;right:0;text-align:center;font-size:11px;color:var(--text-muted);padding:12px;pointer-events:none}
 </style>
 </head>
 <body>
+<div id="progressWrap"><div id="progressBar"></div></div>
+<div id="app">
 
-<!-- HEADER -->
-<header>
-  <div class="app-badge"><span>●</span> AI 꼰대 판별기</div>
-  <h1 class="app-title"><span class="red">늙</span><span class="q">?</span></h1>
-  <p class="app-sub">선 넘었는지 AI가 판별해드립니다</p>
-</header>
-
-<!-- INPUT CARD -->
-<div class="card" id="inputCard">
-
-  <!-- 관계 선택 -->
-  <div class="field-wrap">
-    <div class="section-label">상대방과의 관계</div>
-    <div class="rel-grid">
-      <button type="button" class="rel-btn active" data-rel="boss">
-        <span class="rel-icon">🏢</span>
-        <span class="rel-name">직장 상사</span>
-        <span class="rel-desc">팀장 / 임원 / 대표</span>
-      </button>
-      <button type="button" class="rel-btn" data-rel="senior">
-        <span class="rel-icon">👔</span>
-        <span class="rel-name">직장 선배</span>
-        <span class="rel-desc">선임 / 연차 높은 동료</span>
-      </button>
-      <button type="button" class="rel-btn" data-rel="client">
-        <span class="rel-icon">💼</span>
-        <span class="rel-name">고객 / 갑</span>
-        <span class="rel-desc">거래처 / 클라이언트</span>
-      </button>
-      <button type="button" class="rel-btn" data-rel="parent">
-        <span class="rel-icon">👨‍👩‍👧</span>
-        <span class="rel-name">부모 / 친척</span>
-        <span class="rel-desc">가족 / 친인척</span>
-      </button>
-      <button type="button" class="rel-btn" data-rel="elder">
-        <span class="rel-icon">👴</span>
-        <span class="rel-name">동네 어른</span>
-        <span class="rel-desc">모르는 어른 / 지인</span>
-      </button>
-      <button type="button" class="rel-btn" data-rel="other">
-        <span class="rel-icon">🤷</span>
-        <span class="rel-name">기타</span>
-        <span class="rel-desc">직접 입력할게요</span>
-      </button>
-    </div>
-    <div class="rel-custom-wrap">
-      <input type="text" id="relCustom" placeholder="관계를 직접 입력하거나, 상황 설명을 추가해도 돼요  (예: 10년 차 선배 / 남자친구 아버지 / 오너 일가)" />
-    </div>
+<div class="step active" id="step-0">
+  <div class="step-inner">
+    <div class="intro-badge"><span>●</span> AI 꼰대 판별기</div>
+    <h1 class="intro-title"><span class="red">늙</span>?</h1>
+    <p class="intro-sub">회사에서, 집에서, 길에서 —<br><strong>선 넘은 건지 내가 예민한 건지</strong> 헷갈릴 때<br>AI가 판별해드려요.</p>
+    <button type="button" class="btn-start" id="btnStart">판별 시작하기 →</button>
   </div>
-
-  <!-- 상대방 행동 -->
-  <div class="field-wrap">
-    <div class="section-label">상대방이 한 말 또는 행동</div>
-    <textarea id="situation" placeholder='예: "나 때는 말이야..." 로 시작하면서 업무 방식 강요. 퇴근 후 개인 카톡도 계속 보내고, 팀 회의에서 제 의견을 대놓고 무시했어요.'></textarea>
-  </div>
-
-  <!-- 배경/상황 -->
-  <div class="field-wrap">
-    <div class="section-label">배경 또는 상황 (선택)</div>
-    <textarea id="context" style="min-height:75px;" placeholder="예: 입사 3개월 차 신입인데, 이런 상황이 매주 반복되고 있어요. 다른 팀원들은 그냥 넘기는 분위기."></textarea>
-    <p class="field-hint">언제부터인지, 어떤 상황이었는지 더 적어주면 더 정확하게 판별해드려요</p>
-  </div>
-
-  <!-- 반복 여부 -->
-  <div class="field-wrap">
-    <div class="section-label">이런 일이 얼마나 자주 있나요?</div>
-    <div class="repeat-row">
-      <button type="button" class="repeat-btn active" data-rep="1">처음 있는 일</button>
-      <button type="button" class="repeat-btn" data-rep="2">가끔 있어요</button>
-      <button type="button" class="repeat-btn" data-rep="3">자주 반복돼요</button>
-      <button type="button" class="repeat-btn" data-rep="4">거의 매일</button>
-    </div>
-  </div>
-
-  <!-- 나의 감정 -->
-  <div class="field-wrap">
-    <div class="section-label">나의 반응 또는 감정 (선택)</div>
-    <textarea id="myFeel" style="min-height:75px;" placeholder="예: 처음엔 그러려니 했는데 반복되니까 너무 지치고 무기력해졌어요. 출근하기 싫어질 정도예요."></textarea>
-  </div>
-
-  <hr class="divider">
-
-  <!-- 스트레스 -->
-  <div class="field-wrap">
-    <div class="section-label">나의 스트레스 정도</div>
-    <div class="stress-row">
-      <button type="button" class="stress-btn s1 active-s1" data-st="1">😐<br>별로<br>없음</button>
-      <button type="button" class="stress-btn s2" data-st="2">😕<br>약간<br>있음</button>
-      <button type="button" class="stress-btn s3" data-st="3">😤<br>꽤<br>힘듦</button>
-      <button type="button" class="stress-btn s4" data-st="4">😠<br>많이<br>힘듦</button>
-      <button type="button" class="stress-btn s5" data-st="5">🤯<br>한계<br>직전</button>
-    </div>
-  </div>
-
-  <button type="button" id="btnAnalyze" class="btn-analyze">판별 시작하기</button>
-  <div class="error-msg" id="errorMsg">상황을 조금 더 자세히 입력해주세요.</div>
 </div>
 
-<!-- LOADING -->
-<div class="loading" id="loading">
-  <div class="spinner"></div>
-  <p class="loading-text" id="loadingText">분석 중...</p>
+<div class="step" id="step-1">
+  <div class="step-inner">
+    <div class="step-label">Step 1 / 5</div>
+    <h2 class="step-question">상대방이 누구예요?</h2>
+    <p class="step-desc">선택하면 바로 다음으로 넘어가요</p>
+    <div class="option-list">
+      <button type="button" class="option-card" data-rel="boss"><span class="option-icon">🏢</span><div class="option-text"><div class="option-name">직장 상사</div><div class="option-sub">팀장 / 임원 / 대표</div></div></button>
+      <button type="button" class="option-card" data-rel="senior"><span class="option-icon">👔</span><div class="option-text"><div class="option-name">직장 선배</div><div class="option-sub">선임 / 연차 높은 동료</div></div></button>
+      <button type="button" class="option-card" data-rel="client"><span class="option-icon">💼</span><div class="option-text"><div class="option-name">고객 / 갑</div><div class="option-sub">거래처 / 클라이언트</div></div></button>
+      <button type="button" class="option-card" data-rel="parent"><span class="option-icon">👨‍👩‍👧</span><div class="option-text"><div class="option-name">부모 / 친척</div><div class="option-sub">가족 / 친인척</div></div></button>
+      <button type="button" class="option-card" data-rel="elder"><span class="option-icon">👴</span><div class="option-text"><div class="option-name">동네 어른 / 지인</div><div class="option-sub">모르는 어른 / 지인 어른</div></div></button>
+      <button type="button" class="option-card" data-rel="other"><span class="option-icon">🤷</span><div class="option-text"><div class="option-name">기타</div><div class="option-sub">위에 없는 관계</div></div></button>
+    </div>
+  </div>
 </div>
 
-<!-- RESULT CARD -->
-<div class="result-card" id="resultCard">
-
-  <div class="result-header">
-    <div class="verdict-badge" id="verdictBadge"></div>
-    <div class="grade-tag" id="gradeTag"></div>
+<div class="step" id="step-2">
+  <div class="step-inner">
+    <div class="step-label">Step 2 / 5</div>
+    <h2 class="step-question">어떤 말이나<br>행동을 했어요?</h2>
+    <p class="step-desc">기억나는 대로 편하게 적어주세요</p>
+    <textarea class="step-textarea" id="situationInput" placeholder="예: 나 때는 말이야...로 시작하면서 업무 방식을 강요했고, 퇴근 후에도 개인 카톡을 계속 보냈어요."></textarea>
+    <button type="button" class="btn-next" id="btnStep2Next">다음 →</button>
   </div>
+</div>
 
-  <!-- 선 넘음 게이지 -->
-  <div class="gauge-wrap">
-    <div class="gauge-labels"><span>안전</span><span>주의</span><span>선 넘음</span></div>
+<div class="step" id="step-3">
+  <div class="step-inner">
+    <div class="step-label">Step 3 / 5</div>
+    <h2 class="step-question">이런 일이<br>얼마나 자주 있어요?</h2>
+    <p class="step-desc">선택하면 바로 다음으로 넘어가요</p>
+    <div class="option-list">
+      <button type="button" class="option-card" data-rep="1"><span class="option-icon">1️⃣</span><div class="option-text"><div class="option-name">처음 있는 일이에요</div></div></button>
+      <button type="button" class="option-card" data-rep="2"><span class="option-icon">🔁</span><div class="option-text"><div class="option-name">가끔 있어요</div></div></button>
+      <button type="button" class="option-card" data-rep="3"><span class="option-icon">😮‍💨</span><div class="option-text"><div class="option-name">자주 반복돼요</div></div></button>
+      <button type="button" class="option-card" data-rep="4"><span class="option-icon">💀</span><div class="option-text"><div class="option-name">거의 매일이에요</div></div></button>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step-4">
+  <div class="step-inner">
+    <div class="step-label">Step 4 / 5</div>
+    <h2 class="step-question">그때 어떤<br>기분이었어요?</h2>
+    <p class="step-desc">선택사항이에요 — 건너뛰어도 돼요</p>
+    <textarea class="step-textarea" id="feelInput" placeholder="예: 처음엔 그러려니 했는데 반복되니까 너무 지치고 출근하기 싫어질 정도예요."></textarea>
+    <button type="button" class="btn-next" id="btnStep4Next">다음 →</button>
+    <button type="button" class="btn-next secondary" id="btnStep4Skip">건너뛰기</button>
+  </div>
+</div>
+
+<div class="step" id="step-5">
+  <div class="step-inner">
+    <div class="step-label">Step 5 / 5</div>
+    <h2 class="step-question">지금 스트레스가<br>얼마나 돼요?</h2>
+    <p class="step-desc">선택하면 바로 판별 시작해요</p>
+    <div class="option-grid">
+      <button type="button" class="option-card" data-st="1"><span class="option-icon">😐</span><div class="option-name">별로 없음</div></button>
+      <button type="button" class="option-card" data-st="2"><span class="option-icon">😕</span><div class="option-name">약간 있음</div></button>
+      <button type="button" class="option-card" data-st="3"><span class="option-icon">😤</span><div class="option-name">꽤 힘듦</div></button>
+      <button type="button" class="option-card" data-st="4"><span class="option-icon">😠</span><div class="option-name">많이 힘듦</div></button>
+      <button type="button" class="option-card" data-st="5"><span class="option-icon">🤯</span><div class="option-name">한계 직전</div></button>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step-loading">
+  <div class="loading-wrap">
+    <div class="spinner"></div>
+    <div class="loading-title">판별 중...</div>
+    <div class="loading-sub" id="loadingText">꼰대 발언 데이터베이스 대조 중...</div>
+  </div>
+</div>
+
+<div class="step" id="step-result">
+  <div class="result-wrap">
+    <div id="resultVerdict" class="result-verdict"></div>
+    <div id="resultGrade" class="result-grade"></div>
+    <div id="resultScore" class="result-score">0<small>%</small></div>
     <div class="gauge-track"><div class="gauge-fill" id="gaugeFill"></div></div>
-    <div class="gauge-number" id="gaugeNumber">0<small>%</small></div>
-  </div>
-
-  <div class="verdict-main" id="verdictMain"></div>
-  <div class="verdict-desc" id="verdictDesc"></div>
-  <div class="tag-row" id="tagRow"></div>
-
-  <hr class="divider">
-
-  <!-- 4-way 유형 분석 -->
-  <div class="type-section">
-    <div class="type-section-title">이게 대체 뭔지 — 유형 분석</div>
+    <div id="resultMain" class="result-main"></div>
+    <div id="resultDesc" class="result-desc"></div>
+    <div id="resultTags" class="tag-row"></div>
+    <div class="type-section-label" style="margin-top:24px;">이게 대체 뭔지 — 유형 분석</div>
     <div class="type-grid">
-      <div class="type-block t-age">
-        <div class="type-icon">👴</div>
-        <div class="type-name">늙어서 그런 건지</div>
-        <div class="type-pct" id="pct-age">0<small>%</small></div>
-        <div class="type-desc" id="desc-age"></div>
-      </div>
-      <div class="type-block t-narc">
-        <div class="type-icon">🪞</div>
-        <div class="type-name">나르시시스트인지</div>
-        <div class="type-pct" id="pct-narc">0<small>%</small></div>
-        <div class="type-desc" id="desc-narc"></div>
-      </div>
-      <div class="type-block t-rude">
-        <div class="type-icon">😤</div>
-        <div class="type-name">그냥 무례한 건지</div>
-        <div class="type-pct" id="pct-rude">0<small>%</small></div>
-        <div class="type-desc" id="desc-rude"></div>
-      </div>
-      <div class="type-block t-self">
-        <div class="type-icon">🪩</div>
-        <div class="type-name">내가 문제인 건지</div>
-        <div class="type-pct" id="pct-self">0<small>%</small></div>
-        <div class="type-desc" id="desc-self"></div>
-      </div>
+      <div class="type-block t-age"><div class="type-icon">👴</div><div class="type-name">늙어서 그런 건지</div><div class="type-pct" id="pct-age">0<small>%</small></div><div class="type-desc-text" id="desc-age"></div><div class="type-bar-wrap"><div class="type-bar" id="bar-age"></div></div></div>
+      <div class="type-block t-narc"><div class="type-icon">🪞</div><div class="type-name">나르시시스트인지</div><div class="type-pct" id="pct-narc">0<small>%</small></div><div class="type-desc-text" id="desc-narc"></div><div class="type-bar-wrap"><div class="type-bar" id="bar-narc"></div></div></div>
+      <div class="type-block t-rude"><div class="type-icon">😤</div><div class="type-name">그냥 무례한 건지</div><div class="type-pct" id="pct-rude">0<small>%</small></div><div class="type-desc-text" id="desc-rude"></div><div class="type-bar-wrap"><div class="type-bar" id="bar-rude"></div></div></div>
+      <div class="type-block t-self"><div class="type-icon">🪩</div><div class="type-name">내가 문제인 건지</div><div class="type-pct" id="pct-self">0<small>%</small></div><div class="type-desc-text" id="desc-self"></div><div class="type-bar-wrap"><div class="type-bar" id="bar-self"></div></div></div>
     </div>
+    <div class="action-box"><div class="action-label">대처 방법</div><div id="actionList"></div></div>
+    <button type="button" class="btn-restart" id="btnRestart">다시 판별하기</button>
   </div>
-
-  <!-- 추가 분석 -->
-  <div class="analysis-grid" id="analysisGrid"></div>
-
-  <!-- 대처법 -->
-  <div class="action-box" id="actionBox">
-    <div class="ab-label">대처 방법</div>
-    <div id="actionList"></div>
-  </div>
-
-  <button type="button" id="btnReset" class="btn-reset">다시 분석하기</button>
 </div>
 
-<footer>
-  늙? — 꼰대 선 넘음 판별기<br>
-  결과는 참고용이며, 최종 판단은 본인이 하세요 :)
-</footer>
+</div>
+<footer>늙? — AI 꼰대 판별기 · 결과는 참고용이에요</footer>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  let selectedRel = 'boss';
-  let selectedRepeat = 1;
-  let selectedStress = 1;
+document.addEventListener('DOMContentLoaded', function() {
+  var state = {rel:'boss',rep:1,st:1,situation:'',feel:''};
+  var TOTAL = 5;
 
-  function selectRel(el) {
-    document.querySelectorAll('.rel-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
-    selectedRel = el.dataset.rel;
+  function goTo(id) {
+    var cur = document.querySelector('.step.active');
+    if (cur) { cur.classList.add('exit-left'); cur.classList.remove('active'); setTimeout(function(){cur.classList.remove('exit-left');},400); }
+    var next = document.getElementById('step-'+id);
+    next.style.transform = 'translateX(40px)';
+    next.style.opacity = '0';
+    setTimeout(function(){ next.classList.add('active'); }, 10);
+    var nums = {0:0,1:1,2:2,3:3,4:4,5:5,'loading':6,'result':6};
+    var n = nums[id] || 0;
+    if (n > 0) { document.getElementById('progressWrap').style.display='block'; document.getElementById('progressBar').style.width=(n/TOTAL*100)+'%'; }
+    else { document.getElementById('progressWrap').style.display='none'; }
   }
 
-  function selectRepeat(el) {
-    document.querySelectorAll('.repeat-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
-    selectedRepeat = parseInt(el.dataset.rep);
+  document.getElementById('btnStart').addEventListener('click', function(){ goTo(1); });
+
+  document.querySelectorAll('#step-1 .option-card').forEach(function(btn){
+    btn.addEventListener('click', function(){ state.rel=this.dataset.rel; this.classList.add('selected'); setTimeout(function(){goTo(2);},260); });
+  });
+
+  document.getElementById('btnStep2Next').addEventListener('click', function(){
+    var val = document.getElementById('situationInput').value.trim();
+    if (val.length < 8) { document.getElementById('situationInput').style.borderColor='#e63946'; setTimeout(function(){document.getElementById('situationInput').style.borderColor='';},1500); return; }
+    state.situation = val; goTo(3);
+  });
+
+  document.querySelectorAll('#step-3 .option-card').forEach(function(btn){
+    btn.addEventListener('click', function(){ state.rep=parseInt(this.dataset.rep); this.classList.add('selected'); setTimeout(function(){goTo(4);},260); });
+  });
+
+  document.getElementById('btnStep4Next').addEventListener('click', function(){ state.feel=document.getElementById('feelInput').value.trim(); goTo(5); });
+  document.getElementById('btnStep4Skip').addEventListener('click', function(){ state.feel=''; goTo(5); });
+
+  document.querySelectorAll('#step-5 .option-card').forEach(function(btn){
+    btn.addEventListener('click', function(){ state.st=parseInt(this.dataset.st); this.classList.add('selected'); setTimeout(function(){startAnalysis();},300); });
+  });
+
+  document.getElementById('btnRestart').addEventListener('click', function(){
+    state={rel:'boss',rep:1,st:1,situation:'',feel:''};
+    document.getElementById('situationInput').value='';
+    document.getElementById('feelInput').value='';
+    document.querySelectorAll('.option-card').forEach(function(b){b.classList.remove('selected');});
+    document.getElementById('gaugeFill').style.width='0%';
+    document.querySelectorAll('.type-bar').forEach(function(b){b.style.width='0%';});
+    goTo(0);
+  });
+
+  var loadingTexts=['꼰대 발언 데이터베이스 대조 중...','선 넘음 게이지 측정 중...','나르시시스트 패턴 스캔 중...','내가 문제일 확률 계산 중...','최종 판정 준비 중...'];
+
+  function startAnalysis(){
+    goTo('loading');
+    document.getElementById('progressBar').style.width='100%';
+    var i=0;
+    var iv=setInterval(function(){ i=(i+1)%loadingTexts.length; document.getElementById('loadingText').textContent=loadingTexts[i]; },600);
+    setTimeout(function(){ clearInterval(iv); var r=buildResult(); renderResult(r); goTo('result'); }, 2400+Math.random()*600);
   }
 
-  function selectStress(el) {
-    document.querySelectorAll('.stress-btn').forEach(b => {
-      b.classList.remove('active-s1','active-s2','active-s3','active-s4','active-s5');
-    });
-    const st = el.dataset.st;
-    el.classList.add('active-s' + st);
-    selectedStress = parseInt(st);
+  var hard=['야근','강요','강제','욕설','폭언','협박','때려','개인연락','카톡','새벽','주말','휴일','성희롱','성추행','모욕','무시','창피','망신','인격','꺼져','나가','해고','자르','짤','인사고과','불이익','갈굼','갈구','윽박','고함','잔소리','회식','2차','억지','억압','차별','성별','외모','용모'];
+  var mid=['나때는','나 때는','예전엔','옛날엔','당연히','원래 그래','그것도 못','기본도','왜 이렇게','프로답지','요즘 것들','요즘 애들','어리니까','사회생활','사회경험','철없어','내 밑에서','알아서 해','월급 받잖아','돈 받잖아','감사해야','고마운 줄','조언이라고','충고','잘 되라고','너 생각해서','실망','기대','네 태도','그 태도','문제가 있어','글러먹','답 없어','구제불능'];
+  var mild=['왜 그랬어','왜 그래','한번만','이번만','조심해','주의해','참아','좀 봐줘','오해야','기분 나쁘게','그런 뜻 아니야','예민하게','예민한','과민반응','예민해'];
+  var boundary=['사생활','집안','부모님','결혼','연애','남자친구','여자친구','월급','연봉','나이','외모','몸무게','살','뚱','마른','꾸밈','화장','옷차림'];
+  var power=['갑질','을질','계약','거래처','클라이언트','업체','우리가 돈 주는','돈 주는 입장'];
+  var narc=['자기 얘기만','자기가 최고','인정','내가 없으면','내 덕분에','너 때문에','내 말이 맞','항상 내가','감사할 줄 알아야','내가 키워줬','특별한','선택받은','능력 없어','무능','잘난 척','다 내가 했','공로','내 공','인정 안 해'];
+  var age=['나때는','나 때는','예전엔','옛날엔','어른이','어른을','어른한테','연장자','나이가','나이 먹어서','나이 값','젊은 게','철이 없','애가','세대 차이','요즘 것들','요즘 애들','꼰대','옛날 사람','구식'];
+  var relCfg={boss:{name:'직장 상사',weight:1.1,sp:0.7},senior:{name:'직장 선배',weight:0.95,sp:0.75},client:{name:'고객/갑',weight:1.15,sp:0.65},parent:{name:'부모/친척',weight:0.8,sp:0.9},elder:{name:'동네 어른',weight:0.75,sp:0.95},other:{name:'기타',weight:1.0,sp:0.8}};
+  var grades=[{min:0,max:20,label:'이해 가능 범위'},{min:20,max:40,label:'미묘한 선'},{min:40,max:60,label:'주의 꼰대'},{min:60,max:80,label:'꼰대 확정'},{min:80,max:90,label:'명백한 갑질'},{min:90,max:101,label:'갓꼰대 (최종형태)'}];
+
+  function sc(text, arr) { var s=0,m=[]; arr.forEach(function(k){if(text.includes(k)){s++;m.push(k);}}); return {s:s,m:m}; }
+
+  function buildResult(){
+    var t=state.situation+' '+state.feel;
+    var rH=sc(t,hard),rM=sc(t,mid),rMi=sc(t,mild),rB=sc(t,boundary),rP=sc(t,power),rN=sc(t,narc),rA=sc(t,age);
+    var rawScore=rH.s*18+rM.s*10+rMi.s*4+rB.s*12+rP.s*15;
+    var cfg=relCfg[state.rel]||relCfg.other;
+    var rW=[0.85,1.0,1.15,1.3][state.rep-1];
+    var score=Math.min(97,Math.round(rawScore*cfg.weight*rW));
+    var sFloor=[0,15,28,42,58][state.st-1];
+    if(score<sFloor) score=sFloor+Math.round(Math.random()*8);
+    score=Math.min(97,score);
+    var grade=grades.find(function(g){return score>=g.min&&score<g.max;})||grades[grades.length-1];
+    var agePct=Math.min(95,rA.s*20+rM.s*8);
+    if(['boss','senior','parent','elder'].includes(state.rel)) agePct=Math.min(95,agePct+15);
+    var narcPct=Math.min(92,rN.s*22+rH.s*6+(state.rep>=3?20:0));
+    if(['boss','client'].includes(state.rel)) narcPct=Math.min(92,narcPct+10);
+    var rudePct=Math.min(95,rH.s*15+rB.s*12+rP.s*14+(state.rep>=2?10:0));
+    var selfPct=Math.max(3,Math.round((100-rawScore*1.5)*cfg.sp*0.5));
+    if(state.st>=4) selfPct=Math.max(3,selfPct-15);
+    if(state.rep>=3) selfPct=Math.max(3,selfPct-10);
+    selfPct=Math.min(70,selfPct);
+    var vType,vMain,vDesc,actions,tags;
+    if(score<20){vType='safe';vMain='선은 안 넘은 것 같아요';vDesc='상대방의 말이나 행동이 다소 불편할 수 있지만, 대체로 이해 가능한 범위에 있어 보여요.';tags=['감정 정리 필요','소통으로 해결 가능','오해일 수 있음'];actions=['본인의 감정이 무엇인지 구체적으로 파악해보세요.','상대방 의도를 확인하거나 솔직하게 이야기해보세요.','불편함이 반복된다면 기록을 시작해두세요.'];}
+    else if(score<40){vType='gray';vMain='미묘한 선상에 있어요';vDesc='딱 잘라 말하기 애매하지만, 분명히 불편함이 있는 상황이에요. 반복된다면 누적 피로가 쌓일 수 있어요.';tags=['경계 모호','반복 여부 중요','누적 피로 주의'];actions=['처음인지 반복인지 확인해보세요.','불편했던 순간들을 간략히 기록해두세요.','불편하다고 가볍게 한 번 표현해보세요.'];}
+    else if(score<65){vType='warn';vMain='선 꽤 넘었습니다';vDesc=cfg.name+'으로서 적절하지 않은 언행이에요. 불편함을 느끼는 건 정상적인 반응이고, 오해가 아닙니다.';tags=['선 넘음','정당한 불쾌감','대응 필요'];actions=['상황을 날짜, 내용, 감정과 함께 기록해두세요.','신뢰할 수 있는 사람에게 이야기하고 피드백을 받으세요.','반복된다면 인사팀이나 상담창구를 활용하세요.'];}
+    else if(score<82){vType='danger';vMain='명백한 꼰대 행동입니다';vDesc='이건 참아야 할 상황이 아니에요. 당신의 불편함은 완전히 정당합니다. 혼자 감당하려 하지 마세요.';tags=['갑질 수준','참을 필요 없음','조치 권고'];actions=['지금 당장 상황을 텍스트, 스크린샷, 녹음으로 기록하세요.','주변에 알리거나 HR에 공유하세요.','전문 상담을 활용하는 것도 고려하세요.','법적 보호 수단이 있다는 것도 알아두세요.'];}
+    else{vType='danger';vMain='이건 절대 참으면 안 됩니다';vDesc='심각한 수준의 선 넘음입니다. 개인의 존엄성을 침해하는 수준이에요. 즉각적인 대응이 필요합니다.';tags=['매우 심각','즉각 조치 필요','법적 보호 가능'];actions=['지금 바로 모든 증거를 확보하세요. (문자, 카톡, 이메일, 녹음)','신뢰할 수 있는 동료나 가족에게 알리세요.','직장 내 괴롭힘 신고 채널 또는 노동부 신고를 검토하세요.','심리적 피해가 있다면 전문 상담사를 찾아가세요.'];}
+    return {score:score,grade:grade,vType:vType,vMain:vMain,vDesc:vDesc,tags:tags,actions:actions,types:{agePct:agePct,narcPct:narcPct,rudePct:rudePct,selfPct:selfPct}};
   }
 
-  // ── PATTERNS ──
-  const patterns = {
-    hardOverstep: [
-      '야근','강요','강제','욕','욕설','폭언','협박','손',
-      '신체','때려','맞','개인연락','카톡','새벽','주말','휴일','성희롱','성추행',
-      '모욕','무시','창피','망신','인격','짜증','꺼져','나가','해고','자르','짤','인사고과','평가',
-      '불이익','갈굼','갈구','윽박','소리','고함','뭐라','잔소리','반복',
-      '술','회식','2차','억지','억압','승진','차별','성별','외모','용모'
-    ],
-    midOverstep: [
-      '나때는','나 때는','예전엔','옛날엔','내가 해봐서','당연히','원래 그래',
-      '그것도 못','기본도','왜 이렇게','저래도 돼','프로답지','요즘 것들','요즘 애들','어리니까',
-      '사회생활','사회경험','철없어','내 밑에서','시키면 시키는대로','물어보지 마','알아서 해',
-      '그냥 해','이유 묻지','월급 받잖아','돈 받잖아','그게 일','감사해야','고마운 줄',
-      '한마디','조언이라고','충고','잘 되라고','너 생각해서','실망','기대',
-      '네 태도','그 태도','문제가 있어','글러먹','답 없어','구제불능'
-    ],
-    mildOverstep: [
-      '왜 그랬어','왜 그래','한번만','이번만','조심해',
-      '주의해','참아','좀 봐줘','오해야','기분 나쁘게','그런 뜻 아니야',
-      '예민하게','예민한','과민반응','예민해'
-    ],
-    boundary: [
-      '사생활','집안','부모님','결혼','연애','남자친구','여자친구','월급','연봉',
-      '나이','외모','몸무게','살','뚱','마른','꾸밈','화장','옷차림'
-    ],
-    powerAbuse: [
-      '갑질','을질','계약','거래처','클라이언트','업체','갑의 위치',
-      '주문한 대로','요구한 대로','우리가 돈 주는','돈 주는 입장'
-    ],
-    narcSignals: [
-      '자기 얘기만','자기가 최고','인정','칭찬','내가 없으면','내 덕분에',
-      '너 때문에','내 말이 맞','틀린 적 없','항상 내가','감사할 줄 알아야',
-      '내가 키워줬','내가 아니었으면','특별한','선택받은','능력 없어','무능',
-      '잘난 척','다 내가 했','공로','내 공','인정 안 해'
-    ],
-    agePatterns: [
-      '나때는','나 때는','예전엔','옛날엔','어른이','어른을','어른한테',
-      '연장자','나이가','나이 먹어서','나이 값','젊은 게','철이 없','애가',
-      '세대 차이','요즘 것들','요즘 애들','꼰대','옛날 사람','구식'
-    ]
-  };
-
-  const relConfig = {
-    boss:   { name: '직장 상사', weight: 1.1,  selfPenalty: 0.7 },
-    senior: { name: '직장 선배', weight: 0.95, selfPenalty: 0.75 },
-    client: { name: '고객/갑',   weight: 1.15, selfPenalty: 0.65 },
-    parent: { name: '부모/친척', weight: 0.8,  selfPenalty: 0.9 },
-    elder:  { name: '동네 어른', weight: 0.75, selfPenalty: 0.95 },
-    other:  { name: '기타',      weight: 1.0,  selfPenalty: 0.8 }
-  };
-
-  const grades = [
-    { min: 0,  max: 20, label: '이해 가능 범위' },
-    { min: 20, max: 40, label: '미묘한 선' },
-    { min: 40, max: 60, label: '주의 꼰대' },
-    { min: 60, max: 80, label: '꼰대 확정' },
-    { min: 80, max: 90, label: '명백한 갑질' },
-    { min: 90, max: 101, label: '갓꼰대 (최종형태)' }
-  ];
-
-  function scoreText(text) {
-    const t = text;
-    let score = 0;
-    let matched = { hard:[], mid:[], mild:[], boundary:[], power:[], narc:[], age:[] };
-
-    patterns.hardOverstep.forEach(k => { if (t.includes(k)) { score += 18; matched.hard.push(k); } });
-    patterns.midOverstep.forEach(k =>  { if (t.includes(k)) { score += 10; matched.mid.push(k); } });
-    patterns.mildOverstep.forEach(k => { if (t.includes(k)) { score += 4;  matched.mild.push(k); } });
-    patterns.boundary.forEach(k =>    { if (t.includes(k)) { score += 12; matched.boundary.push(k); } });
-    patterns.powerAbuse.forEach(k =>  { if (t.includes(k)) { score += 15; matched.power.push(k); } });
-    patterns.narcSignals.forEach(k => { if (t.includes(k)) { matched.narc.push(k); } });
-    patterns.agePatterns.forEach(k =>  { if (t.includes(k)) { matched.age.push(k); } });
-
-    return { score, matched };
-  }
-
-  function computeTypeScores(matched, rawScore, rel, repeat, stress) {
-    const cfg = relConfig[rel] || relConfig.other;
-
-    // 늙어서 그런 건지: 세대/나이 키워드 + 관계(boss/senior/elder/parent 가중)
-    let agePct = Math.min(95, matched.age.length * 20 + matched.mid.length * 8);
-    if (['boss','senior','parent','elder'].includes(rel)) agePct = Math.min(95, agePct + 15);
-    agePct = Math.min(95, Math.round(agePct));
-
-    // 나르시시스트: 나르 키워드 + 갑질 + 반복
-    let narcPct = Math.min(92, matched.narc.length * 22 + matched.hard.length * 6 + (repeat >= 3 ? 20 : 0));
-    if (['boss','client'].includes(rel)) narcPct = Math.min(92, narcPct + 10);
-    narcPct = Math.round(narcPct);
-
-    // 그냥 무례한 사람: hard + boundary + power, 반복이면 올라감
-    let rudePct = Math.min(95, matched.hard.length * 15 + matched.boundary.length * 12 + matched.power.length * 14);
-    rudePct = Math.min(95, Math.round(rudePct + (repeat >= 2 ? 10 : 0)));
-
-    // 내가 문제인지: rawScore 낮을수록, stress 낮을수록, 관계 특성
-    let selfPct = Math.max(3, Math.round((100 - rawScore * 1.5) * cfg.selfPenalty * 0.5));
-    if (stress >= 4) selfPct = Math.max(3, selfPct - 15);
-    if (repeat >= 3) selfPct = Math.max(3, selfPct - 10);
-    selfPct = Math.min(70, selfPct);
-
-    return { agePct, narcPct, rudePct, selfPct };
-  }
-
-  function typeDesc(type, pct) {
-    if (type === 'age') {
-      if (pct < 25) return '세대 차이라기보단 다른 요인이 더 커 보여요.';
-      if (pct < 55) return '세대 차이 영향이 일부 있을 수 있지만, 그게 전부는 아니에요.';
-      return '세대·나이 중심 사고방식이 강하게 감지돼요. "나 때는~" 프레임이에요.';
-    }
-    if (type === 'narc') {
-      if (pct < 25) return '나르시시스트 패턴은 뚜렷하지 않아요.';
-      if (pct < 55) return '일부 자기중심적 패턴이 보여요. 단정은 어렵지만 주의 필요.';
-      return '자기 중심적이고 타인의 감정을 잘 고려하지 않는 패턴이 감지돼요.';
-    }
-    if (type === 'rude') {
-      if (pct < 25) return '의도적 무례함보다는 인식 차이일 가능성이 있어요.';
-      if (pct < 55) return '상당한 무례함이 있어요. 본인은 모를 수도 있지만요.';
-      return '명백한 무례함이에요. 상대가 인식하든 못 하든 관계없이요.';
-    }
-    if (type === 'self') {
-      if (pct < 20) return '당신의 반응은 정당해요. 자책할 필요 없어요.';
-      if (pct < 45) return '일부 오해가 있을 수 있으니 상대 의도도 한번 확인해보세요.';
-      return '이 상황은 소통 문제일 가능성도 있어요. 대화를 먼저 시도해보세요.';
-    }
+  function tdesc(type,pct){
+    if(type==='age'){return pct<25?'세대 차이보다 다른 요인이 더 커 보여요.':pct<55?'세대 차이 영향이 일부 있지만 전부는 아니에요.':'"나 때는~" 세대 중심 사고방식이 강하게 감지돼요.';}
+    if(type==='narc'){return pct<25?'나르시시스트 패턴은 뚜렷하지 않아요.':pct<55?'자기중심적 패턴이 일부 보여요.':'타인 감정을 고려하지 않는 패턴이 감지돼요.';}
+    if(type==='rude'){return pct<25?'의도적 무례함보다 인식 차이일 수 있어요.':pct<55?'상당한 무례함이 있어요.':'명백한 무례함이에요.';}
+    if(type==='self'){return pct<20?'당신의 반응은 정당해요.':pct<45?'일부 오해 가능성이 있으니 확인해보세요.':'소통 문제일 수 있어요. 대화를 먼저 시도해보세요.';}
     return '';
   }
 
-  function buildResult(situation, context, myFeel) {
-    const fullText = situation + ' ' + context + ' ' + myFeel;
-    const { score: rawScore, matched } = scoreText(fullText);
-
-    const cfg = relConfig[selectedRel] || relConfig.other;
-    const repeatW = [0.85, 1.0, 1.15, 1.3][selectedRepeat - 1];
-    const stressW = [0.7, 0.85, 1.05, 1.2, 1.4][selectedStress - 1];
-
-    let score = Math.min(97, Math.round(rawScore * cfg.weight * repeatW));
-
-    // Stress-based minimum floors
-    const stressFloor = [0, 15, 28, 42, 58][selectedStress - 1];
-    if (score < stressFloor) score = stressFloor + Math.round(Math.random() * 8);
-    score = Math.min(97, score);
-
-    const grade = grades.find(g => score >= g.min && score < g.max) || grades[grades.length - 1];
-    const types = computeTypeScores(matched, rawScore, selectedRel, selectedRepeat, selectedStress);
-
-    let verdictType, verdictMain, verdictDesc, actions, tags;
-
-    if (score < 20) {
-      verdictType = 'safe';
-      verdictMain = '선은 안 넘은 것 같아요';
-      verdictDesc = '상대방의 말이나 행동이 다소 불편하게 느껴질 수 있지만, 지금 상황은 이해 가능한 범위에 있어 보여요. 나의 감정을 먼저 정리해보고, 솔직하게 전달해보는 것도 방법이에요.';
-      tags = ['감정 정리 필요', '소통으로 해결 가능', '오해일 수 있음'];
-      actions = ['먼저 본인의 감정이 무엇인지 구체적으로 파악해보세요.', '상대방 의도를 한 번 더 확인하거나 솔직하게 이야기해보세요.', '불편함이 반복된다면 그때는 기록을 시작해두세요.'];
-    } else if (score < 40) {
-      verdictType = 'gray';
-      verdictMain = '미묘한 선상에 있어요';
-      verdictDesc = '딱 잘라 말하기 애매하지만, 분명히 불편함이 있는 상황이에요. 반복된다면 누적 피로가 생길 수 있어요. 지금 당장은 참을 수 있더라도 패턴이 중요합니다.';
-      tags = ['경계 모호', '반복 여부 중요', '누적 피로 주의'];
-      actions = ['이 상황이 처음인지 반복인지 확인해보세요. 패턴이라면 다르게 대응해야 해요.', '불편했던 순간들을 간략히 기록해두면 나중에 도움이 됩니다.', '"이런 말은 불편해요"라고 가볍게 한 번 표현해보는 것도 좋아요.'];
-    } else if (score < 65) {
-      verdictType = 'warn';
-      verdictMain = '선 꽤 넘었습니다';
-      verdictDesc = `${cfg.name}으로서 적절하지 않은 언행이에요. 불편함을 느끼는 건 정상적인 반응이고, 오해가 아닙니다. 이 상황을 그냥 넘기면 계속 반복될 가능성이 높아요.`;
-      tags = ['선 넘음', '정당한 불쾌감', '대응 필요'];
-      actions = ['상황을 날짜, 내용, 감정과 함께 기록해두세요.', '신뢰할 수 있는 사람에게 이야기하고 피드백을 받으세요.', '반복된다면 인사팀이나 상담창구를 활용하는 것을 고려해보세요.'];
-    } else if (score < 82) {
-      verdictType = 'danger';
-      verdictMain = '명백한 꼰대 행동입니다';
-      verdictDesc = `이건 참아야 할 상황이 아니에요. ${cfg.name} 위치를 이용한 부적절한 언행이고, 당신의 불편함은 완전히 정당합니다. 혼자 감당하려 하지 마세요.`;
-      tags = ['갑질 수준', '참을 필요 없음', '조치 권고'];
-      actions = ['지금 당장 상황을 텍스트, 스크린샷, 녹음 등으로 기록하세요.', '혼자 해결하려 하지 말고, 주변에 알리거나 HR에 공유하세요.', '전문 상담을 활용하는 것도 고려해보세요.', '이 상황이 지속될 경우 법적 보호 수단이 있다는 것도 알아두세요.'];
-    } else {
-      verdictType = 'danger';
-      verdictMain = '이건 절대 참으면 안 됩니다';
-      verdictDesc = '심각한 수준의 선 넘음입니다. 개인의 존엄성을 침해하는 수준이에요. 이게 당연한 거라 생각하지 마세요. 즉각적인 대응이 필요합니다.';
-      tags = ['매우 심각', '즉각 조치 필요', '법적 보호 가능'];
-      actions = ['지금 바로 모든 증거를 확보하세요. (문자, 카톡, 이메일, 녹음)', '신뢰할 수 있는 동료나 가족에게 상황을 알리세요.', '직장 내 괴롭힘 신고 채널 또는 노동부 신고를 적극 검토하세요.', '심리적 피해가 있다면 전문 상담사를 찾아가는 것을 강력히 권고합니다.'];
-    }
-
-    // Analysis blocks
-    const problemTypes = [];
-    if (matched.hard.length > 0) problemTypes.push('고강도 언행');
-    if (matched.boundary.length > 0) problemTypes.push('사생활 침해');
-    if (matched.power.length > 0) problemTypes.push('갑질성 태도');
-    if (matched.mid.length > 0) problemTypes.push('꼰대식 발언');
-    if (matched.narc.length > 0) problemTypes.push('자기중심적 패턴');
-    if (problemTypes.length === 0) problemTypes.push('미묘한 불쾌감');
-
-    const relPowerMap = {
-      boss:   '권력 차이가 큰 관계예요. 지위를 이용한 언행일 가능성이 있어요.',
-      senior: '연차 차이에서 오는 암묵적 압력이 작용할 수 있는 관계예요.',
-      client: '갑을 관계로, 상대가 우위를 이용했을 가능성이 있어요.',
-      parent: '가족 관계 특성상 경계가 모호해지기 쉬워요.',
-      elder:  '나이/경험 차이를 내세우는 경우 경계가 불명확해지기 쉬운 관계예요.',
-      other:  '관계 맥락에 따라 다르게 해석될 수 있어요.'
-    };
-
-    const repeatLabels = ['처음 있는 일', '가끔 반복', '자주 반복', '거의 매일'];
-    const repeatMent = [
-      '처음 일어난 일이라면 오해 가능성도 있어요.',
-      '가끔 반복된다면 패턴으로 볼 수 있어요.',
-      '자주 반복되는 것은 우연이 아니에요. 명백한 패턴입니다.',
-      '매일 반복된다면 이건 구조적 문제예요. 방관은 금물입니다.'
-    ];
-
-    const analysisItems = [
-      { label: '관계 권력 분석', value: relPowerMap[selectedRel] || relPowerMap.other },
-      { label: '감지된 문제 유형', value: problemTypes.join(', ') },
-      { label: '반복 패턴 분석', value: repeatMent[selectedRepeat - 1], full: true }
-    ];
-
-    return { score, grade, verdictType, verdictMain, verdictDesc, tags, actions, analysisItems, types };
-  }
-
-  // ── LOADING ──
-  const loadingTexts = [
-    '꼰대 발언 데이터베이스 대조 중...',
-    '선 넘음 게이지 측정 중...',
-    '나르시시스트 패턴 스캔 중...',
-    '내가 문제일 확률 계산 중...',
-    '판정 준비 중...'
-  ];
-  let loadInterval;
-
-  function showLoading() {
-    let i = 0;
-    document.getElementById('loadingText').textContent = loadingTexts[0];
-    loadInterval = setInterval(() => {
-      i = (i + 1) % loadingTexts.length;
-      document.getElementById('loadingText').textContent = loadingTexts[i];
-    }, 650);
-    document.getElementById('loading').classList.add('show');
-  }
-
-  function hideLoading() {
-    clearInterval(loadInterval);
-    document.getElementById('loading').classList.remove('show');
-  }
-
-  function analyze() {
-    const situation = document.getElementById('situation').value.trim();
-    const errEl = document.getElementById('errorMsg');
-
-    if (situation.length < 10) {
-      errEl.classList.add('show');
-      setTimeout(() => errEl.classList.remove('show'), 2500);
-      return;
-    }
-    errEl.classList.remove('show');
-    document.getElementById('inputCard').style.opacity = '0.5';
-    document.getElementById('inputCard').style.pointerEvents = 'none';
-    showLoading();
-
-    setTimeout(() => {
-      const context = document.getElementById('context').value.trim();
-      const myFeel = document.getElementById('myFeel').value.trim();
-      const result = buildResult(situation, context, myFeel);
-      hideLoading();
-      renderResult(result);
-    }, 2300 + Math.random() * 700);
-  }
-
-  function renderResult(r) {
-    const badgeMap = {
-      safe:   ['v-safe',   '✓ 안전 범위'],
-      gray:   ['v-gray',   '△ 경계선'],
-      warn:   ['v-warn',   '⚠ 선 넘음'],
-      danger: ['v-danger', '✕ 심각']
-    };
-    const [cls, txt] = badgeMap[r.verdictType];
-    const badge = document.getElementById('verdictBadge');
-    badge.className = 'verdict-badge ' + cls;
-    badge.textContent = txt;
-    document.getElementById('gradeTag').textContent = r.grade.label;
-
-    // Gauge
-    const fill = document.getElementById('gaugeFill');
-    const numEl = document.getElementById('gaugeNumber');
-    let gColor;
-    if (r.score < 30) gColor = 'linear-gradient(90deg,#3b82f6,#60a5fa)';
-    else if (r.score < 55) gColor = 'linear-gradient(90deg,#f59e0b,#fbbf24)';
-    else if (r.score < 75) gColor = 'linear-gradient(90deg,#f97316,#fb923c)';
-    else gColor = 'linear-gradient(90deg,#ef4444,#f87171)';
-    fill.style.background = gColor;
-
-    const colorMap = { safe:'#1d4ed8', gray:'#475569', warn:'#92400e', danger:'#b91c1c' };
-    numEl.style.color = colorMap[r.verdictType];
-
-    setTimeout(() => {
-      fill.style.width = r.score + '%';
-      animNum(numEl, 0, r.score, 1200);
-    }, 100);
-
-    document.getElementById('verdictMain').textContent = r.verdictMain;
-    document.getElementById('verdictDesc').textContent = r.verdictDesc;
-    document.getElementById('tagRow').innerHTML = r.tags.map(t => `<span class="tag">${t}</span>`).join('');
-
-    // Type analysis
-    const { agePct, narcPct, rudePct, selfPct } = r.types;
-    const typeData = [
-      { id: 'age',  pct: agePct  },
-      { id: 'narc', pct: narcPct },
-      { id: 'rude', pct: rudePct },
-      { id: 'self', pct: selfPct }
-    ];
-
-    typeData.forEach(({ id, pct }) => {
-      const pctEl = document.getElementById('pct-' + id);
-      const descEl = document.getElementById('desc-' + id);
-      const bar = document.querySelector(`.type-block.t-${id}::before`);
-      pctEl.innerHTML = '0<small>%</small>';
-      descEl.textContent = typeDesc(id, pct);
-      // Animate bar via style
-      setTimeout(() => {
-        document.querySelector(`.type-block.t-${id}`).style.setProperty('--bar', pct + '%');
-        animNum(pctEl, 0, pct, 1100, true);
-      }, 300);
+  function renderResult(r){
+    var bm={safe:['rv-safe','✓ 안전 범위'],gray:['rv-gray','△ 경계선'],warn:['rv-warn','⚠ 선 넘음'],danger:['rv-danger','✕ 심각']};
+    var bd=bm[r.vType];
+    var vEl=document.getElementById('resultVerdict'); vEl.className='result-verdict '+bd[0]; vEl.textContent=bd[1];
+    document.getElementById('resultGrade').textContent=r.grade.label;
+    var cm={safe:'#1d4ed8',gray:'#475569',warn:'#b45309',danger:'#b91c1c'};
+    var sEl=document.getElementById('resultScore'); sEl.style.color=cm[r.vType];
+    var gc=r.score<30?'linear-gradient(90deg,#3b82f6,#60a5fa)':r.score<55?'linear-gradient(90deg,#f59e0b,#fbbf24)':r.score<75?'linear-gradient(90deg,#f97316,#fb923c)':'linear-gradient(90deg,#ef4444,#f87171)';
+    document.getElementById('gaugeFill').style.background=gc;
+    setTimeout(function(){ document.getElementById('gaugeFill').style.width=r.score+'%'; animN(sEl,0,r.score,1200); },200);
+    document.getElementById('resultMain').textContent=r.vMain;
+    document.getElementById('resultDesc').textContent=r.vDesc;
+    document.getElementById('resultTags').innerHTML=r.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('');
+    var types=[{id:'age',pct:r.types.agePct},{id:'narc',pct:r.types.narcPct},{id:'rude',pct:r.types.rudePct},{id:'self',pct:r.types.selfPct}];
+    types.forEach(function(tp){
+      document.getElementById('desc-'+tp.id).textContent=tdesc(tp.id,tp.pct);
+      setTimeout(function(){ animN(document.getElementById('pct-'+tp.id),0,tp.pct,1000); document.getElementById('bar-'+tp.id).style.width=tp.pct+'%'; },400);
     });
-
-    // Manually animate the bottom bar (::before can't be directly animated via JS)
-    // Instead use a real element approach
-    document.querySelectorAll('.type-block').forEach((block, i) => {
-      const pct = [agePct, narcPct, rudePct, selfPct][i];
-      let bar = block.querySelector('.type-bar');
-      if (!bar) {
-        bar = document.createElement('div');
-        bar.className = 'type-bar';
-        bar.style.cssText = 'position:absolute;bottom:0;left:0;height:3px;width:0%;border-radius:0 0 0 14px;transition:width 1.2s cubic-bezier(0.25,0.46,0.45,0.94);';
-        const colors = ['#f97316','#8b5cf6','#ef4444','#3b82f6'];
-        bar.style.background = colors[i];
-        block.appendChild(bar);
-      }
-      setTimeout(() => { bar.style.width = pct + '%'; }, 300 + i * 80);
-    });
-
-    // Analysis grid
-    document.getElementById('analysisGrid').innerHTML = r.analysisItems.map(item => `
-      <div class="analysis-block ${item.full ? 'full' : ''}">
-        <div class="ab-label">${item.label}</div>
-        <div class="ab-value">${item.value}</div>
-      </div>`).join('');
-
-    // Actions
-    document.getElementById('actionList').innerHTML = r.actions.map(a => `
-      <div class="action-item"><div class="action-dot"></div><span>${a}</span></div>`).join('');
-
-    document.getElementById('resultCard').classList.add('show');
-    document.getElementById('resultCard').scrollIntoView({ behavior:'smooth', block:'start' });
+    document.getElementById('actionList').innerHTML=r.actions.map(function(a){return '<div class="action-item"><div class="action-dot"></div><span>'+a+'</span></div>';}).join('');
   }
 
-  function animNum(el, from, to, dur, isType) {
-    const start = performance.now();
-    function step(now) {
-      const t = Math.min((now - start) / dur, 1);
-      const ease = 1 - Math.pow(1 - t, 3);
-      const val = Math.round(from + (to - from) * ease);
-      el.innerHTML = val + '<small>%</small>';
-      if (t < 1) requestAnimationFrame(step);
+  function animN(el,from,to,dur){
+    var start=performance.now();
+    function step(now){
+      var t=Math.min((now-start)/dur,1);
+      var ease=1-Math.pow(1-t,3);
+      el.innerHTML=Math.round(from+(to-from)*ease)+'<small>%</small>';
+      if(t<1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
-
-  function reset() {
-    document.getElementById('resultCard').classList.remove('show');
-    document.getElementById('inputCard').style.opacity = '1';
-    document.getElementById('inputCard').style.pointerEvents = 'auto';
-    document.getElementById('situation').value = '';
-    document.getElementById('context').value = '';
-    document.getElementById('myFeel').value = '';
-    document.getElementById('relCustom').value = '';
-    document.getElementById('gaugeFill').style.width = '0%';
-    // Reset type bars
-    document.querySelectorAll('.type-bar').forEach(b => b.style.width = '0%');
-    window.scrollTo({ top:0, behavior:'smooth' });
-  }
-
-  // ── EVENT LISTENERS ──
-  document.querySelectorAll('.rel-btn').forEach(btn => {
-    btn.addEventListener('click', function() { selectRel(this); });
-  });
-  document.querySelectorAll('.repeat-btn').forEach(btn => {
-    btn.addEventListener('click', function() { selectRepeat(this); });
-  });
-  document.querySelectorAll('.stress-btn').forEach(btn => {
-    btn.addEventListener('click', function() { selectStress(this); });
-  });
-  document.getElementById('btnAnalyze').addEventListener('click', analyze);
-  document.getElementById('btnReset').addEventListener('click', reset);
-
-}); // end DOMContentLoaded
+});
 </script>
 </body>
 </html>
-
