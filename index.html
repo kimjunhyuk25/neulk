@@ -7,23 +7,17 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#e8e6e0;--white:#fff;--border:#e0ddd5;
-  --text:#111;--sub:#555;--muted:#aaa;
-  --accent:#111;--red:#e63946;--chip:#f0efe9;
-}
+:root{--bg:#e8e6e0;--white:#fff;--border:#e0ddd5;--text:#111;--sub:#555;--muted:#aaa;--accent:#111;--red:#e63946;--chip:#f0efe9;}
 html{height:100%;width:100%}
 body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
 #shell{width:100%;max-width:390px;height:100vh;max-height:844px;background:var(--white);position:relative;overflow:hidden;display:flex;flex-direction:column}
 @media(min-width:460px){body{padding:24px}#shell{border-radius:48px;box-shadow:0 24px 80px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.06)}}
 
-/* STATUS / PROGRESS */
+/* STATUS BAR */
 #sb{position:absolute;top:0;left:0;right:0;height:50px;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 28px;pointer-events:none;transition:color .3s}
 #sb.dark{color:#fff}#sb.light{color:#111}
 .sb-t{font-size:15px;font-weight:700}
 .sb-i{font-size:11px;display:flex;gap:5px;align-items:center}
-#pw{position:absolute;top:50px;left:0;right:0;height:2px;background:var(--border);z-index:49;display:none}
-#pb{height:100%;background:var(--accent);transition:width .45s ease;width:0%}
 
 /* SCREENS */
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(28px);transition:opacity .3s ease,transform .3s ease;overflow:hidden}
@@ -31,137 +25,136 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
 .screen.exit-left{opacity:0;transform:translateX(-28px);pointer-events:none}
 .screen.from-left{opacity:0;transform:translateX(-28px)}
 
-/* HOME */
+/* ── HOME ── */
 #s0{background:#0d0d0d;justify-content:flex-end}
 .home-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px 24px}
 .app-icon{width:88px;height:88px;background:var(--red);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:32px}
-.home-h{font-size:100px;font-weight:900;letter-spacing:-6px;line-height:1;color:#fff;margin-bottom:10px}
+.home-h{font-size:100px;font-weight:900;letter-spacing:-6px;line-height:1;color:#fff;margin-bottom:14px}
 .home-h .r{color:var(--red)}
-.home-p{font-size:14px;color:rgba(255,255,255,.45);text-align:center;line-height:1.65}
+.home-sub{font-size:14px;color:rgba(255,255,255,.38);text-align:center;line-height:1.75}
 .home-foot{padding:20px 24px 48px}
 .btn-start{width:100%;padding:20px;background:var(--red);color:#fff;border:none;border-radius:18px;font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;transition:transform .1s,opacity .1s}
 .btn-start:active{transform:scale(.97);opacity:.88}
 
-/* Q SCREENS */
-.q-top{display:flex;align-items:center;gap:14px;padding:60px 20px 0;flex-shrink:0}
+/* ── COMMON Q TOP ── */
+.q-top{display:flex;align-items:center;gap:14px;padding:58px 24px 0;flex-shrink:0}
 .btn-bk{width:34px;height:34px;border-radius:50%;background:var(--chip);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:background .15s}
 .btn-bk:active{background:var(--border)}
-.step-lbl{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
-.q-head{padding:16px 24px 0;flex-shrink:0}
-.q-title{font-size:32px;font-weight:900;letter-spacing:-1.5px;line-height:1.2;color:var(--text);margin-bottom:5px}
-.q-hint{font-size:13px;color:var(--muted);margin-bottom:20px}
-.q-scroll{flex:1;overflow-y:auto;padding:0 24px;-webkit-overflow-scrolling:touch}
-.q-scroll::-webkit-scrollbar{display:none}
+.q-title{font-size:30px;font-weight:900;letter-spacing:-1.2px;line-height:1.22;color:var(--text);margin-bottom:5px}
+.q-hint{font-size:13px;color:var(--muted);line-height:1.6}
 
-/* CHOICE CARDS */
-.c-list{display:flex;flex-direction:column;gap:9px;padding-bottom:16px}
-.c-card{display:flex;align-items:center;gap:15px;padding:17px 18px;background:var(--chip);border:2px solid transparent;border-radius:16px;cursor:pointer;transition:all .12s;width:100%;font-family:inherit;text-align:left}
-.c-card:active{transform:scale(.98)}
-.c-card.sel{background:var(--accent);border-color:var(--accent);color:#fff}
-.c-icon{font-size:26px;flex-shrink:0}.c-main{font-size:16px;font-weight:700}.c-sub{font-size:12px;opacity:.5;margin-top:2px}.c-card.sel .c-sub{opacity:.6}
-.c-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding-bottom:20px}
-.c-grid .c-card{flex-direction:column;align-items:flex-start;gap:8px;padding:18px 16px}.c-grid .c-icon{font-size:30px}
+/* ── INPUT SCREEN ── */
+#s-input{background:#fff}
+.input-head{padding:14px 24px 0;flex-shrink:0}
+.input-scroll{flex:1;overflow-y:auto;padding:16px 24px 8px;-webkit-overflow-scrolling:touch}
+.input-scroll::-webkit-scrollbar{display:none}
+.situation-ta{width:100%;min-height:170px;padding:16px;border:2px solid var(--border);border-radius:18px;font-family:inherit;font-size:15px;line-height:1.75;color:var(--text);background:var(--chip);outline:none;resize:none;transition:border-color .2s}
+.situation-ta:focus{border-color:var(--accent)}
+.situation-ta::placeholder{color:var(--muted)}
+.char-hint{font-size:12px;color:var(--muted);margin-top:7px;text-align:right}
 
-/* 기타 입력 */
-.other-wrap{overflow:hidden;max-height:0;transition:max-height .3s ease,opacity .3s ease;opacity:0;margin-bottom:0}
-.other-wrap.show{max-height:80px;opacity:1;margin-bottom:8px}
-.other-input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:15px;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
-.other-input:focus{border-color:var(--accent)}.other-input::placeholder{color:var(--muted)}
+/* 생년월일 선택 입력 */
+.birth-toggle{display:flex;align-items:center;gap:9px;padding:16px 0 8px;cursor:pointer;border:none;background:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);width:100%;text-align:left}
+.birth-toggle-icon{font-size:17px;flex-shrink:0}
+.birth-fields{overflow:hidden;max-height:0;transition:max-height .32s ease,opacity .32s ease;opacity:0}
+.birth-fields.open{max-height:120px;opacity:1}
+.birth-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;padding-bottom:6px}
+.birth-input{padding:12px 14px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:15px;color:var(--text);background:var(--chip);outline:none;transition:border-color .15s;width:100%}
+.birth-input:focus{border-color:var(--accent)}
+.birth-input::placeholder{color:var(--muted)}
+.birth-select{padding:12px 10px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:14px;color:var(--text);background:var(--chip);outline:none;transition:border-color .15s;width:100%;appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aaa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.birth-select:focus{border-color:var(--accent)}
+.birth-note{font-size:11px;color:var(--muted);line-height:1.55}
 
-/* CHIPS */
-.chip-cat{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
-.chip-cat:first-child{margin-top:0}
-.chip-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
-.chip{display:inline-flex;align-items:center;gap:5px;padding:9px 13px;background:var(--chip);border:2px solid transparent;border-radius:100px;font-family:inherit;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .12s;white-space:nowrap}
-.chip:active{transform:scale(.93)}.chip.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.input-foot{padding:10px 24px 44px;flex-shrink:0}
+.btn-analyze{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s,opacity .15s}
+.btn-analyze:active{transform:scale(.98)}
+.btn-analyze:disabled{opacity:.35;cursor:default}
 
-/* 직접입력 */
-.text-toggle{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;background:transparent;border:2px dashed var(--border);border-radius:100px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;margin-top:12px}
-.text-toggle.open{border-style:solid;border-color:var(--accent);color:var(--text);background:var(--chip)}
-.custom-wrap{overflow:hidden;max-height:0;transition:max-height .35s ease,opacity .35s ease;opacity:0}
-.custom-wrap.show{max-height:160px;opacity:1}
-.custom-ta{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:14px;color:var(--text);background:var(--chip);outline:none;resize:none;min-height:110px;line-height:1.6;margin-top:10px;transition:border-color .15s}
-.custom-ta:focus{border-color:var(--accent)}.custom-ta::placeholder{color:var(--muted)}
+/* ── FOLLOWUP SCREEN ── */
+#s-followup{background:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#s-followup::-webkit-scrollbar{display:none}
+.followup-head{padding:14px 24px 18px;flex-shrink:0}
+.followup-hint{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+.followup-section{padding:0 24px 16px;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.rel-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:22px}
+.rel-chip{padding:14px 6px;background:var(--chip);border:2px solid transparent;border-radius:14px;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;text-align:center;transition:all .12s;display:flex;flex-direction:column;align-items:center;gap:5px}
+.rel-chip:active{transform:scale(.95)}
+.rel-chip.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.rel-chip-icon{font-size:22px}
+.followup-ta{width:100%;min-height:100px;padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:14px;line-height:1.7;color:var(--text);background:var(--chip);outline:none;resize:none;transition:border-color .15s;margin-bottom:24px}
+.followup-ta:focus{border-color:var(--accent)}
+.followup-ta::placeholder{color:var(--muted)}
+.followup-foot{padding:0 24px 44px;flex-shrink:0}
 
-/* FOOTER */
-.q-foot{padding:10px 24px 44px;flex-shrink:0}
-.chip-info{text-align:center;font-size:12px;color:var(--muted);margin-bottom:10px}
-.btn-nxt{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s}
-.btn-nxt:active{transform:scale(.98)}
-
-/* LOADING */
+/* ── LOADING ── */
 #s-load{background:#fff;align-items:center;justify-content:center}
 .load-emoji{font-size:60px;margin-bottom:20px;animation:bob .75s ease-in-out infinite alternate}
 @keyframes bob{from{transform:translateY(0)}to{transform:translateY(-14px)}}
 .load-title{font-size:22px;font-weight:900;margin-bottom:6px}
 .load-sub{font-size:13px;color:var(--muted);animation:blink 1.4s ease-in-out infinite;text-align:center;padding:0 32px}
 @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+.hi{height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hi-bar{width:120px;height:4px;border-radius:100px;background:rgba(0,0,0,.10)}
 
-/* RESULT */
+/* ── RESULT ── */
 #s-result{overflow-y:auto;-webkit-overflow-scrolling:touch}
 #s-result::-webkit-scrollbar{display:none}
 .res-hero{padding:56px 24px 28px;background:#0d0d0d;color:#fff;flex-shrink:0}
-.res-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
-.rb-safe{background:#dbeafe;color:#1d4ed8}.rb-gray{background:#e2e8f0;color:#475569}
-.rb-warn{background:#fef3c7;color:#b45309}.rb-danger{background:#fee2e2;color:#b91c1c}
-.res-num{font-size:100px;font-weight:900;letter-spacing:-6px;line-height:1;margin-bottom:4px}
-.res-num small{font-size:38px;font-weight:400;opacity:.45;letter-spacing:0}
-.res-grade{font-size:12px;font-weight:600;opacity:.4;margin-bottom:10px}
-.res-verdict{font-size:26px;font-weight:900;line-height:1.2;letter-spacing:-.5px}
+.res-tag{display:inline-flex;align-items:center;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:14px}
+.rt-safe{background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3)}
+.rt-gray{background:rgba(148,163,184,.15);color:#94a3b8;border:1px solid rgba(148,163,184,.3)}
+.rt-warn{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+.rt-danger{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+.res-main{font-size:32px;font-weight:900;line-height:1.18;letter-spacing:-1.2px;margin-bottom:10px}
+.res-score{font-size:13px;font-weight:600;color:rgba(255,255,255,.3);margin-top:2px}
 
-.res-body{padding:0 24px 0}
+.res-body{padding:20px 24px 40px}
 
-/* 공감 카드 */
-.empathy-card{margin:20px 0 16px;padding:18px;background:#fff7ed;border-radius:16px;border-left:4px solid #f97316}
-.empathy-emoji{font-size:22px;margin-bottom:8px}
-.empathy-text{font-size:14px;color:#7c3b00;line-height:1.7;font-weight:500}
+/* 공감 */
+.empathy-wrap{padding:20px;background:#f9f7ff;border-radius:18px;margin-bottom:14px}
+.empathy-emoji{font-size:24px;margin-bottom:8px}
+.empathy-text{font-size:14px;color:#111;line-height:1.78;font-weight:500}
 
-/* AI 분석 */
-.ai-box{margin-bottom:16px;background:#f0f0ff;border-radius:16px;padding:18px;border-left:4px solid #8b5cf6;display:none}
-.ai-box.show{display:block}
-.ai-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.ai-emoji{font-size:20px}
-.ai-title{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#6d28d9}
-.ai-content{font-size:13px;color:#4c1d95;line-height:1.7}
-.ai-content p{margin-bottom:7px}
-.ai-content p:last-child{margin-bottom:0}
-
-/* 상황 설명 */
-.res-desc{font-size:14px;color:var(--sub);line-height:1.75;padding:18px;background:var(--chip);border-radius:16px;margin-bottom:20px}
-
-/* 섹션 */
-.sec-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-
-/* 타입 그리드 */
-.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
-.t-card{padding:16px;background:var(--chip);border-radius:14px}
-.t-emoji{font-size:22px;margin-bottom:5px}
-.t-lbl{font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;line-height:1.4}
-.t-pct{font-size:28px;font-weight:900;letter-spacing:-1px}
-.t-pct small{font-size:12px;font-weight:400;color:var(--muted)}
-.t-bar-bg{height:3px;background:var(--border);border-radius:100px;overflow:hidden;margin-top:8px}
-.t-bar{height:100%;border-radius:100px;width:0%;transition:width 1s cubic-bezier(.25,.46,.45,.94)}
-.t-age .t-pct{color:#f97316}.t-age .t-bar{background:#f97316}
-.t-narc .t-pct{color:#8b5cf6}.t-narc .t-bar{background:#8b5cf6}
-.t-rude .t-pct{color:#ef4444}.t-rude .t-bar{background:#ef4444}
-.t-cut .t-pct{color:#e63946}.t-cut .t-bar{background:#e63946}
+/* 분석 카드 */
+.analysis-card{background:var(--chip);border-radius:16px;padding:18px;margin-bottom:12px;border-left:3px solid #111}
+.analysis-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.analysis-text{font-size:14px;color:var(--text);line-height:1.78}
 
 /* 대처 방법 */
-.act-section{margin-bottom:20px}
-.act-item{background:var(--chip);border-radius:14px;padding:16px 18px;margin-bottom:8px}
-.act-item-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.act-item-icon{font-size:18px;flex-shrink:0}
-.act-item-title{font-size:13px;font-weight:700;color:var(--text)}
-.act-item-body{font-size:13px;color:var(--sub);line-height:1.65;padding-left:28px}
+.action-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.action-item{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--chip);border-radius:14px}
+.action-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.action-body{flex:1}
+.action-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.action-desc{font-size:12px;color:var(--sub);line-height:1.6}
 
+/* 사주 섹션 (결과 화면 내) */
+.saju-section{background:linear-gradient(150deg,#1a0533 0%,#0d0d0d 100%);border-radius:18px;padding:20px;margin-bottom:14px;color:#fff}
+.saju-sec-top{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.saju-sec-icon{font-size:18px}
+.saju-sec-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#c4b5fd}
+.saju-gan-badge{display:inline-flex;background:rgba(139,92,246,.22);border-radius:100px;padding:5px 11px;font-size:12px;font-weight:700;color:#c4b5fd;margin-bottom:8px}
+.saju-type-lbl{font-size:17px;font-weight:900;color:#fff;letter-spacing:-.4px;margin-bottom:3px}
+.saju-type-sub{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:14px}
+.saju-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:16px}
+.saju-pill{display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,.06);border-radius:10px;padding:8px 4px}
+.saju-pill-lbl{font-size:8px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:.3px}
+.saju-pill-gan{font-size:18px;font-weight:900;line-height:1}
+.saju-pill-ji{font-size:13px;font-weight:700;color:rgba(255,255,255,.48);line-height:1;margin-top:2px}
+.saju-divider{height:1px;background:rgba(255,255,255,.08);margin-bottom:14px}
+.saju-trait-text{font-size:13px;color:rgba(255,255,255,.75);line-height:1.82;margin-bottom:12px}
+.saju-why-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c4b5fd;opacity:.7;margin-bottom:6px}
+.saju-why-text{font-size:13px;color:rgba(255,255,255,.58);line-height:1.78}
+
+/* 버튼 */
+.btn-share{width:100%;padding:17px;background:#111;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:800;color:#fff;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s,opacity .1s}
+.btn-share:active{transform:scale(.98);opacity:.88}
 .btn-again{width:100%;padding:15px;background:var(--chip);border:none;border-radius:14px;font-family:inherit;font-size:14px;font-weight:700;color:var(--sub);cursor:pointer;margin-bottom:50px;transition:all .15s}
 .btn-again:active{transform:scale(.98)}
-.hi{height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.hi-bar{width:120px;height:4px;border-radius:100px;background:rgba(0,0,0,.12)}
 
-/* SHARE */
-.btn-share{width:100%;padding:17px;background:#111;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:800;color:#fff;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s,opacity .1s}
-.btn-share:active{transform:scale(.98);opacity:.88}
+/* ── SHARE OVERLAY ── */
 .share-overlay{position:absolute;inset:0;z-index:100;display:flex;align-items:flex-end;pointer-events:none;opacity:0;transition:opacity .25s ease}
 .share-overlay.open{pointer-events:all;opacity:1}
 .share-dim{position:absolute;inset:0;background:rgba(0,0,0,.6)}
@@ -170,8 +163,6 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
 .share-handle{width:40px;height:4px;background:var(--border);border-radius:100px;margin:0 auto 18px}
 .share-card-wrap{width:100%;aspect-ratio:1/1;border-radius:16px;overflow:hidden;margin-bottom:20px;background:#0d0d0d}
 #shareCanvas{width:100%;height:100%;display:block}
-
-/* 플랫폼 아이콘 행 */
 .share-platforms{display:flex;justify-content:space-around;align-items:flex-start;padding:0 4px;margin-bottom:20px}
 .sp-btn{display:flex;flex-direction:column;align-items:center;gap:7px;background:none;border:none;cursor:pointer;padding:4px 8px;font-family:inherit;-webkit-tap-highlight-color:transparent}
 .sp-btn:active .sp-icon{transform:scale(.91);opacity:.8}
@@ -181,99 +172,12 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
 .sp-insta{background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)}
 .sp-x{background:#000}
 .sp-more{background:var(--chip)}
-
-/* 구분선 */
 .share-sep{height:1px;background:var(--border);margin:0 0 14px}
-
-/* 하단 보조 버튼 */
 .share-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .sh-btn{padding:14px 10px;background:var(--chip);border:none;border-radius:12px;font-family:inherit;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:all .12s;text-align:center}
 .sh-btn:active{transform:scale(.97)}
-
-/* 인스타 토스트 */
 .insta-toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:12px;font-weight:600;padding:10px 18px;border-radius:100px;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;z-index:10}
 .insta-toast.show{opacity:1}
-
-/* ── 사주 CTA (결과 화면) ── */
-.btn-saju-cta{width:100%;padding:16px 18px;background:#f5f3ff;border:2px solid #e0d9ff;border-radius:14px;font-family:inherit;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:all .12s;text-align:left}
-.btn-saju-cta:active{transform:scale(.98);opacity:.88}
-.btn-saju-cta-left{display:flex;flex-direction:column;gap:3px}
-.btn-saju-cta-title{font-size:14px;font-weight:800;color:#4c1d95}
-.btn-saju-cta-sub{font-size:11px;color:#8b5cf6;font-weight:600}
-.btn-saju-arrow{font-size:18px;color:#8b5cf6;flex-shrink:0}
-
-/* ── SAJU INPUT ── */
-#s-saju-input{background:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch}
-#s-saju-input::-webkit-scrollbar{display:none}
-.saju-top{display:flex;align-items:center;gap:14px;padding:60px 20px 0;flex-shrink:0}
-.saju-head{padding:16px 24px 0}
-.saju-title{font-size:29px;font-weight:900;letter-spacing:-1.2px;line-height:1.25;color:var(--text);margin-bottom:6px}
-.saju-subtitle{font-size:13px;color:var(--muted);margin-bottom:8px;line-height:1.6}
-.saju-body{padding:20px 24px 40px;display:flex;flex-direction:column;gap:18px}
-.saju-field{display:flex;flex-direction:column;gap:8px}
-.saju-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
-.saju-input{padding:14px 16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:16px;color:var(--text);background:var(--chip);outline:none;transition:border-color .15s;width:100%}
-.saju-input:focus{border-color:var(--accent)}
-.saju-input::placeholder{color:var(--muted)}
-.saju-date-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
-.saju-select{padding:14px 12px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:15px;color:var(--text);background:var(--chip);outline:none;transition:border-color .15s;width:100%;appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aaa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
-.saju-select:focus{border-color:var(--accent)}
-.gender-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.gender-btn{padding:14px;background:var(--chip);border:2px solid transparent;border-radius:14px;font-family:inherit;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;transition:all .12s;text-align:center}
-.gender-btn:active{transform:scale(.97)}
-.gender-btn.sel{background:var(--accent);border-color:var(--accent);color:#fff}
-.saju-time-note{font-size:11px;color:var(--muted);line-height:1.55;padding:10px 14px;background:var(--chip);border-radius:10px;margin-top:6px}
-.btn-saju-start{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:16px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s,opacity .15s;margin-top:4px}
-.btn-saju-start:active{transform:scale(.98)}
-.btn-saju-start:disabled{opacity:.35;cursor:default}
-
-/* ── SAJU LOADING ── */
-#s-saju-load{background:#0d0d0d;align-items:center;justify-content:center}
-.saju-load-emoji{font-size:54px;margin-bottom:18px;animation:bob .8s ease-in-out infinite alternate}
-.saju-load-title{font-size:20px;font-weight:900;color:#fff;margin-bottom:8px;text-align:center}
-.saju-load-sub{font-size:12px;color:rgba(255,255,255,.4);animation:blink 1.4s ease-in-out infinite;text-align:center;padding:0 32px}
-
-/* ── SAJU RESULT ── */
-#s-saju-result{background:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch}
-#s-saju-result::-webkit-scrollbar{display:none}
-.saju-res-hero{padding:56px 24px 24px;background:#0d0d0d;color:#fff;flex-shrink:0}
-.saju-res-gan-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(139,92,246,.25);border-radius:100px;padding:5px 12px;font-size:11px;font-weight:700;color:#c4b5fd;letter-spacing:.5px;margin-bottom:12px}
-.saju-res-name{font-size:24px;font-weight:900;letter-spacing:-.8px;line-height:1.25;margin-bottom:4px}
-.saju-res-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:6px}
-.saju-res-type{font-size:15px;font-weight:800;color:rgba(255,255,255,.75);margin-bottom:18px;letter-spacing:-.2px}
-.saju-four-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.saju-pillar{display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(255,255,255,.07);border-radius:12px;padding:10px 4px}
-.saju-pillar-lbl{font-size:8px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:.5px}
-.saju-pillar-gan{font-size:20px;font-weight:900;line-height:1}
-.saju-pillar-ji{font-size:16px;font-weight:700;color:rgba(255,255,255,.55);line-height:1}
-.saju-pillar-kr{font-size:8px;color:rgba(255,255,255,.22);margin-top:3px}
-
-.saju-res-body{padding:20px 24px 40px}
-
-/* 무료 섹션 */
-.saju-sec-badge{display:inline-flex;align-items:center;gap:5px;background:#f0f0ff;border-radius:100px;padding:4px 10px;font-size:10px;font-weight:700;color:#6d28d9;letter-spacing:.5px;margin-bottom:12px}
-.saju-free-card{background:var(--chip);border-radius:16px;padding:18px;margin-bottom:10px}
-.saju-free-card.accent{border-left:4px solid #8b5cf6}
-.saju-free-card-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#8b5cf6;margin-bottom:8px}
-.saju-free-card-body{font-size:14px;color:var(--text);line-height:1.8;font-weight:400}
-
-/* 오행 바 */
-.ohaeng-grid{display:flex;flex-direction:column;gap:8px}
-.oh-row{display:flex;align-items:center;gap:10px}
-.oh-lbl{font-size:12px;font-weight:700;color:var(--sub);width:20px;flex-shrink:0}
-.oh-bar-bg{flex:1;height:7px;background:var(--border);border-radius:100px;overflow:hidden}
-.oh-bar{height:100%;border-radius:100px;width:0%;transition:width 1s cubic-bezier(.25,.46,.45,.94)}
-.oh-pct{font-size:11px;font-weight:700;color:var(--sub);width:30px;text-align:right;flex-shrink:0}
-
-/* 잠금 섹션 */
-.saju-lock-section{position:relative;margin-bottom:24px;border-radius:16px;overflow:hidden}
-.saju-blurred{filter:blur(5px);user-select:none;pointer-events:none;opacity:.6;padding:0}
-.saju-lock-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:2;padding:24px;background:rgba(255,255,255,.15);backdrop-filter:blur(2px)}
-.saju-lock-icon{font-size:28px}
-.saju-lock-msg{font-size:14px;font-weight:800;color:var(--text);text-align:center;line-height:1.55}
-.saju-lock-price{font-size:11px;color:var(--muted);font-weight:500}
-.btn-unlock{padding:14px 24px;background:#111;color:#fff;border:none;border-radius:14px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:transform .1s;letter-spacing:-.2px}
-.btn-unlock:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -282,135 +186,135 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
     <span class="sb-t" id="sbT">9:41</span>
     <div class="sb-i"><span>▋▋▋</span><span>WiFi</span><span>▉</span></div>
   </div>
-  <div id="pw"><div id="pb"></div></div>
 
   <!-- HOME -->
   <div class="screen active" id="s0">
     <div class="home-top">
       <div class="app-icon">👴</div>
       <div class="home-h"><span class="r">늙</span>?</div>
-      <p class="home-p">선 넘은 건지 내가 예민한 건지<br>30초 만에 판별해드려요</p>
+      <p class="home-sub">내가 예민한 건지,<br>상대방이 선을 넘은 건지<br>솔직하게 판별해드려요</p>
     </div>
     <div class="home-foot">
       <button type="button" class="btn-start" id="btnStart">판별 시작하기 →</button>
     </div>
   </div>
 
-  <!-- S1: 누구? -->
-  <div class="screen" id="s1">
-    <div class="q-top"><button class="btn-bk" id="bk1">←</button><span class="step-lbl">1 / 4</span></div>
-    <div class="q-head"><h2 class="q-title">상대방이<br>누구예요?</h2><p class="q-hint">탭하면 바로 넘어가요</p></div>
-    <div class="q-scroll">
-      <div class="c-list">
-        <button class="c-card" data-rel="boss"><span class="c-icon">🏢</span><div><div class="c-main">직장 상사</div><div class="c-sub">팀장 / 임원 / 대표</div></div></button>
-        <button class="c-card" data-rel="senior"><span class="c-icon">👔</span><div><div class="c-main">직장 선배</div><div class="c-sub">선임 / 연차 높은 동료</div></div></button>
-        <button class="c-card" data-rel="client"><span class="c-icon">💼</span><div><div class="c-main">고객 / 갑</div><div class="c-sub">거래처 / 클라이언트</div></div></button>
-        <button class="c-card" data-rel="parent"><span class="c-icon">👨‍👩‍👧</span><div><div class="c-main">부모 / 친척</div><div class="c-sub">가족 / 친인척</div></div></button>
-        <button class="c-card" data-rel="elder"><span class="c-icon">👴</span><div><div class="c-main">동네 어른 / 지인</div><div class="c-sub">잘 모르는 어른</div></div></button>
-        <button class="c-card" data-rel="other" id="cardOther"><span class="c-icon">✏️</span><div><div class="c-main">기타 (직접 입력)</div><div class="c-sub">위에 없는 관계</div></div></button>
-        <div class="other-wrap" id="otherWrap">
-          <input type="text" class="other-input" id="otherTxt" placeholder="어떤 관계인지 적어주세요 (예: 동창, 교수님...)">
+  <!-- INPUT -->
+  <div class="screen" id="s-input">
+    <div class="q-top">
+      <button class="btn-bk" id="bkInput">←</button>
+    </div>
+    <div class="input-head">
+      <h2 class="q-title">무슨 일이<br>있었나요?</h2>
+      <p class="q-hint" style="margin-top:6px">구체적으로 쓸수록 더 정확하게 판단해드려요</p>
+    </div>
+    <div class="input-scroll">
+      <textarea class="situation-ta" id="situationTa" rows="8" autocomplete="off"
+        placeholder="예: 퇴근하고 나서 새벽 1시에 상사가 카톡을 보내서 당장 답장을 요구했어요. 다음날 회의에서 왜 답장 안 했냐고 공개적으로 혼냈는데, 제가 예민한 건지 모르겠어요..."></textarea>
+      <div class="char-hint" id="charHint">0자</div>
+
+      <!-- 생년월일 (선택) -->
+      <button type="button" class="birth-toggle" id="birthToggle">
+        <span class="birth-toggle-icon">✨</span>
+        <span id="birthToggleLabel">생년월일 입력하면 사주 기질 분석도 해드려요 (선택)</span>
+      </button>
+      <div class="birth-fields" id="birthFields">
+        <div class="birth-row">
+          <input type="number" class="birth-input" id="birthYear" placeholder="출생년도 (예: 1992)" min="1930" max="2005" inputmode="numeric">
+          <select class="birth-select" id="birthMonth">
+            <option value="">월</option>
+            <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
+            <option value="4">4월</option><option value="5">5월</option><option value="6">6월</option>
+            <option value="7">7월</option><option value="8">8월</option><option value="9">9월</option>
+            <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
+          </select>
+          <select class="birth-select" id="birthDay">
+            <option value="">일</option>
+            <option value="1">1일</option><option value="2">2일</option><option value="3">3일</option><option value="4">4일</option><option value="5">5일</option><option value="6">6일</option><option value="7">7일</option><option value="8">8일</option><option value="9">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option>
+          </select>
         </div>
+        <div class="birth-note">생년월일은 판별 결과와 별개로 사주 기질 분석에만 사용돼요</div>
       </div>
+    </div>
+    <div class="input-foot">
+      <button type="button" class="btn-analyze" id="btnInputNext">분석 시작 →</button>
+    </div>
+  </div>
+
+  <!-- FOLLOWUP -->
+  <div class="screen" id="s-followup">
+    <div class="q-top">
+      <button class="btn-bk" id="bkFollowup">←</button>
+    </div>
+    <div class="followup-head">
+      <h2 class="q-title">조금만 더<br>알려주세요</h2>
+      <p class="followup-hint">상대방이 누구인지, 어떤 상황이었는지<br>조금 더 알아야 정확하게 판별할 수 있어요</p>
+    </div>
+    <div class="followup-section">
+      <div class="sec-label">상대방이 누구예요?</div>
+      <div class="rel-grid">
+        <button class="rel-chip" data-rel="boss"><span class="rel-chip-icon">🏢</span><span>직장 상사</span></button>
+        <button class="rel-chip" data-rel="senior"><span class="rel-chip-icon">👔</span><span>직장 선배</span></button>
+        <button class="rel-chip" data-rel="client"><span class="rel-chip-icon">💼</span><span>고객·갑</span></button>
+        <button class="rel-chip" data-rel="parent"><span class="rel-chip-icon">👨‍👩‍👧</span><span>부모·가족</span></button>
+        <button class="rel-chip" data-rel="elder"><span class="rel-chip-icon">👴</span><span>지인 어른</span></button>
+        <button class="rel-chip" data-rel="other"><span class="rel-chip-icon">✏️</span><span>기타</span></button>
+      </div>
+      <div class="sec-label">구체적으로 어떤 상황이었나요?</div>
+      <textarea class="followup-ta" id="followupTa" placeholder="예: 퇴근 후에 갑자기 연락이 와서 주말에 출근하라고 했어요. 거절하기가 너무 어려웠고..."></textarea>
+    </div>
+    <div class="followup-foot">
+      <button type="button" class="btn-analyze" id="btnFollowupNext">판별하기 →</button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="screen" id="s-load">
+    <div style="text-align:center;padding:0 32px">
+      <div class="load-emoji">🔍</div>
+      <div class="load-title">판별 중...</div>
+      <div class="load-sub" id="loadTxt">상황 분석 중...</div>
     </div>
     <div class="hi"><div class="hi-bar"></div></div>
   </div>
 
-  <!-- S2: 뭘 했나요? -->
-  <div class="screen" id="s2">
-    <div class="q-top"><button class="btn-bk" id="bk2">←</button><span class="step-lbl">2 / 4</span></div>
-    <div class="q-head"><h2 class="q-title">어떤 일이<br>있었나요?</h2><p class="q-hint">해당하는 것 모두 탭하세요</p></div>
-    <div class="q-scroll">
-      <div class="chip-cat">🗣 말 한마디</div>
-      <div class="chip-wrap">
-        <button class="chip" data-cat="age">😤 나 때는~</button>
-        <button class="chip" data-cat="age">🙄 요즘 것들이</button>
-        <button class="chip" data-cat="age">내가 다 해봐서 알아</button>
-        <button class="chip" data-cat="mid">그것도 못해?</button>
-        <button class="chip" data-cat="mid">잘 되라고 하는 말</button>
-        <button class="chip" data-cat="mid">반말 강요</button>
-        <button class="chip" data-cat="hard">인격 모독</button>
-        <button class="chip" data-cat="hard">🤬 욕설 / 폭언</button>
-        <button class="chip" data-cat="rude">비교하기</button>
-        <button class="chip" data-cat="rude">조롱 / 비꼬기</button>
-      </div>
-      <div class="chip-cat">📱 연락 · 통제</div>
-      <div class="chip-wrap">
-        <button class="chip" data-cat="hard">🌙 새벽 카톡</button>
-        <button class="chip" data-cat="hard">주말 / 휴일 연락</button>
-        <button class="chip" data-cat="hard">답장 강요</button>
-        <button class="chip" data-cat="hard">🔍 감시 / 통제</button>
-        <button class="chip" data-cat="hard">야근 강요</button>
-        <button class="chip" data-cat="hard">강제 회식 / 2차</button>
-      </div>
-      <div class="chip-cat">🏠 사생활 침범</div>
-      <div class="chip-wrap">
-        <button class="chip" data-cat="boundary">💍 결혼 압박</button>
-        <button class="chip" data-cat="boundary">연애 간섭</button>
-        <button class="chip" data-cat="boundary">외모 / 몸매 언급</button>
-        <button class="chip" data-cat="boundary">연봉 질문</button>
-        <button class="chip" data-cat="boundary">집안 사정 캐기</button>
-        <button class="chip" data-cat="boundary">종교 / 정치 강요</button>
-      </div>
-      <div class="chip-cat">🪞 나르시시스트 패턴</div>
-      <div class="chip-wrap">
-        <button class="chip" data-cat="narc">자기 자랑만</button>
-        <button class="chip" data-cat="narc">공 가로채기</button>
-        <button class="chip" data-cat="narc">인정 / 칭찬 요구</button>
-        <button class="chip" data-cat="narc">나 없으면 안 돼</button>
-        <button class="chip" data-cat="narc">이중적 태도</button>
-        <button class="chip" data-cat="narc">내 덕분에 / 너 때문에</button>
-      </div>
-      <div class="chip-cat">😤 태도 · 갑질</div>
-      <div class="chip-wrap">
-        <button class="chip" data-cat="hard">🚫 무시 / 투명인간</button>
-        <button class="chip" data-cat="hard">공개 망신</button>
-        <button class="chip" data-cat="hard">협박 / 해고 언급</button>
-        <button class="chip" data-cat="power">⚡ 갑질</button>
-        <button class="chip" data-cat="hard">책임 전가</button>
-        <button class="chip" data-cat="hard">면박 주기</button>
-      </div>
-      <button type="button" class="text-toggle" id="textToggle">✏️ 직접 입력하기</button>
-      <div class="custom-wrap" id="customWrap">
-        <textarea class="custom-ta" id="customTxt" placeholder="위에 없는 상황을 자유롭게 적어주세요&#10;예: 30만원 프리랜서 계약을 받아왔는데 저한테는 15만원만 준대요..."></textarea>
-      </div>
-      <div style="height:16px"></div>
+  <!-- RESULT -->
+  <div class="screen" id="s-result">
+    <div class="res-hero">
+      <div class="res-tag" id="resTag"></div>
+      <div class="res-main" id="resMain"></div>
+      <div class="res-score" id="resScore"></div>
     </div>
-    <div class="q-foot">
-      <div class="chip-info" id="chipInfo">선택 없으면 해당 없음으로 판단해요</div>
-      <button type="button" class="btn-nxt" id="btnS2">다음 →</button>
-    </div>
-  </div>
+    <div class="res-body">
+      <div class="empathy-wrap">
+        <div class="empathy-emoji" id="empathyEmoji"></div>
+        <div class="empathy-text" id="empathyText"></div>
+      </div>
+      <div class="analysis-card">
+        <div class="analysis-label">왜 이게 문제인가</div>
+        <div class="analysis-text" id="analysisText"></div>
+      </div>
+      <div class="action-list" id="actionList"></div>
 
-  <!-- S3: 빈도 -->
-  <div class="screen" id="s3">
-    <div class="q-top"><button class="btn-bk" id="bk3">←</button><span class="step-lbl">3 / 4</span></div>
-    <div class="q-head"><h2 class="q-title">얼마나<br>자주요?</h2><p class="q-hint">탭하면 바로 넘어가요</p></div>
-    <div class="q-scroll">
-      <div class="c-list">
-        <button class="c-card" data-rep="1"><span class="c-icon">1️⃣</span><div><div class="c-main">처음 있는 일이에요</div><div class="c-sub">이번 한 번뿐</div></div></button>
-        <button class="c-card" data-rep="2"><span class="c-icon">🔁</span><div><div class="c-main">가끔 있어요</div><div class="c-sub">한 달에 몇 번 정도</div></div></button>
-        <button class="c-card" data-rep="3"><span class="c-icon">😮‍💨</span><div><div class="c-main">자주 반복돼요</div><div class="c-sub">매주, 꽤 잦은 빈도</div></div></button>
-        <button class="c-card" data-rep="4"><span class="c-icon">💀</span><div><div class="c-main">거의 매일이에요</div><div class="c-sub">일상이 됐어요</div></div></button>
+      <!-- 사주 섹션 (생년월일 입력 시 표시) -->
+      <div class="saju-section" id="sajuSection" style="display:none">
+        <div class="saju-sec-top">
+          <span class="saju-sec-icon">☯️</span>
+          <span class="saju-sec-title">사주로 보는 당신의 기질</span>
+        </div>
+        <div class="saju-gan-badge" id="sajuGanBadge"></div>
+        <div class="saju-type-lbl" id="sajuTypeLbl"></div>
+        <div class="saju-type-sub" id="sajuTypeSub"></div>
+        <div class="saju-pillars" id="sajuPillars"></div>
+        <div class="saju-divider"></div>
+        <div class="saju-trait-text" id="sajuTraitText"></div>
+        <div class="saju-why-label">이 상황이 유독 힘든 이유</div>
+        <div class="saju-why-text" id="sajuWhyText"></div>
       </div>
-    </div>
-    <div class="hi"><div class="hi-bar"></div></div>
-  </div>
 
-  <!-- S4: 스트레스 -->
-  <div class="screen" id="s4">
-    <div class="q-top"><button class="btn-bk" id="bk4">←</button><span class="step-lbl">4 / 4</span></div>
-    <div class="q-head"><h2 class="q-title">지금 스트레스가<br>얼마나요?</h2><p class="q-hint">탭하면 바로 판별 시작해요</p></div>
-    <div class="q-scroll">
-      <div class="c-grid">
-        <button class="c-card" data-st="1"><span class="c-icon">😐</span><div><div class="c-main">별로 없음</div></div></button>
-        <button class="c-card" data-st="2"><span class="c-icon">😕</span><div><div class="c-main">약간 있음</div></div></button>
-        <button class="c-card" data-st="3"><span class="c-icon">😤</span><div><div class="c-main">꽤 힘듦</div></div></button>
-        <button class="c-card" data-st="4"><span class="c-icon">😠</span><div><div class="c-main">많이 힘듦</div></div></button>
-        <button class="c-card" data-st="5"><span class="c-icon">🤯</span><div><div class="c-main">한계 직전</div></div></button>
-      </div>
+      <button type="button" class="btn-share" id="btnShare">📤 결과 공유하기</button>
+      <button type="button" class="btn-again" id="btnAgain">↩ 다시 판별하기</button>
     </div>
-    <div class="hi"><div class="hi-bar"></div></div>
   </div>
 
   <!-- SHARE OVERLAY -->
@@ -422,253 +326,37 @@ body{height:100%;width:100%;background:var(--bg);font-family:'Noto Sans KR',-app
       <div class="share-card-wrap">
         <canvas id="shareCanvas"></canvas>
       </div>
-
-      <!-- 플랫폼 버튼 행 -->
       <div class="share-platforms">
-        <!-- 카카오톡 -->
         <button class="sp-btn" id="btnShareKakao">
           <div class="sp-icon sp-kakao">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 3C6.477 3 2 6.477 2 10.857c0 2.738 1.607 5.147 4.04 6.61l-.99 3.654 4.31-2.145c.85.158 1.73.24 2.64.24 5.523 0 10-3.477 10-7.857S17.523 3 12 3z" fill="#000"/>
-            </svg>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3C6.477 3 2 6.477 2 10.857c0 2.738 1.607 5.147 4.04 6.61l-.99 3.654 4.31-2.145c.85.158 1.73.24 2.64.24 5.523 0 10-3.477 10-7.857S17.523 3 12 3z" fill="#000"/></svg>
           </div>
           <span class="sp-label">카카오톡</span>
         </button>
-        <!-- 인스타그램 -->
         <button class="sp-btn" id="btnShareInsta">
           <div class="sp-icon sp-insta">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="1.8"/>
-              <circle cx="12" cy="12" r="5" stroke="white" stroke-width="1.8"/>
-              <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
-            </svg>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="1.8"/><circle cx="12" cy="12" r="5" stroke="white" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.2" fill="white"/></svg>
           </div>
           <span class="sp-label">인스타<br>스토리</span>
         </button>
-        <!-- X (트위터) -->
         <button class="sp-btn" id="btnShareX">
           <div class="sp-icon sp-x">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </div>
           <span class="sp-label">X (트위터)</span>
         </button>
-        <!-- 더보기 -->
         <button class="sp-btn" id="btnShareMore">
           <div class="sp-icon sp-more">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="5" cy="12" r="2" fill="#555"/>
-              <circle cx="12" cy="12" r="2" fill="#555"/>
-              <circle cx="19" cy="12" r="2" fill="#555"/>
-            </svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="2" fill="#555"/><circle cx="12" cy="12" r="2" fill="#555"/><circle cx="19" cy="12" r="2" fill="#555"/></svg>
           </div>
           <span class="sp-label">더보기</span>
         </button>
       </div>
-
       <div class="share-sep"></div>
-
-      <!-- 보조 버튼 -->
       <div class="share-btns">
         <button class="sh-btn" id="btnSaveImg">💾 이미지 저장</button>
         <button class="sh-btn" id="btnCopyLink">🔗 링크 복사</button>
       </div>
-    </div>
-  </div>
-
-  <!-- SAJU INPUT -->
-  <div class="screen" id="s-saju-input">
-    <div class="saju-top"><button class="btn-bk" id="bkSaju">←</button><span class="step-lbl">사주 분석</span></div>
-    <div class="saju-head">
-      <h2 class="saju-title">나는 왜<br>이런 상황에<br>놓인 걸까?</h2>
-      <p class="saju-subtitle">생년월일을 입력하면 명리학(命理學) 기반으로<br>당신의 기질과 관계 패턴을 분석해드려요</p>
-    </div>
-    <div class="saju-body">
-      <div class="saju-field">
-        <div class="saju-label">이름 (선택)</div>
-        <input type="text" class="saju-input" id="sajuName" placeholder="홍길동" autocomplete="off">
-      </div>
-      <div class="saju-field">
-        <div class="saju-label">생년월일</div>
-        <div class="saju-date-row">
-          <input type="number" class="saju-input" id="sajuYear" placeholder="1990년" min="1930" max="2005" inputmode="numeric">
-          <select class="saju-select" id="sajuMonth">
-            <option value="">월</option>
-            <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
-            <option value="4">4월</option><option value="5">5월</option><option value="6">6월</option>
-            <option value="7">7월</option><option value="8">8월</option><option value="9">9월</option>
-            <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
-          </select>
-          <select class="saju-select" id="sajuDay">
-            <option value="">일</option>
-            <option value="1">1일</option><option value="2">2일</option><option value="3">3일</option>
-            <option value="4">4일</option><option value="5">5일</option><option value="6">6일</option>
-            <option value="7">7일</option><option value="8">8일</option><option value="9">9일</option>
-            <option value="10">10일</option><option value="11">11일</option><option value="12">12일</option>
-            <option value="13">13일</option><option value="14">14일</option><option value="15">15일</option>
-            <option value="16">16일</option><option value="17">17일</option><option value="18">18일</option>
-            <option value="19">19일</option><option value="20">20일</option><option value="21">21일</option>
-            <option value="22">22일</option><option value="23">23일</option><option value="24">24일</option>
-            <option value="25">25일</option><option value="26">26일</option><option value="27">27일</option>
-            <option value="28">28일</option><option value="29">29일</option><option value="30">30일</option>
-            <option value="31">31일</option>
-          </select>
-        </div>
-      </div>
-      <div class="saju-field">
-        <div class="saju-label">성별</div>
-        <div class="gender-row">
-          <button class="gender-btn" data-gender="m">👨 남성</button>
-          <button class="gender-btn" data-gender="f">👩 여성</button>
-        </div>
-      </div>
-      <div class="saju-field">
-        <div class="saju-label">태어난 시간 (선택)</div>
-        <select class="saju-select" id="sajuHour">
-          <option value="">모르면 건너뛰어도 돼요</option>
-          <option value="0">자시(子時) — 밤 11시~새벽 1시</option>
-          <option value="2">축시(丑時) — 새벽 1~3시</option>
-          <option value="4">인시(寅時) — 새벽 3~5시</option>
-          <option value="6">묘시(卯時) — 오전 5~7시</option>
-          <option value="8">진시(辰時) — 오전 7~9시</option>
-          <option value="10">사시(巳時) — 오전 9~11시</option>
-          <option value="12">오시(午時) — 오전 11시~오후 1시</option>
-          <option value="14">미시(未時) — 오후 1~3시</option>
-          <option value="16">신시(申時) — 오후 3~5시</option>
-          <option value="18">유시(酉時) — 오후 5~7시</option>
-          <option value="20">술시(戌時) — 오후 7~9시</option>
-          <option value="22">해시(亥時) — 오후 9~11시</option>
-        </select>
-        <div class="saju-time-note">⏰ 시간을 입력하면 시주(時柱)까지 분석해 더 정확한 풀이를 드려요</div>
-      </div>
-      <button type="button" class="btn-saju-start" id="btnSajuStart" disabled>사주 분석 시작 →</button>
-    </div>
-  </div>
-
-  <!-- SAJU LOADING -->
-  <div class="screen" id="s-saju-load">
-    <div style="text-align:center;padding:0 32px">
-      <div class="saju-load-emoji">☯️</div>
-      <div class="saju-load-title">사주 분석 중...</div>
-      <div class="saju-load-sub" id="sajuLoadTxt">천간지지 배열 중...</div>
-    </div>
-    <div class="hi"><div class="hi-bar" style="background:rgba(255,255,255,.15)"></div></div>
-  </div>
-
-  <!-- SAJU RESULT -->
-  <div class="screen" id="s-saju-result">
-    <div class="saju-res-hero">
-      <div class="saju-res-gan-badge" id="srGanBadge">일간 · 甲 갑목(甲木)</div>
-      <div class="saju-res-name" id="srName">당신의 사주 풀이</div>
-      <div class="saju-res-sub" id="srSub">양력 0000년 0월 0일</div>
-      <div class="saju-res-type" id="srType">원칙주의 리더형</div>
-      <div class="saju-four-row" id="srFourPillars"></div>
-    </div>
-    <div class="saju-res-body">
-      <!-- 무료 섹션 -->
-      <div class="saju-free-section">
-        <div class="saju-sec-badge">🔓 무료 분석</div>
-        <div class="saju-free-card accent">
-          <div class="saju-free-card-title" id="srFreeTitle">당신의 타고난 기질</div>
-          <div class="saju-free-card-body" id="srFreeBody"></div>
-        </div>
-        <div class="saju-free-card accent">
-          <div class="saju-free-card-title">이 상황이 유독 힘든 이유</div>
-          <div class="saju-free-card-body" id="srWhyHard"></div>
-        </div>
-        <div class="saju-free-card accent">
-          <div class="saju-free-card-title">관계에서 반복되는 나의 패턴</div>
-          <div class="saju-free-card-body" id="srPattern"></div>
-        </div>
-        <div class="saju-free-card">
-          <div class="saju-free-card-title">사주팔자 오행 분포</div>
-          <div class="ohaeng-grid" id="srOhaeng"></div>
-        </div>
-      </div>
-
-      <!-- 잠금 섹션 -->
-      <div class="saju-lock-section">
-        <div class="saju-blurred">
-          <div class="saju-free-card" style="margin-bottom:10px">
-            <div class="saju-free-card-title">🎯 일간 맞춤 대처 전략</div>
-            <div class="saju-free-card-body">나의 기질에 꼭 맞는 구체적인 대처 전략과 실전 대화법. 갑목 기질이라면 직접 대결보다 이런 방식이 훨씬 효과적이에요. 상대의 패턴을 역이용하는 방법도 있어요.</div>
-          </div>
-          <div class="saju-free-card" style="margin-bottom:10px">
-            <div class="saju-free-card-title">🔗 관계 패턴 심층 분석</div>
-            <div class="saju-free-card-body">왜 이런 사람이 반복해서 나타나는지, 내 사주의 어떤 기운이 이런 관계를 끌어당기는지 분석해드려요. 관계 역학의 근본 원인을 이해하면 패턴이 달라져요.</div>
-          </div>
-          <div class="saju-free-card">
-            <div class="saju-free-card-title">📅 지금 이 상황, 언제까지일까?</div>
-            <div class="saju-free-card-body">대운과 세운 기준으로 본 관계 변화 시점. 지금이 버텨야 할 시기인지, 아니면 과감히 움직여야 할 시기인지 명리학적으로 풀어드려요.</div>
-          </div>
-        </div>
-        <div class="saju-lock-overlay">
-          <div class="saju-lock-icon">🔒</div>
-          <div class="saju-lock-msg">맞춤 대처 전략, 관계 패턴 원인,<br>변화 시점 예측까지 전부 확인하기</div>
-          <div class="saju-lock-price">2,900원 · 한 번 결제로 평생 열람</div>
-          <button class="btn-unlock" id="btnUnlock">전체 풀이 보기  2,900원 →</button>
-        </div>
-      </div>
-
-      <button type="button" class="btn-again" id="btnSajuBack" style="margin-bottom:50px">← 결과로 돌아가기</button>
-    </div>
-  </div>
-
-  <!-- LOADING -->
-  <div class="screen" id="s-load">
-    <div style="text-align:center;padding:0 32px">
-      <div class="load-emoji">🔍</div>
-      <div class="load-title">판별 중...</div>
-      <div class="load-sub" id="loadTxt">꼰대 데이터베이스 대조 중...</div>
-    </div>
-    <div class="hi"><div class="hi-bar"></div></div>
-  </div>
-
-  <!-- RESULT -->
-  <div class="screen" id="s-result">
-    <div class="res-hero">
-      <div id="resBadge" class="res-badge"></div>
-      <div id="resNum" class="res-num">0<small>%</small></div>
-      <div id="resGrade" class="res-grade"></div>
-      <div id="resVerdict" class="res-verdict"></div>
-    </div>
-    <div class="res-body">
-      <!-- 공감 카드 -->
-      <div class="empathy-card" id="empathyCard">
-        <div class="empathy-emoji" id="empathyEmoji"></div>
-        <div class="empathy-text" id="empathyText"></div>
-      </div>
-      <!-- AI 상황 분석 (직접 입력 시) -->
-      <div class="ai-box" id="aiBox">
-        <div class="ai-header">
-          <span class="ai-emoji">🤖</span>
-          <span class="ai-title" id="aiTitle">상황 분석</span>
-        </div>
-        <div class="ai-content" id="aiContent"></div>
-      </div>
-      <!-- 상황 설명 -->
-      <div id="resDesc" class="res-desc"></div>
-      <!-- 유형 분석 -->
-      <div class="sec-lbl">유형 분석</div>
-      <div class="type-grid">
-        <div class="t-card t-age"><div class="t-emoji">👴</div><div class="t-lbl">걍 늙</div><div class="t-pct" id="pa">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="ba"></div></div></div>
-        <div class="t-card t-narc"><div class="t-emoji">🪞</div><div class="t-lbl">나르시시스트 의심</div><div class="t-pct" id="pn">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="bn"></div></div></div>
-        <div class="t-card t-rude"><div class="t-emoji">😤</div><div class="t-lbl">타고난 무례함</div><div class="t-pct" id="pr">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="br"></div></div></div>
-        <div class="t-card t-cut"><div class="t-emoji">✂️</div><div class="t-lbl">관계 정리</div><div class="t-pct" id="pc">0<small>%</small></div><div class="t-bar-bg"><div class="t-bar" id="bc"></div></div></div>
-      </div>
-      <!-- 대처 방법 -->
-      <div class="sec-lbl">대처 방법</div>
-      <div class="act-section" id="actSection"></div>
-      <button type="button" class="btn-share" id="btnShare">📤 결과 공유하기</button>
-      <button type="button" class="btn-saju-cta" id="btnSajuCta">
-        <div class="btn-saju-cta-left">
-          <span class="btn-saju-cta-title">✨ 나는 왜 이런 상황에 놓인 걸까?</span>
-          <span class="btn-saju-cta-sub">생년월일로 보는 사주 심층 분석 — 무료</span>
-        </div>
-        <span class="btn-saju-arrow">→</span>
-      </button>
-      <button type="button" class="btn-again" id="btnAgain">↩ 다시 판별하기</button>
     </div>
   </div>
 </div>
@@ -679,11 +367,10 @@ document.addEventListener('DOMContentLoaded', function(){
   function tick(){var n=new Date(),h=n.getHours(),m=n.getMinutes();document.getElementById('sbT').textContent=h+':'+(m<10?'0':'')+m;}
   tick();setInterval(tick,15000);
 
-  var state={rel:'boss',relCustom:'',rep:1,st:1,chips:[],customText:''};
-  var TOTAL=4;
-  var CAT={hard:18,age:12,mid:10,boundary:12,power:15,narc:12,rude:8};
+  var state={text:'',rel:'',addText:'',birthYear:0,birthMonth:0,birthDay:0,hasBirth:false};
+  var birthOpen=false;
 
-  /* ── TRANSITION ── */
+  /* ── TRANSITIONS ── */
   function goTo(id){
     var cur=document.querySelector('.screen.active');
     if(cur){cur.classList.add('exit-left');cur.classList.remove('active');setTimeout(function(){cur.classList.remove('exit-left');},400);}
@@ -702,310 +389,264 @@ document.addEventListener('DOMContentLoaded', function(){
     updateUI(toId);
   }
   function updateUI(id){
-    var dark=(id==='s0'||id==='s-result'||id==='s-load'||id==='s-saju-load');
+    var dark=(id==='s0'||id==='s-result');
     document.getElementById('sb').className=dark?'dark':'light';
-    var map={s1:1,s2:2,s3:3,s4:4,'s-load':5,'s-result':5};
-    var n=map[id]||0;
-    var pw=document.getElementById('pw');
-    var hidePw=(id==='s-result'||id==='s-load'||id==='s-saju-input'||id==='s-saju-load'||id==='s-saju-result');
-    if(n>0&&!hidePw){pw.style.display='block';document.getElementById('pb').style.width=(n/TOTAL*100)+'%';}
-    else{pw.style.display='none';}
   }
-  function selCard(card,group){group.forEach(function(c){c.classList.remove('sel');});card.classList.add('sel');}
 
-  /* ── S0 ── */
-  document.getElementById('btnStart').addEventListener('click',function(){goTo('s1');});
+  /* ── HOME ── */
+  document.getElementById('btnStart').addEventListener('click',function(){goTo('s-input');});
 
-  /* ── S1 ── */
-  var relCards=Array.from(document.querySelectorAll('#s1 .c-card'));
-  relCards.forEach(function(b){
-    b.addEventListener('click',function(){
-      state.rel=this.dataset.rel;
-      selCard(this,relCards);
-      var wrap=document.getElementById('otherWrap');
-      if(state.rel==='other'){wrap.classList.add('show');document.getElementById('otherTxt').focus();}
-      else{wrap.classList.remove('show');setTimeout(function(){goTo('s2');},220);}
-    });
+  /* ── INPUT SCREEN ── */
+  document.getElementById('bkInput').addEventListener('click',function(){goBack('s0');});
+
+  var ta=document.getElementById('situationTa');
+  ta.addEventListener('input',function(){
+    document.getElementById('charHint').textContent=this.value.length+'자';
   });
-  document.getElementById('otherTxt').addEventListener('keydown',function(e){if(e.key==='Enter'){state.relCustom=this.value.trim();this.blur();}});
-  document.getElementById('otherTxt').addEventListener('blur',function(){state.relCustom=this.value.trim();if(state.relCustom.length>0){setTimeout(function(){goTo('s2');},300);}});
-  document.getElementById('bk1').addEventListener('click',function(){goBack('s0');});
 
-  /* ── S2 ── */
-  var chipEls=Array.from(document.querySelectorAll('#s2 .chip'));
-  chipEls.forEach(function(c){
+  document.getElementById('birthToggle').addEventListener('click',function(){
+    birthOpen=!birthOpen;
+    var fields=document.getElementById('birthFields');
+    if(birthOpen){
+      fields.classList.add('open');
+      document.getElementById('birthToggleLabel').textContent='생년월일 입력됨 — 결과에 사주 기질 분석 포함';
+    }else{
+      fields.classList.remove('open');
+      document.getElementById('birthToggleLabel').textContent='생년월일 입력하면 사주 기질 분석도 해드려요 (선택)';
+    }
+  });
+
+  function collectBirth(){
+    var y=parseInt(document.getElementById('birthYear').value||0);
+    var m=parseInt(document.getElementById('birthMonth').value||0);
+    var d=parseInt(document.getElementById('birthDay').value||0);
+    if(birthOpen&&y>=1930&&y<=2010&&m>=1&&m<=12&&d>=1&&d<=31){
+      state.birthYear=y;state.birthMonth=m;state.birthDay=d;state.hasBirth=true;
+    }else{
+      state.hasBirth=false;
+    }
+  }
+
+  document.getElementById('btnInputNext').addEventListener('click',function(){
+    var text=ta.value.trim();
+    if(!text){return;}
+    state.text=text;
+    collectBirth();
+    if(text.length<40){
+      goTo('s-followup');
+    }else{
+      startAnalysis();
+    }
+  });
+
+  /* ── FOLLOWUP SCREEN ── */
+  document.getElementById('bkFollowup').addEventListener('click',function(){goBack('s-input');});
+
+  var relChips=Array.from(document.querySelectorAll('.rel-chip'));
+  relChips.forEach(function(c){
     c.addEventListener('click',function(){
-      this.classList.toggle('sel');
-      state.chips=chipEls.filter(function(x){return x.classList.contains('sel');}).map(function(x){return x.dataset.cat;});
-      var ci=document.getElementById('chipInfo');
-      ci.textContent=state.chips.length===0?'선택 없으면 해당 없음으로 판단해요':state.chips.length+'개 선택됨';
+      relChips.forEach(function(x){x.classList.remove('sel');});
+      this.classList.add('sel');
+      state.rel=this.dataset.rel;
     });
   });
-  var tog=document.getElementById('textToggle');
-  var cw=document.getElementById('customWrap');
-  tog.addEventListener('click',function(){
-    var open=cw.classList.contains('show');
-    if(open){cw.classList.remove('show');tog.classList.remove('open');tog.textContent='✏️ 직접 입력하기';}
-    else{cw.classList.add('show');tog.classList.add('open');tog.textContent='✏️ 직접 입력 닫기';document.getElementById('customTxt').focus();}
-  });
-  document.getElementById('customTxt').addEventListener('input',function(){state.customText=this.value;});
-  document.getElementById('btnS2').addEventListener('click',function(){goTo('s3');});
-  document.getElementById('bk2').addEventListener('click',function(){goBack('s1');});
 
-  /* ── S3 ── */
-  var repCards=Array.from(document.querySelectorAll('#s3 .c-card'));
-  repCards.forEach(function(b){b.addEventListener('click',function(){state.rep=parseInt(this.dataset.rep);selCard(this,repCards);setTimeout(function(){goTo('s4');},220);});});
-  document.getElementById('bk3').addEventListener('click',function(){goBack('s2');});
+  document.getElementById('followupTa').addEventListener('input',function(){state.addText=this.value.trim();});
 
-  /* ── S4 ── */
-  var stCards=Array.from(document.querySelectorAll('#s4 .c-card'));
-  stCards.forEach(function(b){b.addEventListener('click',function(){state.st=parseInt(this.dataset.st);selCard(this,stCards);setTimeout(function(){startAnalysis();},260);});});
-  document.getElementById('bk4').addEventListener('click',function(){goBack('s3');});
-
-  /* ── RESTART ── */
-  document.getElementById('btnAgain').addEventListener('click',function(){
-    state={rel:'boss',relCustom:'',rep:1,st:1,chips:[],customText:''};
-    document.querySelectorAll('.c-card,.chip').forEach(function(b){b.classList.remove('sel');});
-    document.getElementById('chipInfo').textContent='선택 없으면 해당 없음으로 판단해요';
-    document.getElementById('otherWrap').classList.remove('show');
-    document.getElementById('otherTxt').value='';
-    document.getElementById('customTxt').value='';
-    document.getElementById('customWrap').classList.remove('show');
-    document.getElementById('textToggle').classList.remove('open');
-    document.getElementById('textToggle').textContent='✏️ 직접 입력하기';
-    document.querySelectorAll('.t-bar').forEach(function(b){b.style.width='0%';});
-    goTo('s0');
+  document.getElementById('btnFollowupNext').addEventListener('click',function(){
+    if(state.addText){state.text=(state.text+' '+state.addText).trim();}
+    startAnalysis();
   });
 
   /* ── LOADING ── */
-  var loadMsgs=['꼰대 발언 데이터베이스 대조 중...','선 넘음 게이지 측정 중...','나르시시스트 패턴 스캔 중...','관계 정리 필요성 계산 중...','최종 판정 준비 중...'];
+  var loadMsgs=['상황 분석 중...','선 넘음 기준 대조 중...','꼰대 패턴 스캔 중...','판정 준비 중...','최종 판별 중...'];
 
   function startAnalysis(){
     goTo('s-load');
     var i=0;
-    var iv=setInterval(function(){i=(i+1)%loadMsgs.length;document.getElementById('loadTxt').textContent=loadMsgs[i];},650);
-    setTimeout(function(){clearInterval(iv);var r=buildResult();renderResult(r);goTo('s-result');},2400+Math.random()*600);
+    var iv=setInterval(function(){i=(i+1)%loadMsgs.length;document.getElementById('loadTxt').textContent=loadMsgs[i];},700);
+    setTimeout(function(){
+      clearInterval(iv);
+      var r=buildResult();
+      renderResult(r);
+      goTo('s-result');
+    },2200+Math.random()*600);
   }
 
-  /* ── 텍스트 키워드 ── */
+  /* ── KEYWORD SCORING ── */
   var txtKw={
-    hard:['야근','강제','욕설','폭언','협박','카톡','새벽','주말','휴일','모욕','무시','창피','망신','인격','꺼져','나가','해고','불이익','갈굼','윽박','고함','잔소리','회식','억지','억압','면박','반말','감시','통제','갑질','을'],
-    age:['나때는','나 때는','예전엔','옛날엔','내가 해봐서','가봐서 알아','인생 선배','요즘 것들','요즘 애들','어리니까','철없어','세대 차이','꼰대'],
-    mid:['당연히','원래 그래','그것도 못','기본도','프로답지','알아서 해','월급 받잖아','돈 받잖아','감사해야','고마운 줄','충고','잘 되라고','너 생각해서','실망','기대','네 태도','문제가 있어'],
-    boundary:['사생활','집안','부모님','결혼','연애','월급','연봉','나이','외모','몸무게','꾸밈','화장','옷차림','종교','정치','취업','진로'],
-    power:['갑질','을질','거래처','클라이언트','돈 주는','계약'],
-    narc:['자기 얘기','최고','내가 없으면','내 덕분에','너 때문에','내 말이 맞','감사할 줄','내가 키워','잘난 척','공로','공 가로채','이중적','뒤에서 깎아','칭찬 요구','인정'],
-    rude:['비교','조롱','비꼬','무시','차별','비하','놀림','빈정']
+    hard:['야근','강제','욕설','폭언','협박','카톡','새벽','주말','휴일','모욕','무시','창피','망신','인격','꺼져','나가','해고','불이익','갈굼','윽박','고함','잔소리','회식','억지','억압','면박','반말','감시','통제','갑질','을','강요'],
+    age:['나때는','나 때는','예전엔','옛날엔','내가 해봐서','인생 선배','요즘 것들','요즘 애들','어리니까','철없어','세대 차이','꼰대','어른 말을'],
+    mid:['당연히','원래 그래','그것도 못','기본도','프로답지','알아서 해','월급 받잖아','돈 받잖아','감사해야','고마운 줄','충고','잘 되라고','너 생각해서','실망','기대','네 태도','문제가 있어','열정'],
+    boundary:['사생활','집안','결혼','연애','월급','연봉','나이','외모','몸무게','종교','정치','취업','진로'],
+    power:['갑질','을질','거래처','클라이언트','돈 주는','계약','상전'],
+    narc:['자기 자랑','최고','내가 없으면','내 덕분에','너 때문에','내 말이 맞','내가 키워','공로','공 가로채','이중적','칭찬 요구','나만 믿어'],
+    rude:['비교','조롱','비꼬','차별','비하','놀림','빈정','깎아']
+  };
+  var CAT={hard:18,age:12,mid:10,boundary:12,power:15,narc:12,rude:8};
+  var relCfg={
+    boss:{name:'직장 상사',w:1.1,extra:10},
+    senior:{name:'직장 선배',w:0.95,extra:5},
+    client:{name:'고객/갑',w:1.15,extra:8},
+    parent:{name:'부모/가족',w:0.8,extra:0},
+    elder:{name:'지인 어른',w:0.75,extra:0},
+    other:{name:'상대방',w:1.0,extra:5}
   };
 
   function scoreText(text){
     var s={hard:0,age:0,mid:0,boundary:0,power:0,narc:0,rude:0};
-    Object.keys(txtKw).forEach(function(cat){txtKw[cat].forEach(function(kw){if(text.includes(kw))s[cat]++;});});
+    var low=text.toLowerCase();
+    Object.keys(txtKw).forEach(function(cat){
+      txtKw[cat].forEach(function(kw){if(low.includes(kw))s[cat]++;});
+    });
     return s;
   }
 
-  /* ── AI 상황 분석 ── */
-  function analyzeCustomText(text){
-    if(!text||text.trim().length<15)return null;
-    var t=text;
-    var low=t.toLowerCase();
-
-    // 돈 / 불공정 분배
-    var moneys=t.match(/([0-9]+)\s*만\s*원/g);
-    var hasSplit=low.includes('반반')||low.includes('절반')||low.includes('반씩')||low.includes('나누');
-    var hasWork=low.includes('편집')||low.includes('업무')||low.includes('작업')||low.includes('기획')||low.includes('촬영')||low.includes('디자인');
-    var hasIntro=low.includes('받아왔')||low.includes('연결')||low.includes('소개')||low.includes('중개')||low.includes('알아와');
-    if(moneys&&moneys.length>=2&&(hasSplit||hasIntro)){
-      var amounts=moneys.map(function(m){return parseInt(m.replace(/[^0-9]/g,''));});
-      amounts.sort(function(a,b){return b-a;});
-      var total=amounts[0],myPay=amounts[amounts.length-1];
-      var myRatio=Math.round(myPay/total*100);
-      var theirRatio=100-myRatio;
-      return{emoji:'💰',title:'급여 배분 분석',paras:[
-        '실제 작업을 하는 분이 전체의 '+myRatio+'%를 받는 구조예요.',
-        '업무를 연결·중개만 한 경우의 합리적 수수료 기준은 보통 10~20%예요. 실무자가 더 많은 보수를 받아야 정상이에요.',
-        '지금 구조는 실무 없이 연결만 한 쪽이 '+theirRatio+'%를 가져가는 거라 불공정할 가능성이 높아요.',
-        '협상 여지가 있다면 "실제 작업 시간 기준 배분"을 제안해보세요. 70:30이나 80:20이 더 합리적이에요.'
-      ]};
-    }
-
-    // 성과 / 공 가로채기
-    if((low.includes('이름')&&(low.includes('올렸')||low.includes('제출')))||low.includes('공 가로채')||low.includes('내 기획')){
-      return{emoji:'📋',title:'성과 가로채기 분석',paras:[
-        '내 결과물이 타인 이름으로 제출된 경우, 원본 파일의 생성일·수정일이 핵심 증거가 돼요.',
-        '작업 기록을 이메일·카톡으로 남겨두는 습관이 중요해요. "제가 만든 파일 공유할게요"처럼 흔적을 남기세요.',
-        '반복된다면 상사에게 직접 보고 채널을 만들거나 HR에 상담하세요.',
-        '이건 직장 내 갑질이자 업무 윤리 위반이에요.'
-      ]};
-    }
-
-    // 야근 / 강제 노동
-    if(low.includes('야근')||low.includes('새벽')||(low.includes('주말')&&(low.includes('연락')||low.includes('일')))){
-      return{emoji:'⏰',title:'근무 환경 분석',paras:[
-        '퇴근 후·주말·새벽 연락은 원칙적으로 거부할 수 있어요. 법적으로 "업무 지시"와 "사적 연락"은 구분이 필요해요.',
-        '연장근무에 대한 추가 수당은 근로기준법상 당연한 권리예요.',
-        '지속되는 야근·초과 근무는 출퇴근 기록과 카톡 타임스탬프를 캡처해두세요.',
-        '고용노동부 신고를 통해 수당 미지급을 청구할 수 있어요.'
-      ]};
-    }
-
-    // 폭언 / 언어폭력
-    if(low.includes('욕')||low.includes('폭언')||low.includes('소리 지')||low.includes('고함')||low.includes('怒')||low.includes('화를')){
-      return{emoji:'🚨',title:'언어 폭력 분석',paras:[
-        '직장 내 폭언은 "직장 내 괴롭힘 금지법(근로기준법 제76조의2)"에 해당할 수 있어요.',
-        '발생 날짜, 장소, 발언 내용, 목격자를 즉시 기록해두세요.',
-        '가능하다면 음성 녹음도 유효한 증거가 돼요 (대화 당사자 녹음은 합법).',
-        '고용노동부 익명 신고 또는 노동청 방문 상담을 받아볼 수 있어요.'
-      ]};
-    }
-
-    // 비교 / 차별
-    if(low.includes('비교')||(low.includes('왜 너만')||low.includes('차별'))){
-      return{emoji:'⚖️',title:'불공정 대우 분석',paras:[
-        '반복적 비교와 차별적 대우는 심리적 소진(번아웃)의 원인이에요.',
-        '구체적인 불이익(업무 배제, 평가 차별 등)이 있다면 날짜와 내용을 기록해두세요.',
-        '인사팀 상담이나 직장 내 괴롭힘 신고를 고려해볼 수 있어요.',
-        '자신의 성과를 객관적으로 정리해두면 평가 불공정에 대응할 수 있어요.'
-      ]};
-    }
-
-    // 계약 / 불공정 조건
-    if(low.includes('계약')||low.includes('조건')||low.includes('약속')){
-      return{emoji:'📝',title:'계약 / 약속 관련 분석',paras:[
-        '구두 약속도 증거(카톡, 이메일)가 있으면 법적 효력이 인정될 수 있어요.',
-        '계약서와 다른 요구를 받고 있다면 서면으로 내용을 확인하고 거절 의사를 표현하세요.',
-        '불공정 계약 조건은 표준 계약서 또는 법률 무료 상담(법률구조공단)을 통해 확인할 수 있어요.'
-      ]};
-    }
-
-    // 일반 분석
-    var detected=[];
-    if(low.includes('강요')||low.includes('강제'))detected.push('강압적 태도');
-    if(low.includes('무시'))detected.push('무시·경시');
-    if(low.includes('모욕')||low.includes('인격'))detected.push('인격 침해');
-    if(low.includes('사생활')||low.includes('개인적'))detected.push('사생활 침범');
-    if(low.includes('돈')||low.includes('만원'))detected.push('금전 관련 갈등');
-    if(detected.length>0){
-      return{emoji:'🔍',title:'상황 분석',paras:[
-        '입력하신 내용에서 '+detected.join(', ')+' 패턴이 감지됐어요.',
-        '이런 상황이 반복된다면 날짜·발언 내용·상황을 꼭 기록해두세요.',
-        '신뢰할 수 있는 사람과 상황을 공유하고 피드백을 먼저 받아보세요.',
-        '감정적으로 힘드시다면 심리 상담 연결을 권장해요 (정신건강복지센터, 직장인 EAP).'
-      ]};
-    }
-    return null;
-  }
-
   /* ── BUILD RESULT ── */
-  var relCfg={
-    boss:{name:'직장 상사',w:1.1,cutBonus:10},senior:{name:'직장 선배',w:0.95,cutBonus:5},
-    client:{name:'고객/갑',w:1.15,cutBonus:8},parent:{name:'부모/친척',w:0.8,cutBonus:0},
-    elder:{name:'동네 어른',w:0.75,cutBonus:0},other:{name:'기타',w:1.0,cutBonus:5}
-  };
-  var grades=[
-    {min:0,max:20,lbl:'이해 가능 범위'},{min:20,max:40,lbl:'미묘한 선'},
-    {min:40,max:60,lbl:'주의 꼰대'},{min:60,max:75,lbl:'꼰대 확정'},
-    {min:75,max:88,lbl:'명백한 갑질'},{min:88,max:101,lbl:'갓꼰대 (최종형태)'}
-  ];
-
   function buildResult(){
     var cfg=relCfg[state.rel]||relCfg.other;
-    var rW=[0.85,1.0,1.2,1.4][state.rep-1];
-    var raw=0,hard=0,age=0,mid=0,bnd=0,pwr=0,narc=0,rude=0;
-    state.chips.forEach(function(cat){
-      raw+=CAT[cat]||0;
-      if(cat==='hard')hard++;if(cat==='age')age++;if(cat==='mid')mid++;
-      if(cat==='boundary')bnd++;if(cat==='power')pwr++;if(cat==='narc')narc++;if(cat==='rude')rude++;
-    });
-    var txt=state.customText.toLowerCase();
-    if(txt.length>3){
-      var ts=scoreText(txt);
-      raw+=ts.hard*14+ts.age*10+ts.mid*8+ts.boundary*10+ts.power*13+ts.narc*10+ts.rude*7;
-      hard+=ts.hard;age+=ts.age;mid+=ts.mid;bnd+=ts.boundary;pwr+=ts.power;narc+=ts.narc;rude+=ts.rude;
-    }
-    var score=Math.min(97,Math.round(raw*cfg.w*rW));
-    var floor=[0,12,25,40,56][state.st-1];
-    if(score<floor)score=floor+Math.round(Math.random()*8);
-    score=Math.min(97,score);
-    var grade=grades.find(function(g){return score>=g.min&&score<g.max;})||grades[grades.length-1];
-    var agePct=Math.min(95,age*26+mid*8+(['boss','senior','parent','elder'].includes(state.rel)?15:0));
-    var narcPct=Math.min(95,narc*30+hard*4+(state.rep>=3?20:0)+(['boss','client'].includes(state.rel)?12:0));
-    var rudePct=Math.min(95,hard*16+rude*18+bnd*10+pwr*15+(state.rep>=2?8:0));
-    var cutPct=Math.min(95,Math.round(score*0.75+(state.rep>=3?20:0)+(state.st>=4?12:0)+cfg.cutBonus));
-    if(state.rep===4)cutPct=Math.min(95,cutPct+12);
-    cutPct=Math.max(5,cutPct);
+    var ts=scoreText(state.text);
+    var raw=ts.hard*14+ts.age*10+ts.mid*8+ts.boundary*10+ts.power*13+ts.narc*10+ts.rude*7;
+    // 텍스트 길이 보너스 (길면 상황이 복잡한 것)
+    var lenBonus=Math.min(18,Math.floor(state.text.length/35));
+    raw+=lenBonus+(cfg.extra||0);
+    var score=Math.min(97,Math.max(5,Math.round(raw*cfg.w)));
 
-    // 지배적 유형
-    var dominantType='balanced';
-    if(narcPct>=agePct&&narcPct>=rudePct&&narcPct>40)dominantType='narc';
-    else if(agePct>=narcPct&&agePct>=rudePct&&agePct>40)dominantType='age';
-    else if(rudePct>40)dominantType='rude';
+    var vType,vMain,empathy,analysis,actions;
+    var relName=cfg.name;
 
-    var empathy,vType,vMain,vDesc,actions;
     if(score<20){
       vType='safe';
-      empathy={emoji:'🌿',text:'솔직히 많이 헷갈리셨겠어요. 불편한 감정이 드는 건 맞는데, 뭐라 딱 잘라 말하기 어려운 상황이죠. 그 감각 믿어도 돼요.'};
-      vMain='선은 안 넘은 것 같아요';
-      vDesc='상대방의 언행이 불편하게 느껴질 수 있지만, 현재 정보로는 명확한 선 넘음으로 보기 어려워요. 세대 차이나 소통 방식의 차이일 가능성이 있어요. 단, 같은 느낌이 반복된다면 그때는 다시 판단해봐야 해요.';
+      vMain='이번엔 살짝 예민하셨을 수도 있어요';
+      empathy={emoji:'🌿',text:'불편한 감정이 드는 건 충분히 이해해요. 그 감각 자체는 틀리지 않아요. 다만 지금 정보로는 명확한 선 넘음으로 보기는 어려워요.'};
+      analysis='세대 차이나 소통 방식의 차이일 가능성이 있어요. 상대방이 의도하지 않았어도 불편한 감정은 유효해요. 비슷한 상황이 반복된다면 그때는 다시 판단해봐야 해요.';
       actions=[
-        {icon:'💬',title:'대화로 풀기',body:'상대방 의도를 먼저 확인해보세요. "그 표현이 좀 불편했어요"라고 차분하게 말하는 게 가장 빠른 해결책이에요.'},
-        {icon:'📓',title:'기록해두기',body:'비슷한 상황이 반복된다면 날짜와 내용을 메모해두세요. 패턴이 보이면 더 명확하게 판단할 수 있어요.'},
-        {icon:'🧘',title:'감정 정리하기',body:'내가 왜 불편했는지 구체적으로 써보면 도움이 돼요. 감정을 명확히 알면 대응도 쉬워져요.'}
+        {icon:'💬',title:'차분하게 한마디',desc:'"그 표현이 좀 불편했어요"라고 가볍게 표현해보세요. 처음 한 번 말하면 많은 게 달라질 수 있어요.'},
+        {icon:'📓',title:'반복 여부 체크',desc:'비슷한 일이 또 생기면 날짜와 내용을 메모해두세요. 패턴이 보이면 더 명확하게 판단할 수 있어요.'}
       ];
     }else if(score<40){
       vType='gray';
-      empathy={emoji:'😶',text:'찜찜한 그 느낌, 본능적으로 맞는 경우가 많아요. 이런 감정이 드는 건 뭔가 불편한 게 있다는 신호예요. 무시하지 마세요.'};
-      vMain='미묘하게 선을 밟았어요';
-      vDesc='딱 잘라 말하기 어렵지만, 분명히 뭔가 불편한 상황이에요. 상대방이 의도했는지와 무관하게, 당신이 느끼는 불편함은 유효해요. 이런 상황은 반복될 경우 조금씩 감정 에너지를 소모시켜요.';
+      vMain='미묘하게 선을 밟은 것 같아요';
+      empathy={emoji:'😶',text:'찜찜한 그 느낌, 본능적으로 맞는 경우가 많아요. 불편한 감정이 드는 건 뭔가 있다는 신호예요. 그 감각 무시하지 마세요.'};
+      analysis=relName+'이 딱 잘라 말하기 어렵지만, 분명히 당신의 경계를 건드렸어요. 의도했는지와 무관하게 당신이 느끼는 불편함은 유효해요. 이런 상황이 반복되면 감정 에너지가 조금씩 소모돼요.';
       actions=[
-        {icon:'📏',title:'경계선 표현하기',body:'"그 말이 저는 좀 불편하게 들렸어요"처럼 가볍게 표현해보세요. 처음 한 번 말하면 많은 게 달라져요.'},
-        {icon:'📓',title:'반복 여부 체크',body:'이게 처음인지, 패턴인지가 핵심이에요. 비슷한 상황이 또 생기면 기록해두세요.'},
-        {icon:'🤝',title:'제3자 의견 구하기',body:'신뢰할 수 있는 사람에게 상황을 설명하고 피드백을 받아보세요. 외부 시각이 큰 도움이 돼요.'}
+        {icon:'📏',title:'경계선 표현하기',desc:'"그 말이 저는 좀 불편하게 들렸어요"라고 가볍게 표현해보세요.'},
+        {icon:'📓',title:'반복 여부 체크',desc:'이번이 처음인지, 패턴인지가 핵심이에요. 비슷한 상황이 또 생기면 기록해두세요.'},
+        {icon:'🤝',title:'제3자 의견 구하기',desc:'신뢰할 수 있는 사람에게 상황을 설명하고 피드백을 받아보세요.'}
       ];
     }else if(score<65){
       vType='warn';
-      empathy={emoji:'😟',text:'불편하셨을 텐데, 그 감정 맞아요. 몸은 좀 괜찮아요? 이런 상황이 쌓이면 생각보다 몸이 먼저 반응해요.'};
-      vMain='선 꽤 넘었습니다';
-      vDesc=''+cfg.name+'이 권력 차이 또는 나이 차이를 이용해 당신의 경계를 침범한 거예요. 불편함을 느끼는 건 예민한 게 아니라 정상적인 반응이에요. 이 상황을 계속 혼자 삭이면 감정 소진이 쌓여요.';
+      vMain='상대방이 선을 넘었어요';
+      empathy={emoji:'😟',text:'불편하셨을 텐데, 그 감정 맞아요. 예민한 게 아니에요. 이런 상황이 쌓이면 생각보다 몸이 먼저 반응해요. 몸은 좀 괜찮아요?'};
+      analysis=relName+'이 권력 차이나 나이 차이를 이용해 당신의 경계를 침범한 거예요. 불편함을 느끼는 건 예민한 게 아니라 정상적인 반응이에요. 이 상황을 혼자 계속 삭이면 감정 소진이 쌓여요.';
       actions=[
-        {icon:'📸',title:'기록 & 증거 확보',body:'날짜, 발언 내용, 장소, 목격자를 지금 바로 메모하세요. 나중에 꼭 필요해질 수 있어요.'},
-        {icon:'😶‍🌫️',title:'감정 거리두기',body:'상대방의 말을 "내 문제"로 받아들이지 마세요. 반응을 최소화하고 필요한 말만 하는 것도 좋은 전략이에요.'},
-        {icon:'🗣️',title:'도움 요청하기',body:'신뢰할 수 있는 동료나 HR에 상황을 공유하세요. 혼자 감당하려 하지 마세요.'},
-        {icon:'🔇',title:'대응 불가 시 거리두기',body:'당장 대응이 어렵다면 접촉 자체를 줄이는 것도 방법이에요. 꼭 맞서야만 하는 건 아니에요.'}
+        {icon:'📸',title:'기록 & 증거 확보',desc:'날짜, 발언 내용, 장소를 지금 바로 메모하세요.'},
+        {icon:'🗣️',title:'도움 요청하기',desc:'신뢰할 수 있는 동료나 지인에게 상황을 공유하세요. 혼자 감당하지 마세요.'},
+        {icon:'📏',title:'경계 선언하기',desc:'"저는 그런 상황이 불편해요"라고 차분하고 명확하게 표현해보세요.'}
       ];
     }else if(score<82){
       vType='danger';
-      empathy={emoji:'💔',text:'이 정도면 많이 지치셨겠다... 잠은 제대로 자고 있어요? 오래 참아온 것 같은데, 혼자 다 감당하려 하지 않아도 돼요.'};
-      vMain='명백한 꼰대 행동입니다';
-      vDesc='이건 참아야 할 상황이 아니에요. 상대방의 행동은 당신의 자존감과 심리적 안정감에 영향을 주고 있어요. 당신의 불편함은 100% 정당하고, 이걸 느끼는 게 당연해요.';
+      vMain='명백하게 선을 넘었어요';
+      empathy={emoji:'💔',text:'이 정도면 많이 지치셨겠어요. 오래 참아온 것 같은데, 혼자 다 감당하려 하지 않아도 돼요. 이건 당신 잘못이 아니에요.'};
+      analysis='이건 참아야 할 상황이 아니에요. '+relName+'의 행동은 당신의 자존감과 심리적 안정감에 직접 영향을 주고 있어요. 당신의 불편함은 100% 정당하고, 이걸 느끼는 게 당연해요.';
       actions=[
-        {icon:'📱',title:'지금 당장 증거 확보',body:'텍스트, 카톡, 이메일, 음성 녹음 등 가능한 모든 걸 저장해두세요. 대화 당사자 녹음은 합법이에요.'},
-        {icon:'🧊',title:'그레이록 기법 적용',body:'나르시시스트나 무례한 상대에겐 감정 반응을 최대한 줄이세요. 재미없고 단조롭게 반응하면 상대방이 흥미를 잃어요. 이게 "그레이록(Grey Rock)" 기법이에요.'},
-        {icon:'🏃',title:'물리적 거리두기',body:'관계를 당장 끊기 어렵다면 접촉 빈도를 줄이세요. 같은 공간에 있어야 하더라도 불필요한 대화를 최소화하는 것만으로도 달라져요.'},
-        {icon:'⚖️',title:'법적 보호 수단 확인',body:'직장 내 괴롭힘 신고, 노동청 상담, 법률구조공단 무료 상담을 활용할 수 있어요.'}
+        {icon:'📱',title:'증거 확보',desc:'텍스트, 카톡, 이메일, 음성 녹음 가능한 모든 걸 저장하세요. 대화 당사자 녹음은 합법이에요.'},
+        {icon:'🧊',title:'그레이록 기법',desc:'감정 반응을 최대한 줄이세요. 단조롭게 반응하면 상대가 흥미를 잃어요.'},
+        {icon:'⚖️',title:'법적 보호 수단',desc:'직장 내 괴롭힘 신고, 노동청 상담, 법률구조공단 무료 상담을 활용할 수 있어요.'}
       ];
     }else{
       vType='danger';
-      empathy={emoji:'🆘',text:'몸에 어디 이상 없어요? 이 정도 상황이 반복됐다면 어디 하나쯤은 아플 거 같은데... 정말 많이 힘드셨겠어요. 이건 당신 잘못이 아니에요.'};
-      vMain='절대 참으면 안 됩니다';
-      vDesc='존엄성을 침해하는 수준이에요. 이 상황이 지속된다면 신체적·심리적 건강에 직접적인 영향을 줄 수 있어요. 지금 당장 혼자 감당하려 하지 마세요. 이건 반드시 외부의 도움이 필요한 상황이에요.';
+      vMain='절대 참으면 안 되는 상황이에요';
+      empathy={emoji:'🆘',text:'이 정도면 몸 어딘가가 이미 신호를 보내고 있을 거예요. 정말 많이 힘드셨겠어요. 이건 절대로 당신 잘못이 아니에요.'};
+      analysis='존엄성을 침해하는 수준이에요. 지금 당장 혼자 감당하려 하지 마세요. 이건 반드시 외부의 도움이 필요한 상황이에요.';
       actions=[
-        {icon:'🆘',title:'즉각 증거 확보',body:'모든 기록을 지금 바로 저장하세요. 문자·카톡·이메일·음성녹음·목격자. 삭제되기 전에 빠르게 움직여야 해요.'},
-        {icon:'📞',title:'신고 채널 활용',body:'고용노동부 직장내괴롭힘 신고(1350), 국가인권위원회 상담, 노동청 방문 상담을 즉시 고려하세요.'},
-        {icon:'🤝',title:'반드시 주변에 알리기',body:'동료, 가족, 친구 중 신뢰할 수 있는 누군가에게 지금 바로 털어놓으세요. 혼자 감당하는 건 지금 상황에서 옳지 않아요.'},
-        {icon:'🧠',title:'심리 상담 연결',body:'심리적으로 많이 소모된 상태예요. 정신건강복지센터(무료), 직장 EAP(기업 심리상담), 전문 상담사를 통한 지원을 강력히 권장해요.'},
-        {icon:'🔌',title:'관계 차단',body:'가능하다면 지금 이 관계에서 벗어나는 것을 진지하게 고려해야 해요. 참고 견디는 것이 답이 아닌 상황이에요.'}
+        {icon:'🆘',title:'즉각 증거 확보',desc:'모든 기록을 지금 바로 저장하세요. 삭제되기 전에 빠르게 움직여야 해요.'},
+        {icon:'📞',title:'신고 채널 활용',desc:'고용노동부 직장내괴롭힘 신고(1350), 국가인권위원회 상담을 즉시 고려하세요.'},
+        {icon:'🤝',title:'주변에 알리기',desc:'신뢰할 수 있는 누군가에게 지금 바로 털어놓으세요. 혼자 감당하는 건 옳지 않아요.'},
+        {icon:'🧠',title:'심리 상담',desc:'정신건강복지센터(무료), 직장인 EAP 지원을 강력히 권장해요.'}
       ];
     }
 
-    var aiAnalysis=analyzeCustomText(state.customText);
-
-    return{score,grade,vType,vMain,vDesc,empathy,actions,aiAnalysis,agePct,narcPct,rudePct,cutPct,dominantType};
+    var tagMap={safe:'✓ 선은 안 넘은 것 같아요',gray:'△ 애매해요',warn:'⚠ 선 넘었어요',danger:'✕ 확실히 선 넘었어요'};
+    return{score:score,vType:vType,vMain:vMain,empathy:empathy,analysis:analysis,actions:actions,tag:tagMap[vType]};
   }
 
-  /* ── SHARE ── */
+  /* ── RENDER RESULT ── */
   var shareResult=null;
 
+  function renderResult(r){
+    shareResult=r;
+
+    var tagEl=document.getElementById('resTag');
+    tagEl.className='res-tag rt-'+r.vType;
+    tagEl.textContent=r.tag;
+    document.getElementById('resMain').textContent=r.vMain;
+    document.getElementById('resScore').textContent='선 넘음 지수 '+r.score+'%';
+
+    document.getElementById('empathyEmoji').textContent=r.empathy.emoji;
+    document.getElementById('empathyText').textContent=r.empathy.text;
+    document.getElementById('analysisText').textContent=r.analysis;
+
+    document.getElementById('actionList').innerHTML=r.actions.map(function(a){
+      return '<div class="action-item"><span class="action-icon">'+a.icon+'</span><div class="action-body"><div class="action-title">'+a.title+'</div><div class="action-desc">'+a.desc+'</div></div></div>';
+    }).join('');
+
+    // 사주 섹션
+    if(state.hasBirth){
+      var saju=calcSaju(state.birthYear,state.birthMonth,state.birthDay,-1);
+      renderSajuSection(saju);
+      document.getElementById('sajuSection').style.display='block';
+    }else{
+      document.getElementById('sajuSection').style.display='none';
+    }
+
+    document.getElementById('s-result').scrollTop=0;
+  }
+
+  /* ── SAJU IN RESULT ── */
+  function renderSajuSection(saju){
+    var da=saju.da;
+    var info=GAN_DATA[da.g];
+
+    document.getElementById('sajuGanBadge').textContent=GAN[da.g]+' '+info.label;
+    document.getElementById('sajuTypeLbl').textContent=info.typeLabel;
+    document.getElementById('sajuTypeSub').textContent='양력 '+state.birthYear+'년 '+state.birthMonth+'월 '+state.birthDay+'일 생 · 일간 기준';
+
+    // 4기둥
+    var pillars=[{lbl:'년주',p:saju.yr},{lbl:'월주',p:saju.mo},{lbl:'일주',p:saju.da},{lbl:'시주',p:null}];
+    var html='';
+    pillars.forEach(function(c){
+      if(!c.p){
+        html+='<div class="saju-pill" style="opacity:.2"><div class="saju-pill-lbl">시주</div><div class="saju-pill-gan" style="color:rgba(255,255,255,.2)">?</div><div class="saju-pill-ji">?</div></div>';
+      }else{
+        html+='<div class="saju-pill"><div class="saju-pill-lbl">'+c.lbl+'</div><div class="saju-pill-gan" style="color:'+ganColor(c.p.g)+'">'+GAN[c.p.g]+'</div><div class="saju-pill-ji">'+JI[c.p.j]+'</div></div>';
+      }
+    });
+    document.getElementById('sajuPillars').innerHTML=html;
+
+    // 기질 (첫 문단만)
+    document.getElementById('sajuTraitText').textContent=info.trait.split('\n\n')[0];
+    // 이 상황이 힘든 이유 (첫 문단만)
+    document.getElementById('sajuWhyText').textContent=info.why.split('\n\n')[0];
+  }
+
+  /* ── RESTART ── */
+  document.getElementById('btnAgain').addEventListener('click',function(){
+    state={text:'',rel:'',addText:'',birthYear:0,birthMonth:0,birthDay:0,hasBirth:false};
+    birthOpen=false;
+    document.getElementById('situationTa').value='';
+    document.getElementById('charHint').textContent='0자';
+    document.getElementById('birthYear').value='';
+    document.getElementById('birthMonth').value='';
+    document.getElementById('birthDay').value='';
+    document.getElementById('birthFields').classList.remove('open');
+    document.getElementById('birthToggleLabel').textContent='생년월일 입력하면 사주 기질 분석도 해드려요 (선택)';
+    relChips.forEach(function(c){c.classList.remove('sel');});
+    document.getElementById('followupTa').value='';
+    goTo('s0');
+  });
+
+  /* ── SHARE ── */
   function roundRect(ctx,x,y,w,h,r){
     ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
     ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);
@@ -1019,87 +660,50 @@ document.addEventListener('DOMContentLoaded', function(){
     cv.width=W*DPR;cv.height=H*DPR;
     var ctx=cv.getContext('2d');
     ctx.scale(DPR,DPR);
-
-    // bg
     ctx.fillStyle='#0d0d0d';ctx.fillRect(0,0,W,H);
-
-    // glow circle behind number
     var cm={safe:'#60a5fa',gray:'#94a3b8',warn:'#fbbf24',danger:'#f87171'};
     var col=cm[r.vType]||'#f87171';
-    var grad=ctx.createRadialGradient(W/2,H*0.35,0,W/2,H*0.35,220);
-    grad.addColorStop(0,col+'28');grad.addColorStop(1,'transparent');
+    var grad=ctx.createRadialGradient(W/2,H*0.38,0,W/2,H*0.38,240);
+    grad.addColorStop(0,col+'22');grad.addColorStop(1,'transparent');
     ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
-
-    // top divider line (accent color)
     ctx.fillStyle=col;ctx.fillRect(0,0,W,4);
-
-    // app name — top left
-    ctx.fillStyle='rgba(255,255,255,0.35)';
+    ctx.fillStyle='rgba(255,255,255,0.3)';
     ctx.font='700 22px "Noto Sans KR",sans-serif';
     ctx.textAlign='left';ctx.fillText('늙?',36,54);
-
-    // grade label — top right
-    var gradeMap={safe:'안전 범위',gray:'경계선',warn:'선 넘음',danger:'심각'};
+    var tagMap={safe:'선 안 넘음',gray:'애매함',warn:'선 넘음',danger:'확실히 선 넘음'};
     ctx.fillStyle=col;
     ctx.font='700 18px "Noto Sans KR",sans-serif';
-    ctx.textAlign='right';ctx.fillText(gradeMap[r.vType]||'',W-36,54);
-
-    // big percentage
+    ctx.textAlign='right';ctx.fillText(tagMap[r.vType]||'',W-36,54);
     ctx.fillStyle=col;
-    ctx.font='900 168px "Noto Sans KR",sans-serif';
+    ctx.font='900 170px "Noto Sans KR",sans-serif';
     ctx.textAlign='center';ctx.fillText(r.score+'%',W/2,H*0.44);
-
-    // grade text
-    ctx.fillStyle='rgba(255,255,255,0.35)';
-    ctx.font='600 18px "Noto Sans KR",sans-serif';
-    ctx.fillText(r.grade.lbl,W/2,H*0.44+36);
-
-    // verdict
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    ctx.font='600 17px "Noto Sans KR",sans-serif';
+    ctx.fillText('선 넘음 지수',W/2,H*0.44+38);
     ctx.fillStyle='#fff';
-    ctx.font='800 30px "Noto Sans KR",sans-serif';
-    ctx.fillText(r.vMain,W/2,H*0.59);
-
-    // separator
-    ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(36,H*0.64);ctx.lineTo(W-36,H*0.64);ctx.stroke();
-
-    // 4 type cards
-    var types=[
-      {lbl:'걍 늙',pct:r.agePct,col:'#f97316'},
-      {lbl:'나르시시스트',pct:r.narcPct,col:'#8b5cf6'},
-      {lbl:'타고난 무례함',pct:r.rudePct,col:'#ef4444'},
-      {lbl:'관계 정리',pct:r.cutPct,col:'#e63946'}
-    ];
-    var cardW=172,cardH=74,gapX=10,gapY=10;
-    var startX=(W-(cardW*2+gapX))/2;
-    var startY=H*0.67;
-    types.forEach(function(t,i){
-      var x=startX+(i%2)*(cardW+gapX);
-      var y=startY+Math.floor(i/2)*(cardH+gapY);
-      ctx.fillStyle='rgba(255,255,255,0.06)';
-      roundRect(ctx,x,y,cardW,cardH,12);ctx.fill();
-      // bar bg
-      ctx.fillStyle='rgba(255,255,255,0.08)';
-      roundRect(ctx,x+12,y+cardH-10,cardW-24,3,2);ctx.fill();
-      // bar fill
-      var bw=Math.round((cardW-24)*t.pct/100);
-      ctx.fillStyle=t.col;
-      roundRect(ctx,x+12,y+cardH-10,bw,3,2);ctx.fill();
-      // label
-      ctx.fillStyle='rgba(255,255,255,0.5)';
-      ctx.font='600 11px "Noto Sans KR",sans-serif';
-      ctx.textAlign='left';ctx.fillText(t.lbl,x+12,y+22);
-      // pct
-      ctx.fillStyle=t.col;
-      ctx.font='800 24px "Noto Sans KR",sans-serif';
-      ctx.fillText(t.pct+'%',x+12,y+52);
-    });
-
-    // url watermark
-    ctx.fillStyle='rgba(255,255,255,0.18)';
-    ctx.font='500 16px "Noto Sans KR",sans-serif';
-    ctx.textAlign='center';ctx.fillText('neulk.vercel.app',W/2,H-22);
-
+    ctx.font='800 28px "Noto Sans KR",sans-serif';
+    // 텍스트 줄바꿈 처리
+    var vt=r.vMain;
+    if(vt.length>14){
+      var mid=Math.floor(vt.length/2);
+      var sp=vt.lastIndexOf(' ',mid);
+      if(sp>0){
+        ctx.fillText(vt.substring(0,sp),W/2,H*0.58);
+        ctx.fillText(vt.substring(sp+1),W/2,H*0.58+36);
+      }else{ctx.fillText(vt,W/2,H*0.58);}
+    }else{ctx.fillText(vt,W/2,H*0.58);}
+    ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(36,H*0.68);ctx.lineTo(W-36,H*0.68);ctx.stroke();
+    // 공감 텍스트
+    ctx.fillStyle='rgba(255,255,255,0.45)';
+    ctx.font='400 16px "Noto Sans KR",sans-serif';
+    ctx.textAlign='center';
+    var et=r.empathy.text;
+    if(et.length>28)et=et.substring(0,28)+'...';
+    ctx.fillText(et,W/2,H*0.73);
+    ctx.fillStyle='rgba(255,255,255,0.15)';
+    ctx.font='500 15px "Noto Sans KR",sans-serif';
+    ctx.fillText('neulk.vercel.app',W/2,H-22);
     return cv;
   }
 
@@ -1116,18 +720,17 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('shareOverlay').classList.remove('open');
   });
 
-  /* 공통 유틸 */
   function getShareFile(cb){
     document.getElementById('shareCanvas').toBlob(function(blob){
       cb(new File([blob],'늙_결과.png',{type:'image/png'}));
     },'image/png');
   }
-  function saveImgNow(labelId,defaultTxt){
+  function saveImgNow(btnId,defaultTxt){
     var cv=document.getElementById('shareCanvas');
     var a=document.createElement('a');
     a.download='늙_결과_'+shareResult.score+'%.png';
     a.href=cv.toDataURL('image/png');a.click();
-    if(labelId){var b=document.getElementById(labelId);b.textContent='✅ 저장됨!';setTimeout(function(){b.textContent=defaultTxt;},2000);}
+    if(btnId){var b=document.getElementById(btnId);b.textContent='✅ 저장됨!';setTimeout(function(){b.textContent=defaultTxt;},2000);}
   }
   function showToast(msg){
     var t=document.getElementById('instaToast');
@@ -1135,185 +738,68 @@ document.addEventListener('DOMContentLoaded', function(){
     setTimeout(function(){t.classList.remove('show');},2800);
   }
 
-  /* 카카오톡 — 네이티브 공유 시트 (모바일에서 카톡 포함) */
   document.getElementById('btnShareKakao').addEventListener('click',function(){
     getShareFile(function(file){
       if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-        navigator.share({
-          title:'늙? — 꼰대 판별 결과',
-          text:shareResult.score+'% 나왔어요! '+shareResult.vMain+'\n나도 해봐 👉 neulk.vercel.app',
-          files:[file]
-        }).catch(function(){});
+        navigator.share({title:'늙? — 꼰대 판별 결과',text:shareResult.score+'% 나왔어요! '+shareResult.vMain+'\n나도 해봐 👉 neulk.vercel.app',files:[file]}).catch(function(){});
       }else if(navigator.share){
-        navigator.share({
-          title:'늙? — 꼰대 판별 결과',
-          text:shareResult.score+'% 나왔어요! '+shareResult.vMain,
-          url:'https://neulk.vercel.app'
-        }).catch(function(){});
-      }else{
-        showToast('이미지 저장 후 카카오톡에 전송해주세요!');
-        saveImgNow(null,null);
-      }
+        navigator.share({title:'늙? — 꼰대 판별 결과',text:shareResult.score+'% 나왔어요! '+shareResult.vMain,url:'https://neulk.vercel.app'}).catch(function(){});
+      }else{showToast('이미지 저장 후 카카오톡에 전송해주세요!');saveImgNow(null,null);}
     });
   });
-
-  /* 인스타그램 스토리 — 이미지 저장 + 앱 이동 안내 */
   document.getElementById('btnShareInsta').addEventListener('click',function(){
     saveImgNow(null,null);
-    // 모바일 Instagram URL scheme 시도
     var ua=navigator.userAgent.toLowerCase();
-    var isIOS=/iphone|ipad|ipod/.test(ua);
-    var isAndroid=/android/.test(ua);
-    if(isIOS){
-      // iOS: 인스타 스토리 카메라 열기 시도
+    if(/iphone|ipad|ipod/.test(ua)){
       var tryApp=window.open('instagram://story-camera','_blank');
-      setTimeout(function(){
-        if(!tryApp||tryApp.closed){window.open('https://www.instagram.com/','_blank');}
-      },800);
-    }else if(isAndroid){
+      setTimeout(function(){if(!tryApp||tryApp.closed){window.open('https://www.instagram.com/','_blank');}},800);
+    }else if(/android/.test(ua)){
       window.open('intent://instagram.com/#Intent;scheme=https;package=com.instagram.android;end','_blank');
-    }else{
-      window.open('https://www.instagram.com/','_blank');
-    }
+    }else{window.open('https://www.instagram.com/','_blank');}
     showToast('📸 저장된 이미지를 스토리에 올려주세요!');
   });
-
-  /* X (트위터) */
   document.getElementById('btnShareX').addEventListener('click',function(){
-    var text=encodeURIComponent(
-      shareResult.score+'% 나왔어요! '+shareResult.vMain+'\n꼰대인지 직접 판별해봐 👇'
-    );
+    var text=encodeURIComponent(shareResult.score+'% 나왔어요! '+shareResult.vMain+'\n나도 해봐 👇');
     var url=encodeURIComponent('https://neulk.vercel.app');
     window.open('https://twitter.com/intent/tweet?text='+text+'&url='+url,'_blank');
   });
-
-  /* 더보기 — OS 기본 공유 시트 */
   document.getElementById('btnShareMore').addEventListener('click',function(){
     getShareFile(function(file){
       if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-        navigator.share({
-          title:'늙? — 꼰대 판별 결과',
-          text:shareResult.score+'% 나왔어요! '+shareResult.vMain,
-          url:'https://neulk.vercel.app',
-          files:[file]
-        }).catch(function(){});
+        navigator.share({title:'늙? — 꼰대 판별 결과',text:shareResult.score+'% 나왔어요! '+shareResult.vMain,url:'https://neulk.vercel.app',files:[file]}).catch(function(){});
       }else if(navigator.share){
-        navigator.share({
-          title:'늙? — 꼰대 판별 결과',
-          text:shareResult.score+'% 나왔어요! '+shareResult.vMain,
-          url:'https://neulk.vercel.app'
-        }).catch(function(){});
-      }else{
-        showToast('이미지를 저장해서 공유해주세요!');
-      }
+        navigator.share({title:'늙? — 꼰대 판별 결과',text:shareResult.score+'% 나왔어요! '+shareResult.vMain,url:'https://neulk.vercel.app'}).catch(function(){});
+      }else{showToast('이미지를 저장해서 공유해주세요!');}
     });
   });
-
-  /* 이미지 저장 */
-  document.getElementById('btnSaveImg').addEventListener('click',function(){
-    saveImgNow('btnSaveImg','💾 이미지 저장');
-  });
-
-  /* 링크 복사 */
+  document.getElementById('btnSaveImg').addEventListener('click',function(){saveImgNow('btnSaveImg','💾 이미지 저장');});
   document.getElementById('btnCopyLink').addEventListener('click',function(){
     var url='https://neulk.vercel.app';
     var btn=document.getElementById('btnCopyLink');
     if(navigator.clipboard){
-      navigator.clipboard.writeText(url).then(function(){
-        btn.textContent='✅ 복사됨!';
-        setTimeout(function(){btn.textContent='🔗 링크 복사';},2000);
-      });
+      navigator.clipboard.writeText(url).then(function(){btn.textContent='✅ 복사됨!';setTimeout(function(){btn.textContent='🔗 링크 복사';},2000);});
     }else{
-      var ta=document.createElement('textarea');ta.value=url;
-      document.body.appendChild(ta);ta.select();document.execCommand('copy');
-      document.body.removeChild(ta);
-      btn.textContent='✅ 복사됨!';
-      setTimeout(function(){btn.textContent='🔗 링크 복사';},2000);
+      var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);
+      btn.textContent='✅ 복사됨!';setTimeout(function(){btn.textContent='🔗 링크 복사';},2000);
     }
   });
 
-  /* ── RENDER ── */
-  function renderResult(r){
-    var bm={safe:['rb-safe','✓ 안전 범위'],gray:['rb-gray','△ 경계선'],warn:['rb-warn','⚠ 선 넘음'],danger:['rb-danger','✕ 심각']};
-    var bd=bm[r.vType];
-    shareResult=r;
-    var bEl=document.getElementById('resBadge');bEl.className='res-badge '+bd[0];bEl.textContent=bd[1];
-    document.getElementById('resGrade').textContent=r.grade.lbl;
-    var cm={safe:'#60a5fa',gray:'#94a3b8',warn:'#fbbf24',danger:'#f87171'};
-    var nEl=document.getElementById('resNum');nEl.style.color=cm[r.vType];
-    setTimeout(function(){animN(nEl,0,r.score,1200);},200);
-    document.getElementById('resVerdict').textContent=r.vMain;
-
-    // 공감
-    document.getElementById('empathyEmoji').textContent=r.empathy.emoji;
-    document.getElementById('empathyText').textContent=r.empathy.text;
-
-    // AI 분석
-    var aiBox=document.getElementById('aiBox');
-    if(r.aiAnalysis){
-      document.getElementById('aiTitle').textContent=r.aiAnalysis.title;
-      document.getElementById('aiContent').innerHTML=r.aiAnalysis.paras.map(function(p){return '<p>'+p+'</p>';}).join('');
-      aiBox.classList.add('show');
-    }else{
-      aiBox.classList.remove('show');
-    }
-
-    document.getElementById('resDesc').textContent=r.vDesc;
-
-    // 유형
-    var types=[{id:'a',pct:r.agePct},{id:'n',pct:r.narcPct},{id:'r',pct:r.rudePct},{id:'c',pct:r.cutPct}];
-    types.forEach(function(t){
-      setTimeout(function(){animN(document.getElementById('p'+t.id),0,t.pct,900);document.getElementById('b'+t.id).style.width=t.pct+'%';},500);
-    });
-
-    // 대처
-    document.getElementById('actSection').innerHTML=r.actions.map(function(a){
-      return '<div class="act-item"><div class="act-item-head"><span class="act-item-icon">'+a.icon+'</span><span class="act-item-title">'+a.title+'</span></div><div class="act-item-body">'+a.body+'</div></div>';
-    }).join('');
-
-    // 스크롤 최상단
-    document.getElementById('s-result').scrollTop=0;
-  }
-
-  function animN(el,from,to,dur){
-    var s=performance.now();
-    (function step(now){
-      var t=Math.min((now-s)/dur,1),e=1-Math.pow(1-t,3);
-      el.innerHTML=Math.round(from+(to-from)*e)+'<small>%</small>';
-      if(t<1)requestAnimationFrame(step);
-    })(s);
-  }
-
-
-  /* ── SAJU (사주 분석) ── */
-  var sajuState={name:'',year:0,month:0,day:0,gender:'',hour:-1};
-  var sajuResult=null;
-
-  // 천간 · 지지 · 오행 테이블
+  /* ── 사주 계산 (만세력) ── */
   var GAN=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
   var JI=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
   var GAN_KR=['갑','을','병','정','무','기','경','신','임','계'];
   var JI_KR=['자','축','인','묘','진','사','오','미','신','유','술','해'];
-  var OH_NAME=['木','火','土','金','水'];
-  var OH_COL=['#4ade80','#fb923c','#a78bfa','#fbbf24','#60a5fa'];
-  // 천간→오행: 甲乙=木, 丙丁=火, 戊己=土, 庚辛=金, 壬癸=水
   var GAN_OH=[0,0,1,1,2,2,3,3,4,4];
-  // 지지→오행: 子=水,丑=土,寅=木,卯=木,辰=土,巳=火,午=火,未=土,申=金,酉=金,戌=土,亥=水
   var JI_OH=[4,2,0,0,2,1,1,2,3,3,2,4];
 
-  // Julian Day Number 계산
   function getJD(y,m,d){
     var a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;
     return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045;
   }
-
-  // 년주(年柱): 입춘 기준 (2월 4일 이전이면 전년도)
   function getYearPillar(y,m,d){
     var adjY=(m<2||(m===2&&d<4))?y-1:y;
     return{g:((adjY-4)%10+10)%10,j:((adjY-4)%12+12)%12};
   }
-
-  // 월주(月柱): 절기 기준 지지 + 년간에 따른 월간
   var JEOLGI=[
     {ji:1,sm:1,sd:6},{ji:2,sm:2,sd:4},{ji:3,sm:3,sd:6},
     {ji:4,sm:4,sd:5},{ji:5,sm:5,sd:6},{ji:6,sm:6,sd:6},
@@ -1326,213 +812,83 @@ document.addEventListener('DOMContentLoaded', function(){
       var j=JEOLGI[i];
       if(m>j.sm||(m===j.sm&&d>=j.sd)){ji=j.ji;break;}
     }
-    // 년간 % 5 → 인월(寅月,지지2) 천간: 갑기=丙(2), 을경=戊(4), 병신=庚(6), 정임=壬(8), 무계=甲(0)
     var inStart=[2,4,6,8,0][yearG%5];
     var g=(inStart+(ji-2+12)%12)%10;
     return{g:g,j:ji};
   }
-
-  // 일주(日柱): 기준 1900.1.31 = 甲子日 (JD 2415080)
   var BASE_JD=2415080;
   function getDayPillar(y,m,d){
     var diff=getJD(y,m,d)-BASE_JD;
     return{g:((diff%10)+10)%10,j:((diff%12)+12)%12};
   }
-
-  // 시주(時柱): 일간에 따른 자시(子時) 천간, 시진 지지
   function getHourPillar(dayG,hour){
     if(hour<0)return null;
     var jiH=(hour===23||hour===0)?0:Math.floor((hour+1)/2)%12;
     var ziStart=[0,2,4,6,8][dayG%5];
     return{g:(ziStart+jiH)%10,j:jiH};
   }
-
-  // 오행 분포 집계
-  function calcOhaeng(yr,mo,da,hr){
-    var oh=[0,0,0,0,0];
-    [yr,mo,da,hr].forEach(function(p){
-      if(!p)return;
-      oh[GAN_OH[p.g]]++;oh[JI_OH[p.j]]++;
-    });
-    return oh;
-  }
-
-  // 일간별 기질 + 이 상황이 힘든 이유 + 관계 패턴 (10가지) — 확장판
-  var GAN_DATA=[
-    { label:'갑목(甲木)', typeLabel:'원칙주의 리더형', ohLabel:'木',
-      trait:'갑목(甲木)은 명리학에서 하늘을 향해 곧게 자라는 큰 나무를 상징해요. 타고난 리더십과 뚜렷한 자기 주관이 이 기질의 핵심이에요. 어릴 때부터 "왜 그래야 해?"라는 질문을 자연스럽게 던지며, 남들이 당연하게 받아들이는 관행도 납득이 안 되면 따르기가 어려워요. 이 기질은 불의 앞에서 흔들리지 않는 힘이 되지만, "저 사람은 왜 저렇게 완고하지?"라는 오해를 사기도 해요.\n\n갑목은 꺾이는 것보다 부러지는 길을 택하는 기질이에요. 그게 당신의 가장 큰 강점이면서, 동시에 가장 큰 시련의 씨앗이기도 해요. 주변에서 당신에게 의지하는 이유도, 당신이 가장 크게 지치는 이유도 결국 같은 곳에서 출발해요.',
-      why:'갑목 기질에게 가장 큰 스트레스는 자율성의 침해예요. 상대방이 나이나 경험을 앞세워 내 방향을 강요할 때, 갑목은 그걸 단순한 조언이 아니라 내 존재 방향을 억지로 꺾으려는 시도로 무의식이 인식해요. 그래서 같은 상황에서도 다른 기질의 사람보다 훨씬 강한 거부감과 분노가 올라오는 거예요.\n\n이건 당신이 유독 예민한 게 아니에요. 갑목의 기운이 그 압력에 맞서는 것 자체가 생존 본능이기 때문이에요. 그 본능이 맞다는 증거는, 당신이 불편함을 느끼는 상황이 대부분 실제로 뭔가 잘못된 상황이라는 점이에요.',
-      pattern:'갑목은 "내가 납득해야 따를 수 있다"는 내면의 원칙이 있어요. 납득이 안 되면 표정과 태도에서 바로 드러나고, 그게 상대를 자극해 갈등이 더 깊어지는 패턴이 반복돼요. 정면 돌파 방식이 오히려 더 큰 충돌을 만들고 있는 건 아닌지 점검해보세요.\n\n지금 이 상황에서 갑목에게 필요한 다음 성장 과제는 전략적인 유연함이에요. 부러지지 않으면서도 흘러갈 수 있는 방식을 찾는 것이 이 시기의 열쇠예요.'
-    },
-    { label:'을목(乙木)', typeLabel:'유연한 적응가형', ohLabel:'木',
-      trait:'을목(乙木)은 명리학에서 바위틈을 비집고 자라는 담쟁이덩굴, 혹은 바람에 자연스럽게 흔들리는 풀꽃에 비유해요. 어떤 환경에서도 유연하게 적응하며, 상대방이 편안하게 느끼도록 자연스럽게 맞춰주는 탁월한 관계 감각이 있어요.\n\n분위기를 빠르게 읽고, 어색한 자리도 부드럽게 만드는 능력이 있어요. 그런데 이 능력의 이면에는 자신의 감정과 필요를 뒤로 미루는 습관이 생기기 쉬워요. 상대를 먼저 배려하다 보면, 어느 순간 내 공간과 경계가 조금씩 좁아지고 있다는 걸 뒤늦게 알아채게 돼요.',
-      why:'을목 기질이 이 상황에서 특히 힘든 이유는 참다 참다 한 번에 터지는 패턴에 있어요. 상대방이 조금씩 선을 넘어올 때마다 경계를 양보하다 보면, 어느 순간 내 공간이 너무 좁아진 상태가 돼요. 그 시점이 되면 사소한 한마디가 도화선이 돼서 감정이 한꺼번에 터지는 경우가 많아요.\n\n지금 이 상황이 처음이 아니라 반복되고 있다면, 관계 초반부터 경계를 조금씩 양보해왔던 게 여기까지 이어진 거예요. 지금의 상황은 당신이 약해서가 아니에요. 너무 오래, 너무 많이 배려해온 결과예요.',
-      pattern:'을목은 상대가 기분 나쁘지 않게 거절하려다 결국 수락하는 패턴이 있어요. 이게 반복되면 주변에서 을목을 편한 사람으로 인식하게 되고, 무의식적으로 더 많은 것을 요구하게 돼요.\n\n지금 이 상황에서 을목에게 필요한 것은 거절 기술이 아니에요. 내가 불편하다는 신호를 상대보다 먼저, 내 자신이 먼저 알아채는 연습이에요. 그 신호를 무시하지 않는 것에서부터 경계가 시작돼요.'
-    },
-    { label:'병화(丙火)', typeLabel:'열정적 표현가형', ohLabel:'火',
-      trait:'병화(丙火)는 명리학에서 하늘 위의 태양을 상징해요. 에너지가 넘치고, 감정을 숨기는 게 잘 안 되며, 좋으면 좋다, 싫으면 싫다가 바로 얼굴에 나타나는 기질이에요. 자연스럽게 주변을 밝히고 사람들을 끌어당기는 매력이 있어요.\n\n그런데 태양은 모든 것을 비추기 때문에 그림자도 또렷이 드러나요. 감정의 파동이 크고, 열정적으로 타올랐다가 급격히 식는 경우도 있어요. 병화에게는 표현하지 않는 것이 오히려 스트레스고, 참는 것이 체질에 맞지 않아요.',
-      why:'병화 기질은 상대의 무시나 폄하 발언이 다른 기질의 사람보다 훨씬 직접적으로 꽂혀요. 태양처럼 강렬하게 비추는 기운이라, 자신을 부정하는 에너지도 그만큼 강하게 받아들여요.\n\n그 결과 즉각적으로 감정이 반응하고, 그 반응이 상황을 더 꼬이게 만드는 사이클이 생기는 경우가 많아요. 감정적으로 반응했다는 자책감이 남고, 그게 또 다른 스트레스로 쌓이는 거예요. 이 사이클이 반복되고 있다면, 당신의 감정이 문제가 아니에요. 그 감정을 다루는 방식에서 전환이 필요한 시점이에요.',
-      pattern:'병화는 감정적으로 반응할 때 상대방이 오히려 유리해지는 구도가 만들어지기 쉬워요. 본질적인 문제가 감정 싸움으로 희석되거나, 상대가 피해자 역할로 전환되는 경우도 있어요.\n\n지금 이 상황에서 병화에게 필요한 것은 반응의 타이밍을 조절하는 능력이에요. 당장 반응하지 않아도 당신의 감정은 맞고, 나중에 차분하게 표현해도 늦지 않아요. 태양은 서두르지 않아도 매일 떠오르니까요.'
-    },
-    { label:'정화(丁火)', typeLabel:'깊은 직관가형', ohLabel:'火',
-      trait:'정화(丁火)는 명리학에서 촛불, 혹은 깊은 밤의 등불에 비유해요. 병화(丙火)가 하늘의 태양이라면, 정화는 어두운 방 안에서 사람의 마음 깊은 곳까지 조용히 비추는 불빛이에요.\n\n직관이 매우 날카롭고, 사람의 말 뒤에 있는 감정과 의도를 빠르게 감지해요. "이 사람 뭔가 이상하다"는 느낌이 들었다면, 대부분의 경우 맞아요. 겉으로는 차분하고 조용해 보여도 내면에서는 끊임없이 분석하고 처리하고 감지하는 기질이에요. 그 섬세함이 정화를 깊이 있고 신뢰할 수 있는 사람으로 만들어요.',
-      why:'정화 기질의 어려움은 감지는 잘하는데 표현이 늦다는 점이에요. 이상하다고 느꼈어도 확신이 생길 때까지 말하지 못하고, 그사이 상황이 악화되는 경우가 있어요.\n\n또 감정을 혼자 삭히며 내부에서 처리하다 보면 실제보다 더 크게 느껴지거나, 어느 순간 자기 자신을 탓하게 되는 방향으로 흐르기도 해요. 지금 내가 힘든 게 상대 잘못인지 내 잘못인지 구분이 안 된다면, 그건 정화의 자기 검열이 작동하고 있는 거예요.',
-      pattern:'정화는 혼자 생각하는 시간이 길어질수록 감정이 더 복잡해지는 경향이 있어요. 상대방의 발언을 계속 반추하면서 다양한 해석을 붙이다 보면, 처음보다 상처가 더 커지는 경우도 있어요.\n\n지금 이 상황에서 정화에게 필요한 것은 신뢰할 수 있는 한 사람에게 털어놓는 거예요. 밖으로 꺼낸 말은 생각만 할 때보다 훨씬 가벼워지고, 더 명확하게 보여요. 촛불은 혼자 타오를 때보다 함께 있을 때 더 오래 빛나요.'
-    },
-    { label:'무토(戊土)', typeLabel:'묵묵한 대산형', ohLabel:'土',
-      trait:'무토(戊土)는 명리학에서 큰 산, 혹은 드넓은 대지를 상징해요. 쉽게 흔들리지 않는 중심과 묵묵히 버티는 힘이 가장 큰 특징이에요. 주변에서 의지하는 사람이 많고, 누군가 힘들 때 가장 먼저 떠올리는 존재예요.\n\n쉽게 감정을 드러내지 않고, 어지간한 일은 참고 넘길 수 있는 포용력이 있어요. 그런데 산이 아무리 거대해도 오랜 시간 압력이 쌓이면 지반이 무너지듯, 무토도 한 번에 붕괴하는 방식으로 한계를 드러내요. 그때가 되면 본인도 놀랄 만큼 크게 반응하는 경우가 있어요.',
-      why:'무토 기질의 가장 큰 과제는 "참는 것이 미덕"이라는 믿음이에요. 오랫동안 감정과 불편함을 쌓아두다 보면, 본인도 언제부터 힘들었는지 모르게 되는 경우가 있어요.\n\n지금 이 상황이 얼마나 됐는지 떠올려보세요. 처음에는 괜찮다고 생각했던 일이 지금은 훨씬 무겁게 느껴지고 있다면, 오랜 시간 쌓아온 무게가 이미 한계에 가까워졌다는 신호예요. 몸 어딘가에서 이미 신호를 보내고 있을 수 있어요.',
-      pattern:'무토는 주변의 기대에 부응하려는 성향이 강해서, 힘들어도 "괜찮다"고 말하는 패턴이 있어요. 그 결과 주변에서는 "이 사람은 다 견딜 수 있다"고 인식하게 되고, 점점 더 많은 것을 요구하게 돼요.\n\n지금 이 상황에서 무토에게 필요한 것은 참는 능력이 아니에요. 지금 내가 얼마나 힘든지를 솔직하게 표현하는 연습이에요. 산도 비가 오면 물을 흘려보내야 해요.'
-    },
-    { label:'기토(己土)', typeLabel:'세심한 배려가형', ohLabel:'土',
-      trait:'기토(己土)는 명리학에서 기름진 논밭, 혹은 정원의 흙에 비유해요. 모든 것을 품어 키워내는 포용력과 배려심이 타고난 기질이에요. 사람의 감정 변화에 민감하게 반응하고, 상대가 불편하지 않도록 세심하게 신경 쓰는 능력이 있어요.\n\n꼼꼼하고 성실하며, 맡은 일은 끝까지 책임지는 성향이 강해요. 그런데 기름진 흙이 모든 것을 흡수하듯, 기토는 타인의 감정과 요구도 너무 많이 흡수하는 경향이 있어요. 상대의 기분을 먼저 고려하다 보니, 정작 내가 원하는 것을 말하는 게 어색하게 느껴지는 경우가 생겨요.',
-      why:'기토 기질은 내 감정보다 상대의 감정을 먼저 읽는 능력이 너무 뛰어나서, 정작 본인의 경계가 언제 넘어갔는지 늦게 알아채는 경우가 많아요.\n\n"저 사람도 사정이 있겠지, 한 번만 더 참아보자" 하다가 어느 순간 억울함이 폭발하는 패턴이 생겨요. 지금 이 상황이 억울하고 화가 난다면, 그건 지금 이 순간 갑자기 생긴 감정이 아니에요. 오랫동안 쌓여온 것들이 임계점에 달한 거예요.',
-      pattern:'기토는 어려운 상황에서도 먼저 사과하거나 상황을 봉합하려는 성향이 있어요. 이게 갈등을 잠깐 잠재우지만, 근본적인 문제는 해결되지 않고 반복되는 원인이 돼요.\n\n지금 이 상황에서 기토에게 필요한 것은 내가 불편하다는 말을 먼저 하는 연습이에요. 상대의 감정보다 내 감정이 덜 중요한 게 아니에요. 기름진 흙도 가끔은 쉬어야 해요.'
-    },
-    { label:'경금(庚金)', typeLabel:'결단력 원칙가형', ohLabel:'金',
-      trait:'경금(庚金)은 명리학에서 강철, 혹은 도끼에 비유해요. 타고난 결단력과 원칙 의식이 강하고, 옳고 그름에 대한 판단이 명확하며 그걸 행동으로 옮기는 실행력이 있어요. 한번 마음먹으면 강하게 밀어붙이는 힘이 있고, 부당한 것을 참고 넘어가는 게 체질적으로 안 맞아요.\n\n이 기질은 불의 앞에서 가장 먼저 목소리를 내는 힘이 돼요. 그런데 강철처럼 단단하고 날카로운 만큼, 주변 사람들이 압도되거나 방어적으로 반응하는 경우도 생겨요.',
-      why:'경금 기질은 상황을 정확하게 판단하는 능력은 뛰어나지만, 그 판단을 표현하는 방식이 너무 직접적이어서 갈등이 오히려 커지는 경우가 있어요.\n\n맞는 말을 했는데도 상대방이 방어적으로 굳어버리거나, 감정 싸움으로 번져서 본질이 희석되는 경험을 한 적 있을 거예요. 이건 당신의 판단이 틀린 게 아니에요. 맞는 말도 방식이 달라지면 효과가 완전히 달라지는 걸 경금 기질이 가장 많이 체감하게 돼요.',
-      pattern:'경금은 빠른 해결을 원하는 성향 때문에, 상대가 아직 준비되지 않은 상태에서 결론을 밀어붙이는 패턴이 생기기 쉬워요.\n\n지금 이 상황에서 경금에게 필요한 것은 기다리는 전략이에요. 돌격하지 않아도 이길 수 있는 방법이 있어요. 상대가 스스로 물러서게 만드는 방식을 찾는 게 지금 이 시기의 과제예요.'
-    },
-    { label:'신금(辛金)', typeLabel:'완벽주의 감각가형', ohLabel:'金',
-      trait:'신금(辛金)은 명리학에서 보석, 혹은 날카롭게 벼려진 작은 칼에 비유해요. 완벽주의적 성향과 예민한 감각이 특징이에요. 사소한 것도 그냥 넘기지 않고, 아름다움과 질서에 대한 기준이 높아요.\n\n이 섬세함이 신금을 탁월한 감각의 소유자로 만들어줘요. 그런데 보석이 아무리 귀해도 작은 충격에도 금이 가듯, 신금은 타인의 말이나 시선에 민감하게 반응하고 상처가 쉽게 남는 편이에요. 그 상처를 겉으로 드러내지 않고 안으로 담아두는 경향이 있어요.',
-      why:'신금 기질은 상대의 말 한마디가 오래 남아요. 이미 지나간 상황을 반복해서 떠올리고, "그때 왜 저 말을 했을까, 내가 뭔가 잘못한 걸까"를 되새기는 패턴이 있어요.\n\n이 반추가 길어지면 실제보다 더 큰 상처로 남고, 자기 검열이 과도해지는 상태가 돼요. 지금 이 상황에서 내가 잘못한 건 아닌지 반복해서 생각하고 있다면, 신금의 자기 검열이 작동하고 있는 거예요. 상대방 잘못을 내가 짊어지고 있을 가능성이 높아요.',
-      pattern:'신금은 완벽하게 대응하려다 타이밍을 놓치는 경우가 있어요. 뭐라고 말해야 할지 계속 고민하다가 그 순간이 지나버리고, 나중에 후회하는 패턴이에요.\n\n지금 이 상황에서 신금에게 필요한 것은 완벽한 말 대신 솔직한 말이에요. 잘 다듬어진 말보다 진심이 담긴 말이 훨씬 강력해요. 보석은 세공하지 않아도 보석이에요.'
-    },
-    { label:'임수(壬水)', typeLabel:'전략적 큰 물형', ohLabel:'水',
-      trait:'임수(壬水)는 명리학에서 큰 강이나 바다를 상징해요. 광활하고 깊으며, 어느 방향으로든 유연하게 흘러갈 수 있는 기질이에요. 상황 파악이 빠르고, 다각도로 분석하는 능력이 뛰어나며, 장기적인 안목으로 판단하는 힘이 있어요.\n\n사람도 빠르게 파악하고, 관계의 역학을 직관적으로 이해해요. 이 능력 덕분에 임수는 많은 상황에서 가장 현명한 선택지를 찾아낼 수 있어요. 그런데 큰 강이 모든 것을 담고 흘러가듯, 임수는 때로 너무 많은 것을 혼자 감당하려는 경향이 생기기도 해요.',
-      why:'임수 기질의 어려움은 다 알면서도 실제로 변화를 만들기가 어렵다는 느낌이에요. 이미 상황을 분석했고, 어떻게 해야 하는지도 알고 있어요.\n\n그런데 막상 행동으로 옮기려면 변수가 너무 많고, 최적의 타이밍을 기다리다 기회를 놓치는 경우가 생겨요. 지금 이 상황이 오래된 이유 중 하나는 완벽한 해결책을 찾을 때까지 기다리고 있기 때문일 수 있어요.',
-      pattern:'임수는 감정보다 분석이 앞서는 경향이 있어요. 그 덕분에 냉정하게 볼 수 있지만, 정작 본인의 감정적 필요는 뒤로 밀리는 경우가 생겨요.\n\n지금 이 상황에서 임수에게 필요한 것은 더 많은 분석이 아니에요. 작은 행동 하나를 지금 당장 실행하는 것이에요. 완벽하지 않아도 괜찮아요. 강은 완벽한 길을 찾을 때까지 기다리지 않아요.'
-    },
-    { label:'계수(癸水)', typeLabel:'감수성 내면가형', ohLabel:'水',
-      trait:'계수(癸水)는 명리학에서 안개, 빗방울, 혹은 이슬에 비유해요. 임수(壬水)가 큰 강이라면, 계수는 조용히 스며드는 빗물이에요. 감수성이 풍부하고 깊은 공감 능력이 있으며, 상대의 감정을 섬세하게 포착하는 능력이 뛰어나요.\n\n내면이 풍부하고, 혼자 사유하는 시간에서 에너지를 얻는 기질이에요. 조용하고 내성적으로 보이지만, 내면에는 굉장히 세밀하고 복잡한 감정의 층위가 있어요. 이 풍부한 내면이 계수를 특별하게 만들어주는 동시에, 타인이 쉽게 이해하지 못하는 고독함을 만들기도 해요.',
-      why:'계수 기질은 상대방의 에너지를 강하게 흡수하는 특성이 있어요. 특히 부정적인 에너지, 압박감, 무시하는 태도 같은 것들이 다른 기질의 사람보다 훨씬 깊이 스며들어요.\n\n이 상황에서 유독 지치고 힘든 이유가 여기 있어요. 예민해서가 아니에요. 그만큼 많은 것을 흡수하고 있기 때문이에요. 흡수한 것들을 흘려보내지 않으면 계수는 특히 빠르게 소진돼요.',
-      pattern:'계수는 혼자 감당하려는 성향이 강해서 힘들다는 말을 잘 못 하는 경우가 있어요. 내면에서 많은 것을 처리하다 보면 외부적으로는 괜찮아 보이고, 주변에서도 괜찮은 줄 알고 더 많은 것을 기대하게 되는 패턴이 생겨요.\n\n지금 이 상황에서 계수에게 필요한 것은 내가 흡수한 것들을 밖으로 표현하는 출구예요. 글이든 말이든 어떤 방식으로든 흘려보내는 것이 중요해요. 빗물도 고이면 썩어요.'
-    }
-  ];
-
-  // 천간 색상
-  function ganColor(g){return['#4ade80','#86efac','#fb923c','#fca5a5','#a78bfa','#c4b5fd','#fbbf24','#fde68a','#60a5fa','#93c5fd'][g]||'#fff';}
-
-  // 사주 계산
   function calcSaju(y,m,d,hour){
     var yr=getYearPillar(y,m,d);
     var mo=getMonthPillar(y,m,d,yr.g);
     var da=getDayPillar(y,m,d);
     var hr=hour>=0?getHourPillar(da.g,hour):null;
-    var oh=calcOhaeng(yr,mo,da,hr);
-    return{yr:yr,mo:mo,da:da,hr:hr,oh:oh};
+    return{yr:yr,mo:mo,da:da,hr:hr};
   }
+  function ganColor(g){return['#4ade80','#86efac','#fb923c','#fca5a5','#a78bfa','#c4b5fd','#fbbf24','#fde68a','#60a5fa','#93c5fd'][g]||'#fff';}
 
-  // 사주 결과 렌더링
-  function renderSajuResult(saju,name,y,m,d,hour){
-    var da=saju.da;
-    var info=GAN_DATA[da.g];
-
-    // 헤더
-    document.getElementById('srGanBadge').textContent='일간 · '+GAN[da.g]+' '+info.label;
-    document.getElementById('srName').textContent=(name||'당신')+'의 사주 풀이';
-    document.getElementById('srSub').textContent='양력 '+y+'년 '+m+'월 '+d+'일'+(hour>=0?' '+hour+'시 생':'');
-    document.getElementById('srType').textContent='✦ '+info.typeLabel;
-
-    // 4기둥
-    var cols=[
-      {lbl:'년주',p:saju.yr},{lbl:'월주',p:saju.mo},
-      {lbl:'일주',p:saju.da},{lbl:'시주',p:saju.hr}
-    ];
-    var html='';
-    cols.forEach(function(c){
-      if(!c.p){
-        html+='<div class="saju-pillar" style="opacity:.25"><div class="saju-pillar-lbl">시주</div><div class="saju-pillar-gan" style="color:rgba(255,255,255,.3)">?</div><div class="saju-pillar-ji" style="color:rgba(255,255,255,.2)">?</div><div class="saju-pillar-kr">미입력</div></div>';
-      }else{
-        html+='<div class="saju-pillar"><div class="saju-pillar-lbl">'+c.lbl+'</div><div class="saju-pillar-gan" style="color:'+ganColor(c.p.g)+'">'+GAN[c.p.g]+'</div><div class="saju-pillar-ji">'+JI[c.p.j]+'</div><div class="saju-pillar-kr">'+GAN_KR[c.p.g]+JI_KR[c.p.j]+'</div></div>';
-      }
-    });
-    document.getElementById('srFourPillars').innerHTML=html;
-
-    // 무료 분석 텍스트
-    document.getElementById('srFreeTitle').textContent='당신의 타고난 기질 — '+info.label;
-    document.getElementById('srFreeBody').innerHTML=info.trait.replace(/\n\n/g,'<br><br>');
-    document.getElementById('srWhyHard').innerHTML=info.why.replace(/\n\n/g,'<br><br>');
-    document.getElementById('srPattern').innerHTML=info.pattern.replace(/\n\n/g,'<br><br>');
-
-    // 오행 분포
-    var total=saju.oh.reduce(function(a,b){return a+b;},0)||1;
-    var ohHtml='';
-    saju.oh.forEach(function(v,i){
-      var pct=Math.round(v/total*100);
-      ohHtml+='<div class="oh-row"><div class="oh-lbl">'+OH_NAME[i]+'</div><div class="oh-bar-bg"><div class="oh-bar" style="background:'+OH_COL[i]+';width:0%" data-pct="'+pct+'"></div></div><div class="oh-pct">'+pct+'%</div></div>';
-    });
-    document.getElementById('srOhaeng').innerHTML=ohHtml;
-    setTimeout(function(){
-      document.querySelectorAll('#srOhaeng .oh-bar').forEach(function(b){b.style.width=b.dataset.pct+'%';});
-    },350);
-
-    // 스크롤 리셋
-    document.getElementById('s-saju-result').scrollTop=0;
-  }
-
-  // 유효성 체크
-  function checkSajuValid(){
-    var y=parseInt(document.getElementById('sajuYear').value||0);
-    var m=parseInt(document.getElementById('sajuMonth').value||0);
-    var d=parseInt(document.getElementById('sajuDay').value||0);
-    var ok=(y>=1930&&y<=2010&&m>=1&&m<=12&&d>=1&&d<=31&&sajuState.gender!=='');
-    document.getElementById('btnSajuStart').disabled=!ok;
-  }
-
-  // 성별 버튼
-  var genderBtns=Array.from(document.querySelectorAll('.gender-btn'));
-  genderBtns.forEach(function(b){
-    b.addEventListener('click',function(){
-      genderBtns.forEach(function(x){x.classList.remove('sel');});
-      this.classList.add('sel');
-      sajuState.gender=this.dataset.gender;
-      checkSajuValid();
-    });
-  });
-
-  // 입력 변경 이벤트
-  ['sajuYear','sajuMonth','sajuDay'].forEach(function(id){
-    document.getElementById(id).addEventListener('change',checkSajuValid);
-    document.getElementById(id).addEventListener('input',checkSajuValid);
-  });
-
-  // CTA 버튼 → 입력 화면
-  document.getElementById('btnSajuCta').addEventListener('click',function(){goTo('s-saju-input');});
-
-  // 뒤로 가기 (입력 화면 → 결과)
-  document.getElementById('bkSaju').addEventListener('click',function(){goBack('s-result');});
-
-  // 사주 분석 시작
-  var sajuLoadMsgs=['천간지지 배열 중...','사주팔자 구성 중...','일간(日干) 분석 중...','오행 분포 측정 중...','기질 패턴 매칭 중...'];
-  document.getElementById('btnSajuStart').addEventListener('click',function(){
-    var y=parseInt(document.getElementById('sajuYear').value);
-    var m=parseInt(document.getElementById('sajuMonth').value);
-    var d=parseInt(document.getElementById('sajuDay').value);
-    var hv=document.getElementById('sajuHour').value;
-    var hour=hv===''?-1:parseInt(hv);
-    var name=document.getElementById('sajuName').value.trim();
-    sajuState={name:name,year:y,month:m,day:d,gender:sajuState.gender,hour:hour};
-
-    goTo('s-saju-load');
-    var i=0;
-    var iv=setInterval(function(){i=(i+1)%sajuLoadMsgs.length;document.getElementById('sajuLoadTxt').textContent=sajuLoadMsgs[i];},620);
-    setTimeout(function(){
-      clearInterval(iv);
-      sajuResult=calcSaju(y,m,d,hour);
-      renderSajuResult(sajuResult,name,y,m,d,hour);
-      goTo('s-saju-result');
-    },2300+Math.random()*500);
-  });
-
-  // 사주 결과 → 판별 결과로
-  document.getElementById('btnSajuBack').addEventListener('click',function(){goBack('s-result');});
-
-  // 결제 버튼 (준비 중)
-  document.getElementById('btnUnlock').addEventListener('click',function(){
-    showToast('🔐 결제 기능 곧 오픈해요!');
-  });
+  /* ── GAN_DATA (10 일간) ── */
+  var GAN_DATA=[
+    { label:'갑목(甲木)', typeLabel:'원칙주의 리더형', ohLabel:'木',
+      trait:'갑목(甲木)은 명리학에서 하늘을 향해 곧게 자라는 큰 나무를 상징해요. 타고난 리더십과 뚜렷한 자기 주관이 이 기질의 핵심이에요. 어릴 때부터 "왜 그래야 해?"라는 질문을 자연스럽게 던지며, 남들이 당연하게 받아들이는 관행도 납득이 안 되면 따르기가 어려워요. 이 기질은 불의 앞에서 흔들리지 않는 힘이 되지만, "저 사람은 왜 저렇게 완고하지?"라는 오해를 사기도 해요.\n\n갑목은 꺾이는 것보다 부러지는 길을 택하는 기질이에요. 그게 당신의 가장 큰 강점이면서, 동시에 가장 큰 시련의 씨앗이기도 해요.',
+      why:'갑목 기질에게 가장 큰 스트레스는 자율성의 침해예요. 상대방이 나이나 경험을 앞세워 내 방향을 강요할 때, 갑목은 그걸 단순한 조언이 아니라 내 존재 방향을 억지로 꺾으려는 시도로 무의식이 인식해요. 그래서 같은 상황에서도 다른 기질의 사람보다 훨씬 강한 거부감과 분노가 올라오는 거예요.\n\n이건 당신이 유독 예민한 게 아니에요.',
+      pattern:'갑목은 "내가 납득해야 따를 수 있다"는 내면의 원칙이 있어요. 납득이 안 되면 표정과 태도에서 바로 드러나고, 그게 상대를 자극해 갈등이 더 깊어지는 패턴이 반복돼요.\n\n지금 이 상황에서 갑목에게 필요한 성장 과제는 전략적인 유연함이에요.'
+    },
+    { label:'을목(乙木)', typeLabel:'유연한 적응가형', ohLabel:'木',
+      trait:'을목(乙木)은 명리학에서 바위틈을 비집고 자라는 담쟁이덩굴, 혹은 바람에 자연스럽게 흔들리는 풀꽃에 비유해요. 어떤 환경에서도 유연하게 적응하며, 상대방이 편안하게 느끼도록 자연스럽게 맞춰주는 탁월한 관계 감각이 있어요.\n\n분위기를 빠르게 읽고, 어색한 자리도 부드럽게 만드는 능력이 있어요. 그런데 이 능력의 이면에는 자신의 감정과 필요를 뒤로 미루는 습관이 생기기 쉬워요.',
+      why:'을목 기질이 이 상황에서 특히 힘든 이유는 참다 참다 한 번에 터지는 패턴에 있어요. 상대방이 조금씩 선을 넘어올 때마다 경계를 양보하다 보면, 어느 순간 내 공간이 너무 좁아진 상태가 돼요.\n\n지금의 상황은 당신이 약해서가 아니에요. 너무 오래, 너무 많이 배려해온 결과예요.',
+      pattern:'을목은 상대가 기분 나쁘지 않게 거절하려다 결국 수락하는 패턴이 있어요. 이게 반복되면 주변에서 을목을 편한 사람으로 인식하고, 무의식적으로 더 많은 것을 요구하게 돼요.\n\n필요한 것은 거절 기술이 아니에요. 내가 불편하다는 신호를 먼저 알아채는 연습이에요.'
+    },
+    { label:'병화(丙火)', typeLabel:'열정적 표현가형', ohLabel:'火',
+      trait:'병화(丙火)는 명리학에서 하늘 위의 태양을 상징해요. 에너지가 넘치고, 감정을 숨기는 게 잘 안 되며, 좋으면 좋다, 싫으면 싫다가 바로 얼굴에 나타나는 기질이에요. 자연스럽게 주변을 밝히고 사람들을 끌어당기는 매력이 있어요.\n\n그런데 태양은 모든 것을 비추기 때문에 그림자도 또렷이 드러나요. 감정의 파동이 크고, 열정적으로 타올랐다가 급격히 식는 경우도 있어요.',
+      why:'병화 기질은 상대의 무시나 폄하 발언이 다른 기질의 사람보다 훨씬 직접적으로 꽂혀요. 태양처럼 강렬하게 비추는 기운이라, 자신을 부정하는 에너지도 그만큼 강하게 받아들여요.\n\n즉각적으로 감정이 반응하고, 그 반응이 상황을 더 꼬이게 만드는 사이클이 생기는 경우가 많아요.',
+      pattern:'병화는 감정적으로 반응할 때 상대방이 오히려 유리해지는 구도가 만들어지기 쉬워요. 본질적인 문제가 감정 싸움으로 희석되거나, 상대가 피해자 역할로 전환되는 경우도 있어요.\n\n반응의 타이밍을 조절하는 능력이 지금 이 시기의 핵심이에요.'
+    },
+    { label:'정화(丁火)', typeLabel:'깊은 직관가형', ohLabel:'火',
+      trait:'정화(丁火)는 명리학에서 촛불, 혹은 깊은 밤의 등불에 비유해요. 직관이 매우 날카롭고, 사람의 말 뒤에 있는 감정과 의도를 빠르게 감지해요. "이 사람 뭔가 이상하다"는 느낌이 들었다면, 대부분의 경우 맞아요.\n\n겉으로는 차분하고 조용해 보여도 내면에서는 끊임없이 분석하고 처리하고 감지하는 기질이에요.',
+      why:'정화 기질의 어려움은 감지는 잘하는데 표현이 늦다는 점이에요. 이상하다고 느꼈어도 확신이 생길 때까지 말하지 못하고, 그사이 상황이 악화되는 경우가 있어요.\n\n감정을 혼자 삭히며 내부에서 처리하다 보면 실제보다 더 크게 느껴지거나, 어느 순간 자기 자신을 탓하게 되는 방향으로 흐르기도 해요.',
+      pattern:'정화는 혼자 생각하는 시간이 길어질수록 감정이 더 복잡해지는 경향이 있어요. 상대방의 발언을 계속 반추하면서 다양한 해석을 붙이다 보면, 처음보다 상처가 더 커지는 경우도 있어요.\n\n신뢰할 수 있는 한 사람에게 털어놓는 것이 지금 이 시기에 가장 필요한 것이에요.'
+    },
+    { label:'무토(戊土)', typeLabel:'묵묵한 대산형', ohLabel:'土',
+      trait:'무토(戊土)는 명리학에서 큰 산, 혹은 드넓은 대지를 상징해요. 쉽게 흔들리지 않는 중심과 묵묵히 버티는 힘이 가장 큰 특징이에요. 주변에서 의지하는 사람이 많고, 누군가 힘들 때 가장 먼저 떠올리는 존재예요.\n\n쉽게 감정을 드러내지 않고, 어지간한 일은 참고 넘길 수 있는 포용력이 있어요.',
+      why:'무토 기질의 가장 큰 과제는 "참는 것이 미덕"이라는 믿음이에요. 오랫동안 감정과 불편함을 쌓아두다 보면, 본인도 언제부터 힘들었는지 모르게 되는 경우가 있어요.\n\n지금 이 상황이 얼마나 됐는지 떠올려보세요. 처음에는 괜찮다고 생각했던 일이 지금은 훨씬 무겁게 느껴지고 있다면, 이미 한계에 가까워졌다는 신호예요.',
+      pattern:'무토는 주변의 기대에 부응하려는 성향이 강해서, 힘들어도 "괜찮다"고 말하는 패턴이 있어요. 그 결과 주변에서 "이 사람은 다 견딜 수 있다"고 인식하고, 점점 더 많은 것을 요구하게 돼요.\n\n지금 내가 얼마나 힘든지를 솔직하게 표현하는 연습이 필요한 시기예요.'
+    },
+    { label:'기토(己土)', typeLabel:'세심한 배려가형', ohLabel:'土',
+      trait:'기토(己土)는 명리학에서 기름진 논밭, 혹은 정원의 흙에 비유해요. 모든 것을 품어 키워내는 포용력과 배려심이 타고난 기질이에요. 사람의 감정 변화에 민감하게 반응하고, 상대가 불편하지 않도록 세심하게 신경 쓰는 능력이 있어요.\n\n꼼꼼하고 성실하며, 맡은 일은 끝까지 책임지는 성향이 강해요.',
+      why:'기토 기질은 내 감정보다 상대의 감정을 먼저 읽는 능력이 너무 뛰어나서, 정작 본인의 경계가 언제 넘어갔는지 늦게 알아채는 경우가 많아요.\n\n"저 사람도 사정이 있겠지" 하다가 어느 순간 억울함이 폭발하는 패턴이 생겨요.',
+      pattern:'기토는 어려운 상황에서도 먼저 사과하거나 상황을 봉합하려는 성향이 있어요. 갈등을 잠깐 잠재우지만, 근본적인 문제는 해결되지 않고 반복되는 원인이 돼요.\n\n내가 불편하다는 말을 먼저 하는 연습이 지금 이 시기에 필요해요.'
+    },
+    { label:'경금(庚金)', typeLabel:'결단력 원칙가형', ohLabel:'金',
+      trait:'경금(庚金)은 명리학에서 강철, 혹은 도끼에 비유해요. 타고난 결단력과 원칙 의식이 강하고, 옳고 그름에 대한 판단이 명확하며 그걸 행동으로 옮기는 실행력이 있어요. 한번 마음먹으면 강하게 밀어붙이는 힘이 있고, 부당한 것을 참고 넘어가는 게 체질적으로 안 맞아요.\n\n이 기질은 불의 앞에서 가장 먼저 목소리를 내는 힘이 돼요.',
+      why:'경금 기질은 상황을 정확하게 판단하는 능력은 뛰어나지만, 그 판단을 표현하는 방식이 너무 직접적이어서 갈등이 오히려 커지는 경우가 있어요.\n\n맞는 말을 했는데도 상대방이 방어적으로 굳어버리거나, 감정 싸움으로 번져서 본질이 희석되는 경험을 한 적 있을 거예요.',
+      pattern:'경금은 빠른 해결을 원하는 성향 때문에, 상대가 아직 준비되지 않은 상태에서 결론을 밀어붙이는 패턴이 생기기 쉬워요.\n\n돌격하지 않아도 이길 수 있는 방법이 있어요. 상대가 스스로 물러서게 만드는 전략이 지금 이 시기의 과제예요.'
+    },
+    { label:'신금(辛金)', typeLabel:'완벽주의 감각가형', ohLabel:'金',
+      trait:'신금(辛金)은 명리학에서 보석, 혹은 날카롭게 벼려진 작은 칼에 비유해요. 완벽주의적 성향과 예민한 감각이 특징이에요. 사소한 것도 그냥 넘기지 않고, 아름다움과 질서에 대한 기준이 높아요.\n\n이 섬세함이 신금을 탁월한 감각의 소유자로 만들어줘요. 그런데 보석이 아무리 귀해도 작은 충격에도 금이 가듯, 신금은 타인의 말이나 시선에 민감하게 반응해요.',
+      why:'신금 기질은 상대의 말 한마디가 오래 남아요. 이미 지나간 상황을 반복해서 떠올리고, "그때 왜 저 말을 했을까, 내가 뭔가 잘못한 걸까"를 되새기는 패턴이 있어요.\n\n지금 이 상황에서 내가 잘못한 건 아닌지 반복해서 생각하고 있다면, 상대방 잘못을 내가 짊어지고 있을 가능성이 높아요.',
+      pattern:'신금은 완벽하게 대응하려다 타이밍을 놓치는 경우가 있어요. 뭐라고 말해야 할지 고민하다가 그 순간이 지나버리고, 나중에 후회하는 패턴이에요.\n\n완벽한 말 대신 솔직한 말이 지금 훨씬 강력해요.'
+    },
+    { label:'임수(壬水)', typeLabel:'전략적 큰 물형', ohLabel:'水',
+      trait:'임수(壬水)는 명리학에서 큰 강이나 바다를 상징해요. 광활하고 깊으며, 어느 방향으로든 유연하게 흘러갈 수 있는 기질이에요. 상황 파악이 빠르고, 다각도로 분석하는 능력이 뛰어나며, 장기적인 안목으로 판단하는 힘이 있어요.\n\n사람도 빠르게 파악하고, 관계의 역학을 직관적으로 이해해요.',
+      why:'임수 기질의 어려움은 다 알면서도 실제로 변화를 만들기가 어렵다는 느낌이에요. 이미 상황을 분석했고, 어떻게 해야 하는지도 알고 있어요.\n\n그런데 막상 행동으로 옮기려면 변수가 너무 많고, 최적의 타이밍을 기다리다 기회를 놓치는 경우가 생겨요.',
+      pattern:'임수는 감정보다 분석이 앞서는 경향이 있어요. 냉정하게 볼 수 있지만, 정작 본인의 감정적 필요는 뒤로 밀리는 경우가 생겨요.\n\n지금 이 상황에서 필요한 것은 더 많은 분석이 아니에요. 작은 행동 하나를 지금 당장 실행하는 것이에요.'
+    },
+    { label:'계수(癸水)', typeLabel:'감수성 내면가형', ohLabel:'Water',
+      trait:'계수(癸水)는 명리학에서 안개, 빗방울, 혹은 이슬에 비유해요. 감수성이 풍부하고 깊은 공감 능력이 있으며, 상대의 감정을 섬세하게 포착하는 능력이 뛰어나요. 내면이 풍부하고, 혼자 사유하는 시간에서 에너지를 얻는 기질이에요.\n\n조용하고 내성적으로 보이지만, 내면에는 굉장히 세밀하고 복잡한 감정의 층위가 있어요.',
+      why:'계수 기질은 상대방의 에너지를 강하게 흡수하는 특성이 있어요. 특히 부정적인 에너지, 압박감, 무시하는 태도 같은 것들이 다른 기질의 사람보다 훨씬 깊이 스며들어요.\n\n예민해서가 아니에요. 그만큼 많은 것을 흡수하고 있기 때문이에요.',
+      pattern:'계수는 혼자 감당하려는 성향이 강해서 힘들다는 말을 잘 못 하는 경우가 있어요. 내면에서 많은 것을 처리하다 보면 외부적으로는 괜찮아 보이고, 주변도 괜찮은 줄 알아요.\n\n흡수한 것들을 밖으로 표현하는 출구가 지금 반드시 필요해요.'
+    }
+  ];
 
 });
 </script>
